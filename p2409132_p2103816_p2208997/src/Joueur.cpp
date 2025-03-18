@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Joueur.h"
-#include "Pion.h"
+
 using namespace std;
 
 Joueur::Joueur()
@@ -8,10 +8,17 @@ Joueur::Joueur()
 	id=0;
 	nbpionarrives=0;
 }
-Joueur::Joueur(int ident)
+
+Joueur::Joueur(int ident, int r, int v, int b)
 {
 	id=ident;
 	nbpionarrives=0;
+	couleur=set_color(r,v,b);
+	Pion * tab[4];
+	for (i=0; i<4;i++)
+	{
+		tab[0] = new Pion();  
+	}
 }
 
 int Joueur::getNbpionArrives()
@@ -19,10 +26,11 @@ int Joueur::getNbpionArrives()
 	return nbpionarrives;
 }
 
-Color Joueur::setcouleurjoueur()
+Joueur::~Joueur()
 {
-	couleur=set_color(r,v,b);
+	for (int i = 0; i < 4; ++i) 
+	{
+		delete tab[i];  
+	}
 }
-
-Joueur::~Joueur(){}
 

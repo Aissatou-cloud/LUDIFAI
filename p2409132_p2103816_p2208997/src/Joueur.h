@@ -1,5 +1,7 @@
 #ifndef JOUEUR_H
 #define JOUEUR_H
+#include "Pion.h"
+#include "Color.h"
 
 class Joueur
 {
@@ -10,10 +12,9 @@ class Joueur
     	Color couleur; 	
     public:
     	Joueur();
-    	Joueur(int indent);
+    	Joueur(int indent,int r, int v, int b);
     	int getNbpionArrives();
     	~Joueur();
 };
 
 #endif
-
