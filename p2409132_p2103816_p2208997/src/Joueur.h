@@ -3,13 +3,16 @@
 
 class Joueur
 {
-public:
-    int id;
-    int nbpionarrives;
-    
-    Joueur();
-    int getNbpionArrives();
-    ~Joueur();
+	private:
+    	int id;
+    	int nbpionarrives;
+    	Pion * tab[4];  
+    	Color couleur; 	
+    public:
+    	Joueur();
+    	Joueur(int indent);
+    	int getNbpionArrives();
+    	~Joueur();
 };
 
 #endif
