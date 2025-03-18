@@ -2,6 +2,7 @@
 #define JEU_H
 
 #include <iostream>     //vector pour les tableaux dynamique
+#include <vector>
 #include "Joueur.h"
 #include "De.h"
 
