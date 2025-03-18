@@ -33,7 +33,7 @@ struct Color{
     const Color& getColor();
 
 
-}
+};
 
 
 
