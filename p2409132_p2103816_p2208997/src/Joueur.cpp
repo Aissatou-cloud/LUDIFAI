@@ -3,34 +3,38 @@
 
 using namespace std;
 
-Joueur::Joueur()
-{
-	id=0;
-	nbpionarrives=0;
-}
-
-Joueur::Joueur(int ident, int r, int v, int b)
-{
-	id=ident;
-	nbpionarrives=0;
-	couleur=set_color(r,v,b);
-	Pion * tab[4];
-	for (i=0; i<4;i++)
+	Joueur::Joueur(): id(0), nbpionarrives(0) 
 	{
-		tab[0] = new Pion();  
+		for(unsigned int i=0; i<4; i++){
+			tab[i]=new Pion(i+1); //cree 4 pions avec un identifiant unique
+		}
 	}
-}
 
-int Joueur::getNbpionArrives()
-{
-	return nbpionarrives;
-}
-
-Joueur::~Joueur()
-{
-	for (int i = 0; i < 4; ++i) 
+	Joueur::Joueur(int ident, int r, int v, int b):id(ident), nbpionarrives(0)
 	{
-		delete tab[i];  
+		couleur.setColor(r,v,b); //correctement initialise
+		for (unsigned int i=0; i<4; i++){
+			tab[i] = new Pion(i+1);  
+		}
 	}
-}
+
+	
+	Joueur::~Joueur()
+	{
+		for (unsigned int i = 0; i < 4; ++i) 
+		{
+			delete tab[i];  
+		}
+	}
+
+	int Joueur:: getId()const{
+		return id;
+	}
+
+	int Joueur::getNbpionArrives()
+	{
+		return nbpionarrives;
+	}
+
+	Color Joueur:: getCouleur() const {return couleur ;}
 

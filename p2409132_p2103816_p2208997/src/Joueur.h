@@ -13,8 +13,11 @@ class Joueur
     public:
     	Joueur();
     	Joueur(int indent,int r, int v, int b);
+		~Joueur();
+		int getId() const;
+		Color getCouleur() const ;
     	int getNbpionArrives();
-    	~Joueur();
+    	
 };
 
 #endif
