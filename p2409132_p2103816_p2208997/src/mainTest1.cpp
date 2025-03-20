@@ -1,8 +1,9 @@
 #include <iostream>
-#include "Joueur.h"
+#include "Joueur.h"   //a enlever pour jeu
 #include "Pion.h"
-#include "De.h"
+#include "De.h"   //a enlever pour jeu
 #include "Color.h"
+#include "Jeu.h"
 
 using namespace std;
 
@@ -38,6 +39,11 @@ int main() {
          << " a la couleur R=" << (int)joueur1.getCouleur().r 
          << ", V=" << (int)joueur1.getCouleur().v 
          << ", B=" << (int)joueur1.getCouleur().b << endl;
+
+     //Test de l'affichage sdl jeu 
+     Jeu j;
+     cout<<"depart jeu"<<endl;
+     j.Demarer_Jeu();
 
     return 0;
 }
