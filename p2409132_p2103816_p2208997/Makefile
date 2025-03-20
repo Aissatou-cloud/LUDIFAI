@@ -1,10 +1,13 @@
 all: bin/mainTest1
 
-bin/mainTest1: obj/mainTest1.o obj/Joueur.o obj/Pion.o obj/De.o obj/Color.o 
-	g++ -ggdb -Wall obj/mainTest1.o obj/Joueur.o obj/Pion.o obj/De.o obj/Color.o -o bin/mainTest1
+bin/mainTest1: obj/mainTest1.o obj/Jeu.o obj/Joueur.o obj/Pion.o obj/De.o obj/Color.o 
+	g++ -ggdb -Wall obj/mainTest1.o obj/Jeu.o obj/Joueur.o obj/Pion.o obj/De.o obj/Color.o -o bin/mainTest1
 	
-obj/mainTest1.o: src/mainTest1.cpp src/Joueur.h src/Pion.h src/De.h src/Color.h
+obj/mainTest1.o: src/mainTest1.cpp src/Jeu.h src/Joueur.h src/Pion.h src/De.h src/Color.h
 	g++ -ggdb -Wall -c src/mainTest1.cpp -o obj/mainTest1.o
+
+obj/Jeu.o: src/Jeu.cpp src/Jeu.h src/Joueur.h src/De.h
+	g++ -ggdb -Wall -c src/Jeu.cpp -o obj/Jeu.o
 
 obj/Joueur.o: src/Joueur.cpp src/Joueur.h src/Pion.h src/Color.h
 	g++ -ggdb -Wall -c src/Joueur.cpp -o obj/Joueur.o

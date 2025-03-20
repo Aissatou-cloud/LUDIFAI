@@ -1,7 +1,6 @@
 #ifndef JEU_H
 #define JEU_H
 
-#include <iostream>     //vector pour les tableaux dynamique
 #include <vector>
 #include "Joueur.h"
 #include "De.h"
@@ -18,7 +17,7 @@ class Jeu
 {
     private:
         int nb_Joueur;      ///nb de joueur 
-        vector<Joueur> * Joueur = new vector<Joueur> [nb_Joueur];        ///creer tableau de nb Joueur présent
+        vector<Joueur> * joueurs;      ///creer tableau de nb Joueur présent
         De de;              ///le de du jeu 
 
     public:
@@ -39,9 +38,23 @@ class Jeu
         ~Jeu();
 
         /**
+        * @brief Demarer jeu place les pions et les joueurs pour le debut du jeu
+        */
+        void Demarer_Jeu();
+
+        /**
         * @brief gere les tours pour chaque joueur
         */
-        Gerer_Tour();
+        void Gerer_Tour();
 
+        /**
+        * @brief affiche le jeu sous la console 
+        * @param j jeu 
+        * @param t_x taille x de la fenetre
+        * @param t_y taille y de la fenetre
+        */
+        void AffichageLimiteTerrain_SDL (int t_x, int t_y);
 };
+
+#endif
 

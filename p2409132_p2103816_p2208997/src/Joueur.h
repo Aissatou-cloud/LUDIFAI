@@ -6,13 +6,13 @@
 class Joueur
 {
 	private:
-    	int id;
+    	unsigned int id;
     	int nbpionarrives;
     	Pion * tab[4];  
     	Color couleur; 	
     public:
     	Joueur();
-    	Joueur(int indent,int r, int v, int b);
+		Joueur(unsigned int indent,unsigned char r, unsigned char v, unsigned char b);
 		~Joueur();
 		int getId() const;
 		Color getCouleur() const ;

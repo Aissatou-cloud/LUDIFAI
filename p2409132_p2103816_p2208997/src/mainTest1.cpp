@@ -1,8 +1,9 @@
 #include <iostream>
-#include "Joueur.h"
+#include "Joueur.h"   //a enlever pour jeu
 #include "Pion.h"
-#include "De.h"
+#include "De.h"   //a enlever pour jeu
 #include "Color.h"
+#include "Jeu.h"
 
 using namespace std;
 
@@ -38,6 +39,36 @@ int main() {
          << " a la couleur R=" << (int)joueur1.getCouleur().r 
          << ", V=" << (int)joueur1.getCouleur().v 
          << ", B=" << (int)joueur1.getCouleur().b << endl;
+
+     //Test de l'affichage sdl jeu 
+     Jeu j;
+    char t[4];
+     bool valide;
+     cout<<"depart jeu"<<endl;
+     cout<<"Choisissez vos pions: *, +, ^, °"<<endl;
+
+     for(int i=0; i<4; i++)
+     {
+          do{
+               valide = true;
+               cout<<"Utilisateur "<<i+1<<": ";
+               cin>>t[i];
+               cout<<endl;
+
+               for (int j=0; j<i; j++)
+               {
+                    if(t[j]==t[i])
+                    {
+                         cout<<"Pion deja prit recommencez"<<endl;
+                         valide = false;
+                         break;
+                    }
+               }               
+          }while(!valide);
+
+     }
+
+     j.Demarer_Jeu();
 
     return 0;
 }
