@@ -42,7 +42,32 @@ int main() {
 
      //Test de l'affichage sdl jeu 
      Jeu j;
+    char t[4];
+     bool valide;
      cout<<"depart jeu"<<endl;
+     cout<<"Choisissez vos pions: *, +, ^, °"<<endl;
+
+     for(int i=0; i<4; i++)
+     {
+          do{
+               valide = true;
+               cout<<"Utilisateur "<<i+1<<": ";
+               cin>>t[i];
+               cout<<endl;
+
+               for (int j=0; j<i; j++)
+               {
+                    if(t[j]==t[i])
+                    {
+                         cout<<"Pion deja prit recommencez"<<endl;
+                         valide = false;
+                         break;
+                    }
+               }               
+          }while(!valide);
+
+     }
+
      j.Demarer_Jeu();
 
     return 0;
