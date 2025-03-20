@@ -36,9 +36,9 @@ int main() {
     cout << "\n==== TEST JOUEUR ====" << endl;
     Joueur joueur1(1, 0, 255, 0); // Joueur vert
     cout << "Joueur " << joueur1.getId() 
-         << " a la couleur R=" << (int)joueur1.getCouleur().r 
-         << ", V=" << (int)joueur1.getCouleur().v 
-         << ", B=" << (int)joueur1.getCouleur().b << endl;
+         << " a la couleur R=" << (int)joueur1.getCouleur().getR() 
+         << ", V=" << (int)joueur1.getCouleur().getV ()
+         << ", B=" << (int)joueur1.getCouleur().getB() << endl;
 
      //Test de l'affichage sdl jeu 
      Jeu j;

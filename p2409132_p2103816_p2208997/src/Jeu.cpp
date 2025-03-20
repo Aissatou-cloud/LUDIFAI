@@ -3,37 +3,31 @@
 
 using namespace std;
 
-Jeu::Jeu()
+Jeu::Jeu(): nb_Joueur(4)
 {
-    int nb_joueur=4;
+    //int nb_Joueur=4;
     De de;
-    Joueur * joueur = new Joueur[nb_joueur];
-
-    for (int i=0;i<nb_joueur; i++)
+    /*Comme on a un vector de joeur on aura pas besoin d'allouer et desallouer dynmiquement
+    car vector le gere automatiquemnt pour nous
+    et aussi VECTOR nous permet d'ajouter(PUSH.BACK) ou de retirer des joueurs avec ces methodes
+    sans se soucier de la taille du tab 
+     */
+    for (int i=0;i<nb_Joueur; i++)
     {
-        joueur[i] = Joueur(i, 0, 0, 0);       //gerer la couleur 
+        joueurs.push_back(Joueur(i,0, 0, 0)); //ajoute a la fin du vector
+      //gerer la couleur 
     }
 }
 
-<<<<<<< HEAD
-
-
-=======
-Jeu::Jeu(int nb_j)
-{
-    De de;
-    Joueur * joueurs = new Joueur[nb_j];
-
+Jeu::Jeu(int nb_j): nb_Joueur(nb_j){
+   
     for (int i=0;i<nb_j; i++)
     {
-        joueurs[i] = Joueur(i, 0, 0, 0);       //gerer la couleur 
+        joueurs.push_back(Joueur(i,0, 0, 0));      //gerer la couleur 
     }
 }
 
-Jeu::~Jeu()
-{
-    delete [] joueurs;
-}
+Jeu::~Jeu(){} //Plus besoin de delete[] car 'vector' gere la mem automatiquement
 
 void Jeu::AffichageLimiteTerrain_SDL(int x, int y)
 {
@@ -60,12 +54,24 @@ void Jeu::AffichageLimiteTerrain_SDL(int x, int y)
     cout<<endl;
 }
 
-void Jeu::Demarer_Jeu()
-{
+void Jeu::Demarer_Jeu(){
+    
     int taille_x, taille_y;         //taille plateau
     taille_x = 30;    //affichage a part 
     taille_y = 15;
 
     AffichageLimiteTerrain_SDL(taille_x, taille_y);
+
+
+    cout<<"Le jeu commence avec: "<< nb_Joueur<< "joueurs" <<endl;
+
+    //Affichage des joueurs et leur couleurs
+    for( int i=0; i< nb_Joueur; i++){
+        cout<<"Player: "<<joueurs[i].getId()<< " -Color: ( "
+        <<(int)joueurs[i].getCouleur().getR()<<", " 
+        <<(int)joueurs[i].getCouleur().getV()<<", " 
+        <<(int)joueurs[i].getCouleur().getB()<<" )"<<endl;
+
+    }
+
 }
->>>>>>> 62fb08fdc869c48bc8a4b4fff9da16f52991db60

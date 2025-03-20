@@ -16,3 +16,7 @@ using namespace std;
         return *this; //Renvoie une reference sur l'objet courant
         
     }
+    
+    unsigned char Color::getR() const{ return r; }
+    unsigned char Color::getV() const{ return v; }
+    unsigned char Color::getB() const{ return b; }

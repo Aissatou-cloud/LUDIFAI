@@ -30,6 +30,11 @@ struct Color{
      * @brief methode pour recuperer la couleur
      */
     const Color& getColor();
+    unsigned char getR() const;
+    unsigned char getV() const;
+    unsigned char getB() const;
+    
+    
 
 
 };

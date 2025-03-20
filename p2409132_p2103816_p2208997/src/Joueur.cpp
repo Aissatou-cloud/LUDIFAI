@@ -21,10 +21,10 @@ using namespace std;
 	
 	Joueur::~Joueur()
 	{
-		for (unsigned int i = 0; i < 4; ++i) 
+		/*for (unsigned int i = 0; i < 4; ++i) 
 		{
-			delete tab[i];  
-		}
+			delete tab[];  
+		}*/
 	}
 
 	int Joueur:: getId()const{

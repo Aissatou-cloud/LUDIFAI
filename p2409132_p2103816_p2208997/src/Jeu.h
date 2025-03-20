@@ -17,7 +17,8 @@ class Jeu
 {
     private:
         int nb_Joueur;      ///nb de joueur 
-        vector<Joueur> * joueurs;      ///creer tableau de nb Joueur présent
+        vector<Joueur> joueurs; ///Tableau dyna de joueur
+        //vector<Joueur> * joueurs;      ///creer tableau de nb Joueur présent
         De de;              ///le de du jeu 
 
     public:
