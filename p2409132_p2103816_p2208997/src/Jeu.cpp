@@ -12,3 +12,6 @@ Jeu::Jeu()
         Joueur = joueur(i, i*20, i *20, i *20);
     }
 }
+
+
+
