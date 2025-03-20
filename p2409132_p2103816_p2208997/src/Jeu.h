@@ -17,7 +17,7 @@ class Jeu
 {
     private:
         int nb_Joueur;      ///nb de joueur 
-        vector<Joueur> joueurs; ///Tableau dyna de joueur
+        vector<Joueur*> joueurs; ///Tableau dyna de joueur
         //vector<Joueur> * joueurs;      ///creer tableau de nb Joueur présent
         De de;              ///le de du jeu 
 
@@ -46,7 +46,7 @@ class Jeu
         /**
         * @brief gere les tours pour chaque joueur
         */
-        void Gerer_Tour();
+        void Gerer_Tour(Joueur & joueur);
 
         /**
         * @brief affiche le jeu sous la console 
@@ -55,6 +55,15 @@ class Jeu
         * @param t_y taille y de la fenetre
         */
         void AffichageLimiteTerrain_SDL (int t_x, int t_y);
+        int LancerDe();
+        vector<Pion*> RecupDesPionsEnJeu(Joueur &joueur);
+        bool GererEntreeJeu(Joueur &joueur, int val_de);
+        Pion* ChoisirPion(vector<Pion*> PionsEnJeu, Joueur &joueur );
+        void DeplacerPion(Pion* pion, int val-de);
+        void VerifierCollision(Pion* pionDeplace, Joueur &joueurActuel);
+        void VerifierArrivee(Pion* pion, Joueur &joueur);
+
+
 };
 
 #endif

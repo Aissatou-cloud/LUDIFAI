@@ -14,7 +14,7 @@ Jeu::Jeu(): nb_Joueur(4)
      */
     for (int i=0;i<nb_Joueur; i++)
     {
-        joueurs.push_back(Joueur(i,0, 0, 0)); //ajoute a la fin du vector
+        joueurs.push_back(new Joueur(i,0, 0, 0)); //ajoute a la fin du vector
       //gerer la couleur 
     }
 }
@@ -23,11 +23,15 @@ Jeu::Jeu(int nb_j): nb_Joueur(nb_j){
    
     for (int i=0;i<nb_j; i++)
     {
-        joueurs.push_back(Joueur(i,0, 0, 0));      //gerer la couleur 
+        joueurs.push_back(new Joueur(i,0, 0, 0));      //gerer la couleur 
     }
 }
 
-Jeu::~Jeu(){} //Plus besoin de delete[] car 'vector' gere la mem automatiquement
+Jeu::~Jeu(){
+    for(int i; i<nb_Joueur; i++){
+        delete Joueur;
+    }
+} //Plus besoin de delete[] car 'vector' gere la mem automatiquement
 
 void Jeu::AffichageLimiteTerrain_SDL(int x, int y)
 {
@@ -75,3 +79,22 @@ void Jeu::Demarer_Jeu(){
     }
 
 }
+
+/*void Jeu::Gerer_Tour(Joueur &joueur){
+    cout<<"Tour du joueur: "<< joueur.getID()<<"!"<<endl;
+    
+    //1.lancé du dé
+    int val_de=Get.Val();
+    cout<<"le joueur: "<<joueur.getID()<< "a lance le de : "<<val_de<< endl;
+
+
+    //Deplacemnt du pion
+    vector<Pion*> pions_en_jeu;
+    for(int=0; i<4; i++){
+        Joue
+    }
+
+
+
+}*/
+
