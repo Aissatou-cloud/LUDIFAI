@@ -37,3 +37,22 @@ using namespace std;
 
 	Color Joueur:: getCouleur() const {return couleur ;}
 
+	Pion* GetPion(int indice){ //recuperation du pion on en as besoin dans Jeu 
+		if(indice <0 && indice >=4){
+			return tab[indice]; //return 1 ptr vers le pion demande
+		}else{
+			return nullptr; //return nullptr if invalide index
+		}
+	}
+
+	vector<Pin*> GetPionsEnJeu(){
+		vector<Pion*> pions_en_jeu; //init du vecteur qui contiendra les pions en jeu
+
+		for(int i=0; i<4; i++){
+			if(!tab[i]->GetEstArrive() && tab[i]->GetEstSorti()){
+				pions_en_jeu.push_back(tab[i]); //ajoute le pion s'il est sorti mais pas arrive dans le tableau
+			}
+		}
+		return pions_en_jeu;
+	}
+

@@ -55,6 +55,8 @@ class Jeu
         * @param t_y taille y de la fenetre
         */
         void AffichageLimiteTerrain_SDL (int t_x, int t_y);
+
+        //methodes dont aura besoin Gerer_tour(Joueur &joueur)
         int LancerDe();
         vector<Pion*> RecupDesPionsEnJeu(Joueur &joueur);
         bool GererEntreeJeu(Joueur &joueur, int val_de);

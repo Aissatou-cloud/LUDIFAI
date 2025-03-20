@@ -42,13 +42,16 @@ class Pion{
         /**
         * @brief Retourne si le pion est arrivé a la case d'arrivée ou non        
         */
-        bool GetEstArriver() const;
+        bool GetEstArrive() const;
 
         /**
         * @brief Deplace le pion en fonction du nombre du dé lancé
         * @param nb nombre de place à incrémenter a la position du pion 
         */
         void SeDeplace(int nb);
+        void SortirBase(); // sortir le pion
+
+        
 };
 
 #endif

@@ -17,6 +17,8 @@ class Joueur
 		int getId() const;
 		Color getCouleur() const ;
     	int getNbpionArrives();
+		Pion* GetPion(int indice); //recuperation du pion
+		vector<Pin*> GetPionsEnJeu();  //recuperation du vecteur de pions qui sont en jeu
     	
 };
 
