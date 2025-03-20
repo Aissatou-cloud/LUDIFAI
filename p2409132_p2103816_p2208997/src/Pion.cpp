@@ -32,7 +32,7 @@ bool Pion::GetEstSorti() const
     return est_sorti;
 }
 
-bool Pion::GetEstArriver() const 
+bool Pion::GetEstArrive() const 
 {
     return est_arrive;
 }
@@ -41,3 +41,10 @@ void Pion::SeDeplace(int nb)   //verification du bon pion dans plateau
 {
     i+=nb;
 }
+
+void SortirBase(){
+    est_sorti=true; //Le pion est maintenant en jeu
+    i=0;  //supposons que la position de depart soit 0
+}
+
+

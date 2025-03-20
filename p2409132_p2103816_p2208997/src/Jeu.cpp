@@ -80,6 +80,41 @@ void Jeu::Demarer_Jeu(){
 
 }
 
+int Jeu::LancerDe(){
+    int val_de=Get.Val();
+    cout<<"le joueur: "<<joueur.getID()<< "a lance le de : "<<val_de<< endl;
+    return val_de;
+}
+
+vector<Pion*> Jeu:: RecupDesPionsEnJeu(Joueur &joueur){
+    vector<Pion*> pionsEnjeu;
+    for(int i=0; i<4; i++){
+        if(!tab[i]->GetEstArrive() && tab[i]->GetEstSorti()){
+            pionsEnJeu.push_back(joueur.GetPion(i));
+        }
+    }
+    return pionsEnJeu;
+}
+
+bool GererEntreeJeu(Joueur &joueur, int val_de){
+    if(val_de==6){
+        //chercher un pion qui n'est pas encore sorti
+        for(int=0; i<4; i++){
+            Pion* pion_sorti=joueur.GetPion(i);
+            if(!pion_sorti.GetEstSorti()){ //si le pion n'est pas sorti
+                pion_sorti.SortirBase();
+                cout<<"le joueur: "<< joueur.getID() <<" a fait sortir un pion" <<endl;
+                return true;
+            }
+
+        }
+        
+    }
+    cout<<<"Aucun pion en jeu(no 6)"<<endl;
+    return false;
+}
+
+
 /*void Jeu::Gerer_Tour(Joueur &joueur){
     cout<<"Tour du joueur: "<< joueur.getID()<<"!"<<endl;
     
