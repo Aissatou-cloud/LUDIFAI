@@ -68,7 +68,7 @@ int main() {
 
      }
 
-     j.Demarer_Jeu();
+     j.Demarer_Jeu(t);
 
     return 0;
 }

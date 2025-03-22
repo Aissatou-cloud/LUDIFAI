@@ -1,7 +1,10 @@
 #ifndef JOUEUR_H
 #define JOUEUR_H
+#include <vector>
 #include "Pion.h"
 #include "Color.h"
+
+using namespace std;
 
 class Joueur
 {
@@ -18,7 +21,7 @@ class Joueur
 		Color getCouleur() const ;
     	int getNbpionArrives();
 		Pion* GetPion(int indice); //recuperation du pion
-		vector<Pin*> GetPionsEnJeu();  //recuperation du vecteur de pions qui sont en jeu
+		vector<Pion*> GetPionsEnJeu();  //recuperation du vecteur de pions qui sont en jeu
     	
 };
 

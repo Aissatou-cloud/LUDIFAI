@@ -45,7 +45,7 @@ using namespace std;
 		}
 	}
 
-	vector<Pin*> GetPionsEnJeu(){
+	vector<Pion*> GetPionsEnJeu(){
 		vector<Pion*> pions_en_jeu; //init du vecteur qui contiendra les pions en jeu
 
 		for(int i=0; i<4; i++){

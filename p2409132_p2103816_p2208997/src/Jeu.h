@@ -41,11 +41,12 @@ class Jeu
         /**
         * @brief Demarer jeu place les pions et les joueurs pour le debut du jeu
         */
-        void Demarer_Jeu();
+        void Demarer_Jeu(char tab[4]);
 
         /**
         * @brief gere les tours pour chaque joueur
         * @param joueur le joueur actuel 
+		* @param tab de caractere (uniquement pour console)
         */
         void Gerer_Tour(Joueur & joueur);
 
@@ -55,7 +56,7 @@ class Jeu
         * @param t_x taille x de la fenetre
         * @param t_y taille y de la fenetre
         */
-        void AffichageLimiteTerrain_SDL (int t_x, int t_y);
+        void AffichageLimiteTerrain_SDL (int t_x, int t_y, char tab[4]);
 
         //methodes dont aura besoin Gerer_tour(Joueur &joueur)
                 /**
@@ -89,7 +90,7 @@ class Jeu
         * @param pion 1 ptr sur Pion
         * @param val_de la valeur du de
         */
-        void DeplacerPion(Pion* pion, int val-de);
+        void DeplacerPion(Pion* pion, int val_de);
 
         /**
         * @brief verifie la collision entre les autres pions des autres joeur et le joueur

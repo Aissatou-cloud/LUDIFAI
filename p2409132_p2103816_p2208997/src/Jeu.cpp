@@ -27,51 +27,51 @@ Jeu::Jeu(int nb_j): nb_Joueur(nb_j){
     }
 }
 
-Jeu::~Jeu(){
-    for(int i; i<nb_Joueur; i++){
+Jeu::~Jeu()
+{
+    for(int i; i<nb_Joueur; i++)
+	{
         delete Joueur;
     }
 } //Plus besoin de delete[] car 'vector' gere la mem automatiquement
 
-void Jeu::AffichageLimiteTerrain_SDL(int x, int y)
+void Jeu::AffichageLimiteTerrain_SDL(int x, int y, char t[4])
 {
-	for (int i = 0; i < y; i++)  
+for (int i = 0; i < y; i++)  
 	{
 		for (int j = 0; j < x; j++) 
 		{
 			if (i == 0 || i == y - 1)   
-				cout << "-";
+				std::cout << "-";
 			else if (j == 0 || j == x - 1) 
-				cout << "|";
+				std::cout << "|";
 			else if (j<=2 && i<=2)
-				cout<<"r";
+				std::cout<<t[1];
 			else if (i >= y - 3 && j >= x - 3)
-				cout<<"b";
+				std::cout<<t[2];
 			else if (i<=2 && j>=27)
-				cout<<"v";
+				std::cout<<t[3];
 			else if (j<=2 && i>=12)
-				cout<<"n";
-			else if ((i==5 && j<=10) || (i==5 && j>=20) || 
-			(i==9 && j<=10) || (i==9 && j>=20) || (j==10 && i<=5) 
-			|| (j==10 && i>=10) || (i==1 && j>=10 && j<=20) || 
-			(i==y-2 && j>=10 && j<=20) || 
-			(i==1 && j>=10 && j<=20) || 
-			(j==1 && i>=5 && i<=9) || (j==x-1 && i>=5 && i<=9) 
-			|| (j==20 && (i>=9 || i<=5) ) || (j==x-2 && i>=5 && i<=9))
-				cout<<"*";
+				std::cout<<t[4];
+            else if (
+                ((i == 5 || i == 9) && (j <= 10 || j >= 20)) ||  
+                ((j == 10 || j == 20) && (i <= 5 || i >= 9)) ||  
+                ((i == 1 || i == y - 2) && j >= 10 && j <= 20) ||  
+                ((j == 1 || j == x - 1 || j == x - 2) && i >= 5 && i <= 9))
+				std::cout<<"*";
 			else 
-				cout << ".";  
-		}
-		cout << endl; 
+				std::cout << ".";  
+		}	std::cout <<std::endl; 
 	}
 }
-void Jeu::Demarer_Jeu(){
+void Jeu::Demarer_Jeu(char tab[4])
+{
     
     int taille_x, taille_y;         //taille plateau
     taille_x = 30;    //affichage a part 
     taille_y = 15;
 
-    AffichageLimiteTerrain_SDL(taille_x, taille_y);
+    AffichageLimiteTerrain_SDL(taille_x, taille_y, tab);
 
 
     cout<<"Le jeu commence avec: "<< nb_Joueur<< "joueurs" <<endl;
@@ -97,27 +97,27 @@ vector<Pion*> Jeu:: RecupDesPionsEnJeu(Joueur &joueur){
     vector<Pion*> pionsEnjeu;
     for(int i=0; i<4; i++){
         if(!tab[i]->GetEstArrive() && tab[i]->GetEstSorti()){
-            pionsEnJeu.push_back(joueur.GetPion(i));
+            pionsEnjeu.push_back(joueur.GetPion(i));
         }
     }
-    return pionsEnJeu;
+    return pionsEnjeu;
 }
 
 bool GererEntreeJeu(Joueur &joueur, int val_de){
-    if(val_de==6){
+    if (val_de==6){
         //chercher un pion qui n'est pas encore sorti
-        for(int=0; i<4; i++){
+        for(int i=0; i<4; i++){
             Pion* pion_sorti=joueur.GetPion(i);
             if(!pion_sorti.GetEstSorti()){ //si le pion n'est pas sorti
                 pion_sorti.SortirBase();
-                cout<<"le joueur: "<< joueur.getID() <<" a fait sortir un pion" <<endl;
+                cout<<"le joueur: "<< joueur.getId() <<" a fait sortir un pion" <<endl;
                 return true;
             }
 
         }
         
     }
-    cout<<<"Aucun pion en jeu(no 6)"<<endl;
+    cout<<"Aucun pion en jeu(no 6)"<<endl;
     return false;
 }
 
@@ -136,10 +136,10 @@ Pion* ChoisirPion(vector<Pion*> PionsEnJeu, Joueur &joueur ){
             cin>>choix;
     }
 
-    return joeur.GetPion(choix -1);
+    return joueur.GetPion(choix -1);
 }
 
-void DeplacerPion(Pion* pion, int val-de){
+void DeplacerPion(Pion* pion, int val_de){
     pion->SeDeplace(val_de);
     cout<<"le pion "<< pion->GetId()<< "avance de " <<val_de <<"cases." <<endl;
 }
@@ -163,22 +163,22 @@ void VerifierCollision(Pion* pion_deplace, Joueur &joueur_actuel){
 }
 
 void VerifierArrivee(Pion* pion, Joueur &joueur){
-    if(pion.GetI() >= 56){ //si 5- est la derniere cas
+    if(pion.GetId() >= 56){ //si 5- est la derniere cas
         joueur.nbpionarrives ++; //on increment le nbpionarrive
-        cout<<"Le pion " <<pion->GetId()<<" du joueur "<<joueur.GetId()<< " est arrive "<<endl;
+        cout<<"Le pion " <<pion->GetId()<<" du joueur "<<joueur.getId()<< " est arrive "<<endl;
 
     }
 }
 
 void Jeu::Gerer_Tour(Joueur &joueur){
-    cout<<"Tour du joueur: "<< joueur.getID()<<"!"<<endl;
+    cout<<"Tour du joueur: "<< joueur.getId()<<"!"<<endl;
     
     //1.lancé du dé
-    int val_de=LanceDe();
+    int val_de=LancerDe();
 
 
     // recuperer les pions en jeu
-    vector<Pion*> pions_en_jeu=RecupererPonsEnJeu(joueur);
+    vector<Pion*> pions_en_jeu=RecupDesPionsEnJeu(joueur);
 
     //gerer le cas ou aucun pion n'est sur le plateau
     if(pions_en_jeu.empty()){
@@ -187,18 +187,18 @@ void Jeu::Gerer_Tour(Joueur &joueur){
     }
 
     //choisir un pion à deplacer
-    Pion* pion_choisi=ChoisiPion(pions_en_jeu, joueur);
+    Pion* pion_choisi=ChoisirPion(pions_en_jeu, joueur);
     
     //deplacer le pion
     DeplacerPion(pion_choisi, val_de);
 
     //verifier les collisions
-    VerifierCollisions(pion_choisi,joueur);
+    VerifierCollision(pion_choisi,joueur);
 
     //veifier si un pion a atteint l'arrivee
     VerifierArrivee(pion_choisi, joueur);
 
-    cout <<"Fin du tour du joueur " <<joueur.getId() <<ensl;
+    cout <<"Fin du tour du joueur " <<joueur.getId() <<endl;
 
 
 
