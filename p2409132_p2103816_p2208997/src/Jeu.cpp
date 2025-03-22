@@ -169,21 +169,38 @@ void VerifierArrivee(Pion* pion, Joueur &joueur){
 
     }
 }
-/*void Jeu::Gerer_Tour(Joueur &joueur){
+
+void Jeu::Gerer_Tour(Joueur &joueur){
     cout<<"Tour du joueur: "<< joueur.getID()<<"!"<<endl;
     
     //1.lancé du dé
-    int val_de=Get.Val();
-    cout<<"le joueur: "<<joueur.getID()<< "a lance le de : "<<val_de<< endl;
+    int val_de=LanceDe();
 
 
-    //Deplacemnt du pion
-    vector<Pion*> pions_en_jeu;
-    for(int=0; i<4; i++){
-        Joue
+    // recuperer les pions en jeu
+    vector<Pion*> pions_en_jeu=RecupererPonsEnJeu(joueur);
+
+    //gerer le cas ou aucun pion n'est sur le plateau
+    if(pions_en_jeu.empty()){
+        if(GererEntreeJeu(joueur, val_de)) return ;
+        return ;
     }
 
+    //choisir un pion à deplacer
+    Pion* pion_choisi=ChoisiPion(pions_en_jeu, joueur);
+    
+    //deplacer le pion
+    DeplacerPion(pion_choisi, val_de);
+
+    //verifier les collisions
+    VerifierCollisions(pion_choisi,joueur);
+
+    //veifier si un pion a atteint l'arrivee
+    VerifierArrivee(pion_choisi, joueur);
+
+    cout <<"Fin du tour du joueur " <<joueur.getId() <<ensl;
 
 
-}*/
+
+}
 
