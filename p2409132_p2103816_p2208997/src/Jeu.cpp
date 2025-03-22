@@ -35,29 +35,36 @@ Jeu::~Jeu(){
 
 void Jeu::AffichageLimiteTerrain_SDL(int x, int y)
 {
-    for(int i=0; i<x; i++)
-    {
-        cout<<"-";
-    }
-    cout<<endl;
-
-    for (int i=0; i<y; i++)
-    {
-        cout<<"|";
-        for(int j=0; j<x-2; j++)
-        {
-            cout<<" ";
-        }
-        cout<<"|"<<endl;
-    }
-
-    for(int i=0; i<x; i++)      
-    {
-        cout<<"-";
-    }
-    cout<<endl;
+	for (int i = 0; i < y; i++)  
+	{
+		for (int j = 0; j < x; j++) 
+		{
+			if (i == 0 || i == y - 1)   
+				cout << "-";
+			else if (j == 0 || j == x - 1) 
+				cout << "|";
+			else if (j<=2 && i<=2)
+				cout<<"r";
+			else if (i >= y - 3 && j >= x - 3)
+				cout<<"b";
+			else if (i<=2 && j>=27)
+				cout<<"v";
+			else if (j<=2 && i>=12)
+				cout<<"n";
+			else if ((i==5 && j<=10) || (i==5 && j>=20) || 
+			(i==9 && j<=10) || (i==9 && j>=20) || (j==10 && i<=5) 
+			|| (j==10 && i>=10) || (i==1 && j>=10 && j<=20) || 
+			(i==y-2 && j>=10 && j<=20) || 
+			(i==1 && j>=10 && j<=20) || 
+			(j==1 && i>=5 && i<=9) || (j==x-1 && i>=5 && i<=9) 
+			|| (j==20 && (i>=9 || i<=5) ) || (j==x-2 && i>=5 && i<=9))
+				cout<<"*";
+			else 
+				cout << ".";  
+		}
+		cout << endl; 
+	}
 }
-
 void Jeu::Demarer_Jeu(){
     
     int taille_x, taille_y;         //taille plateau
