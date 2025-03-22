@@ -44,7 +44,12 @@ void Pion::SeDeplace(int nb)   //verification du bon pion dans plateau
 
 void SortirBase(){
     est_sorti=true; //Le pion est maintenant en jeu
-    i=0;  //supposons que la position de depart soit 0
+    i=1;  //supposons que la position de depart soit 0
+}
+
+void RetournerBase(){
+    est_sortie=false;
+    i=0;
 }
 
 

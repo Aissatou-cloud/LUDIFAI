@@ -50,6 +50,7 @@ class Pion{
         */
         void SeDeplace(int nb);
         void SortirBase(); // sortir le pion
+        void RetournerBase(); // retourner à la base
 
         
 };

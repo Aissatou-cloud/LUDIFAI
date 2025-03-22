@@ -114,7 +114,54 @@ bool GererEntreeJeu(Joueur &joueur, int val_de){
     return false;
 }
 
+Pion* ChoisirPion(vector<Pion*> PionsEnJeu, Joueur &joueur ){
+    if(PionsEnJeu.size== 1){ //si un seul pion en jeu, le return
+        return PionsEnJeu[0]; 
+    }
 
+    cout<<"Choississez 1 pion à déplacer (1-4): ";
+    int choix;
+    cin>>choix;
+
+    while(choix < 1 || choix > 4 ||
+         !joueur.GetPion(choix -1)->GetEstSorti() || joueur.GetPion(choix -1)->GetEstArrive()){
+            cout<<"choix de pon invalide.Reessayer !";
+            cin>>choix;
+    }
+
+    return joeur.GetPion(choix -1);
+}
+
+void DeplacerPion(Pion* pion, int val-de){
+    pion->SeDeplace(val_de);
+    cout<<"le pion "<< pion->GetId()<< "avance de " <<val_de <<"cases." <<endl;
+}
+
+
+void VerifierCollision(Pion* pion_deplace, Joueur &joueur_actuel){
+    for(int i=0; i<joueurs.size(); i++){
+        Joueur& autre_joueur = *joueurs[i];   //Utlisation de la boucle 
+
+        if(autre_joueur.getId() !=joueur_actuel.getId()){
+            for(int j=0; j<4; j++){
+                if(autre_joueur.GetPion(i)->GetI() == pion_deplace->GetI()){
+                    autre_joueur.GetPion(i)->RetournerBase();
+                    cout << "Le pion adverse "<< autre_joueur.GetPion(i)->GetI()
+                    <<" retourne àa la base"<<endl;   
+                }
+            }
+        }
+    }
+
+}
+
+void VerifierArrivee(Pion* pion, Joueur &joueur){
+    if(pion.GetI() >= 56){ //si 5- est la derniere cas
+        joueur.nbpionarrives ++; //on increment le nbpionarrive
+        cout<<"Le pion " <<pion->GetId()<<" du joueur "<<joueur.GetId()<< " est arrive "<<endl;
+
+    }
+}
 /*void Jeu::Gerer_Tour(Joueur &joueur){
     cout<<"Tour du joueur: "<< joueur.getID()<<"!"<<endl;
     
