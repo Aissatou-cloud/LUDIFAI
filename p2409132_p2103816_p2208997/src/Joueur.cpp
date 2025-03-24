@@ -35,9 +35,14 @@ using namespace std;
 		return nbpionarrives;
 	}
 
+	void Joueur::IncrementerNbPionArrive()
+	{
+		nbpionarrives++;
+	}
+
 	Color Joueur:: getCouleur() const {return couleur ;}
 
-	Pion* GetPion(int indice){ //recuperation du pion on en as besoin dans Jeu 
+	Pion* Joueur::GetPion(int indice){ //recuperation du pion on en as besoin dans Jeu 
 		if(indice <0 && indice >=4){
 			return tab[indice]; //return 1 ptr vers le pion demande
 		}else{
@@ -45,7 +50,7 @@ using namespace std;
 		}
 	}
 
-	vector<Pion*> GetPionsEnJeu(){
+	vector<Pion*> Joueur::GetPionsEnJeu(){
 		vector<Pion*> pions_en_jeu; //init du vecteur qui contiendra les pions en jeu
 
 		for(int i=0; i<4; i++){

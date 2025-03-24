@@ -29,11 +29,11 @@ Jeu::Jeu(int nb_j): nb_Joueur(nb_j){
 
 Jeu::~Jeu()
 {
-    for(int i; i<nb_Joueur; i++)
-	{
-        delete Joueur;
+    for (Joueur * joueur: joueurs)
+    {
+        delete joueur;
     }
-} //Plus besoin de delete[] car 'vector' gere la mem automatiquement
+} //Plus besoin de delete[] car 'vector' gere la mem automatiquement, pour chq joueur du vector on delete
 
 void Jeu::AffichageLimiteTerrain_SDL(int x, int y, char t[4])
 {
@@ -78,38 +78,40 @@ void Jeu::Demarer_Jeu(char tab[4])
 
     //Affichage des joueurs et leur couleurs
     for( int i=0; i< nb_Joueur; i++){
-        cout<<"Player: "<<joueurs[i].getId()<< " -Color: ( "
-        <<(int)joueurs[i].getCouleur().getR()<<", " 
-        <<(int)joueurs[i].getCouleur().getV()<<", " 
-        <<(int)joueurs[i].getCouleur().getB()<<" )"<<endl;
+        cout<<"Player: "<<joueurs[i]->getId()<< " -Color: ( "
+        <<(int)joueurs[i]->getCouleur().getR()<<", " 
+        <<(int)joueurs[i]->getCouleur().getV()<<", " 
+        <<(int)joueurs[i]->getCouleur().getB()<<" )"<<endl;
 
     }
 
 }
 
-int Jeu::LancerDe(){
-    int val_de=Get.Val();
-    cout<<"le joueur: "<<joueur.getID()<< "a lance le de : "<<val_de<< endl;
+int Jeu::LancerDe(unsigned int id_joueur){
+    int val_de=de.GetVal();
+    cout<<"le joueur: "<<joueurs[id_joueur]->getId()<< "a lance le de : "<<val_de<< endl;
     return val_de;
 }
 
 vector<Pion*> Jeu:: RecupDesPionsEnJeu(Joueur &joueur){
     vector<Pion*> pionsEnjeu;
     for(int i=0; i<4; i++){
-        if(!tab[i]->GetEstArrive() && tab[i]->GetEstSorti()){
+        Pion * pion = joueur.GetPion(i);    //recupère les pions, tu peux pas utiliser tab direct
+
+        if(!pion->GetEstArrive() && pion->GetEstSorti()){
             pionsEnjeu.push_back(joueur.GetPion(i));
         }
     }
     return pionsEnjeu;
 }
 
-bool GererEntreeJeu(Joueur &joueur, int val_de){
+bool Jeu::GererEntreeJeu(Joueur &joueur, int val_de){
     if (val_de==6){
         //chercher un pion qui n'est pas encore sorti
         for(int i=0; i<4; i++){
             Pion* pion_sorti=joueur.GetPion(i);
-            if(!pion_sorti.GetEstSorti()){ //si le pion n'est pas sorti
-                pion_sorti.SortirBase();
+            if(!pion_sorti->GetEstSorti()){ //si le pion n'est pas sorti
+                pion_sorti->SortirBase();
                 cout<<"le joueur: "<< joueur.getId() <<" a fait sortir un pion" <<endl;
                 return true;
             }
@@ -121,8 +123,8 @@ bool GererEntreeJeu(Joueur &joueur, int val_de){
     return false;
 }
 
-Pion* ChoisirPion(vector<Pion*> PionsEnJeu, Joueur &joueur ){
-    if(PionsEnJeu.size== 1){ //si un seul pion en jeu, le return
+Pion* Jeu::ChoisirPion(vector<Pion*> PionsEnJeu, Joueur &joueur ){
+    if(PionsEnJeu.size()== 1){ //si un seul pion en jeu, le return
         return PionsEnJeu[0]; 
     }
 
@@ -139,14 +141,14 @@ Pion* ChoisirPion(vector<Pion*> PionsEnJeu, Joueur &joueur ){
     return joueur.GetPion(choix -1);
 }
 
-void DeplacerPion(Pion* pion, int val_de){
+void Jeu::DeplacerPion(Pion* pion, int val_de){
     pion->SeDeplace(val_de);
     cout<<"le pion "<< pion->GetId()<< "avance de " <<val_de <<"cases." <<endl;
 }
 
 
-void VerifierCollision(Pion* pion_deplace, Joueur &joueur_actuel){
-    for(int i=0; i<joueurs.size(); i++){
+void Jeu::VerifierCollision(Pion* pion_deplace, Joueur &joueur_actuel){
+    for(size_t i=0; i<joueurs.size(); i++){     // ici i de type size_t type entier non signé pour représenter taille des objets en mémoire,
         Joueur& autre_joueur = *joueurs[i];   //Utlisation de la boucle 
 
         if(autre_joueur.getId() !=joueur_actuel.getId()){
@@ -162,9 +164,9 @@ void VerifierCollision(Pion* pion_deplace, Joueur &joueur_actuel){
 
 }
 
-void VerifierArrivee(Pion* pion, Joueur &joueur){
-    if(pion.GetId() >= 56){ //si 5- est la derniere cas
-        joueur.nbpionarrives ++; //on increment le nbpionarrive
+void Jeu::VerifierArrivee(Pion* pion, Joueur &joueur){
+    if(pion->GetId() >= 56){ //si 5- est la derniere cas
+        joueur.IncrementerNbPionArrive(); //on increment le nbpionarrive, impossible de faire nbpionarrivee ++ car membre privee
         cout<<"Le pion " <<pion->GetId()<<" du joueur "<<joueur.getId()<< " est arrive "<<endl;
 
     }
@@ -174,7 +176,7 @@ void Jeu::Gerer_Tour(Joueur &joueur){
     cout<<"Tour du joueur: "<< joueur.getId()<<"!"<<endl;
     
     //1.lancé du dé
-    int val_de=LancerDe();
+    int val_de=LancerDe(joueur.getId());
 
 
     // recuperer les pions en jeu

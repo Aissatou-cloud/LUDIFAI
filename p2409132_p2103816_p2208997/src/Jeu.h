@@ -61,8 +61,9 @@ class Jeu
         //methodes dont aura besoin Gerer_tour(Joueur &joueur)
                 /**
         * @brief retourne la valeur lance du de
+        * @param id_joueur joueur qui lance le dé
         */
-        int LancerDe();
+        int LancerDe(unsigned int id_joueur);
 
         /**
         * @brief recupere le l'ensemble des pions qui sont deja en jeu d'un joueur
