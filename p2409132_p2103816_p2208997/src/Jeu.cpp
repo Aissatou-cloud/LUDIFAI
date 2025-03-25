@@ -65,10 +65,10 @@ for (int i = 0; i < y; i++)
 	}
 }
 
-int Jeu::LancerDe(unsigned int id_joueur){
-    int val_de=de.GetVal();
-    cout<<"le joueur: "<<joueurs[id_joueur]->getId()<< "a lance le de : "<<val_de<< endl;
-    return val_de;
+int Jeu::JoueurLanceDe(unsigned int id_joueur, De de){
+    de.LancerDe();
+    cout<<"le joueur: "<<joueurs[id_joueur]->getId()<< "a lance le de : "<<de.GetVal()<< endl;
+    return de.GetVal();
 }
 
 vector<Pion*> Jeu:: RecupDesPionsEnJeu(Joueur &joueur){
@@ -76,19 +76,20 @@ vector<Pion*> Jeu:: RecupDesPionsEnJeu(Joueur &joueur){
     for(int i=0; i<4; i++){
         Pion * pion = joueur.GetPion(i);    //recupère les pions, tu peux pas utiliser tab direct
 
-        if(!pion->GetEstArrive() && pion->GetEstSorti()){
-            pionsEnjeu.push_back(joueur.GetPion(i));
+        if(pion != nullptr && !pion->GetEstArrive() && pion->GetEstSorti()){
+            pionsEnjeu.push_back(pion);
         }
     }
     return pionsEnjeu;
 }
 
 bool Jeu::GererEntreeJeu(Joueur &joueur, int val_de){
+    val_de = de.GetVal();
     if (val_de==6){
         //chercher un pion qui n'est pas encore sorti
         for(int i=0; i<4; i++){
             Pion* pion_sorti=joueur.GetPion(i);
-            if(!pion_sorti->GetEstSorti()){ //si le pion n'est pas sorti
+            if(pion_sorti != nullptr && !pion_sorti->GetEstSorti()){ //si le pion n'est pas sorti
                 pion_sorti->SortirBase();
                 cout<<"le joueur: "<< joueur.getId() <<" a fait sortir un pion" <<endl;
                 return true;
@@ -151,36 +152,49 @@ void Jeu::VerifierArrivee(Pion* pion, Joueur &joueur){
 }
 
 void Jeu::Gerer_Tour(Joueur &joueur){
-    cout<<"Tour du joueur: "<< joueur.getId()<<"!"<<endl;
-    
-    //1.lancé du dé
-    int val_de=LancerDe(joueur.getId());
+    if(joueur.Joueur_Gagnant()==false)
+    {
+        cout<<"Tour du joueur: "<< joueur.getId()<<"!"<<endl;
+        
+        //1.lancé du dé
+        De de;
+        int val_de=JoueurLanceDe(joueur.getId(), de);
 
 
-    // recuperer les pions en jeu
-    vector<Pion*> pions_en_jeu=RecupDesPionsEnJeu(joueur);
+        // recuperer les pions en jeu
+        vector<Pion*> pions_en_jeu=RecupDesPionsEnJeu(joueur);
 
-    //gerer le cas ou aucun pion n'est sur le plateau
-    if(pions_en_jeu.empty()){
-        if(GererEntreeJeu(joueur, val_de)) return ;
-        return ;
+        //gerer le cas ou aucun pion n'est sur le plateau
+        if(pions_en_jeu.empty()){
+            if(GererEntreeJeu(joueur, val_de)) return ;
+            return ;
+        }
+
+        //choisir un pion à deplacer
+        Pion* pion_choisi=ChoisirPion(pions_en_jeu, joueur);
+        
+        //deplacer le pion
+        DeplacerPion(pion_choisi, val_de);
+
+        //verifier les collisions
+        VerifierCollision(pion_choisi,joueur);
+
+        //veifier si un pion a atteint l'arrivee
+        VerifierArrivee(pion_choisi, joueur);
+
+        if(joueur.Joueur_Gagnant())
+        {
+            joueurs_gagnants.push_back(&joueur);        //passe l'adresse 
+        }
+
+        cout <<"Fin du tour du joueur " <<joueur.getId() <<endl;        
+    }else{
+        cout<<"le joueur a deja fini"<<endl;
     }
 
-    //choisir un pion à deplacer
-    Pion* pion_choisi=ChoisirPion(pions_en_jeu, joueur);
-    
-    //deplacer le pion
-    DeplacerPion(pion_choisi, val_de);
-
-    //verifier les collisions
-    VerifierCollision(pion_choisi,joueur);
-
-    //veifier si un pion a atteint l'arrivee
-    VerifierArrivee(pion_choisi, joueur);
-
-    cout <<"Fin du tour du joueur " <<joueur.getId() <<endl;
 
 }
+
 
 void Jeu::Demarer_Jeu(char tab[4])
 {
@@ -202,6 +216,8 @@ void Jeu::Demarer_Jeu(char tab[4])
         <<(int)joueurs[i]->getCouleur().getB()<<" )"<<endl;
 
     }
+
+
     
     bool continu;
     continu= true;
@@ -211,8 +227,11 @@ void Jeu::Demarer_Jeu(char tab[4])
             Gerer_Tour(*joueurs[i]);  //on passe par reference
         }
 
-        if(joeur)
-    }
+        if(joueurs_gagnants.size()==(static_cast<long unsigned int>(nb_Joueur)-1))
+        {
+            continu=false;
+        }
+    }while(continu);
 
 
 }

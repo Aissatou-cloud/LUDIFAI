@@ -23,8 +23,13 @@ class De{
 
         /**
         * @brief Retourne la valeur actuel du de
-         */
+        */
         int GetVal() const;
+
+        /**
+        * @brief Lance le de
+        */
+       void LancerDe();
 };
 
 #endif

@@ -18,6 +18,7 @@ class Jeu
     private:
         int nb_Joueur;      ///nb de joueur 
         vector<Joueur*> joueurs; ///Tableau dyna de joueur
+        vector<Joueur*> joueurs_gagnants;   ///tableau dynamique des joueurs gagnants
         //vector<Joueur> * joueurs;      ///creer tableau de nb Joueur présent
         De de;              ///le de du jeu 
 
@@ -62,8 +63,9 @@ class Jeu
                 /**
         * @brief retourne la valeur lance du de
         * @param id_joueur joueur qui lance le dé
+        * @param de de du jeu 
         */
-        int LancerDe(unsigned int id_joueur);
+        int JoueurLanceDe(unsigned int id_joueur, De de);
 
         /**
         * @brief recupere le l'ensemble des pions qui sont deja en jeu d'un joueur
@@ -106,7 +108,7 @@ class Jeu
         * @param joueur le joueur actuel
         */
         void VerifierArrivee(Pion* pion, Joueur &joueur);
-
+       
 
 };
 

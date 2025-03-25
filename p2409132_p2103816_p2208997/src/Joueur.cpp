@@ -3,27 +3,29 @@
 
 using namespace std;
 
-	Joueur::Joueur(): id(1), nbpionarrives(0) 
+	Joueur::Joueur(): id(1), nbpionarrives(0), a_gagner(false)
 	{
 		for(unsigned int i=0; i<4; i++){
-			tab[i]=new Pion(i+1); //cree 4 pions avec un identifiant unique
+			tab[i]=new Pion(i); //cree 4 pions avec un identifiant unique
 		}
+
 	}
 
 	Joueur::Joueur(unsigned int ident, unsigned char r, unsigned char v, unsigned char b):id(ident), nbpionarrives(0)
 	{
 		couleur.setColor(r,v,b); //correctement initialise
 		for (unsigned int i=0; i<4; i++){
-			tab[i] = new Pion(i+1);  
+			tab[i] = new Pion(i);  
 		}
 	}
 
 	Joueur::~Joueur()
 	{
-		/*for (unsigned int i = 0; i < 4; ++i) 
+		for (unsigned int i = 0; i < 4; i++) 
 		{
-			delete tab[];  
-		}*/
+			delete tab[i];
+			tab[i]=nullptr;  
+		}
 	}
 
 	int Joueur:: getId()const{
@@ -59,5 +61,16 @@ using namespace std;
 			}
 		}
 		return pions_en_jeu;
+	}
+
+	bool Joueur::Joueur_Gagnant()
+	{
+		if(getNbpionArrives()==4)
+		{
+			a_gagner=true;
+		}else{
+			a_gagner=false;
+		}
+		return a_gagner;
 	}
 

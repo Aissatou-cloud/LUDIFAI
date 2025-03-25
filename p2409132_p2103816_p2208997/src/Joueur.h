@@ -11,8 +11,9 @@ class Joueur
 	private:
     	unsigned int id;
     	int nbpionarrives;
-    	Pion * tab[4];  
+    	Pion * tab[4];  //a changer 
     	Color couleur; 	
+		bool a_gagner;
     public:
     	Joueur();
 		Joueur(unsigned int indent,unsigned char r, unsigned char v, unsigned char b);
@@ -23,6 +24,7 @@ class Joueur
 		void IncrementerNbPionArrive();
 		Pion* GetPion(int indice); //recuperation du pion
 		vector<Pion*> GetPionsEnJeu();  //recuperation du vecteur de pions qui sont en jeu
+		bool Joueur_Gagnant();
     
 };
 

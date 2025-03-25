@@ -12,7 +12,12 @@ De::~De()
     val = 0;
 }
 
+void De::LancerDe()
+{
+    val = rand()%6+1;
+}
+
 int De::GetVal() const
 {
-    return rand()%7 + 1;
+    return val;
 }
