@@ -52,7 +52,7 @@ for (int i = 0; i < y; i++)
 			else if (i<=2 && j>=27)
 				std::cout<<t[3];
 			else if (j<=2 && i>=12)
-				std::cout<<t[4];
+				std::cout<<t[0];
             else if (
                 ((i == 5 || i == 9) && (j <= 10 || j >= 20)) ||  
                 ((j == 10 || j == 20) && (i <= 5 || i >= 9)) ||  
@@ -63,28 +63,6 @@ for (int i = 0; i < y; i++)
 				std::cout << ".";  
 		}	std::cout <<std::endl; 
 	}
-}
-void Jeu::Demarer_Jeu(char tab[4])
-{
-    
-    int taille_x, taille_y;         //taille plateau
-    taille_x = 30;    //affichage a part 
-    taille_y = 15;
-
-    AffichageLimiteTerrain_SDL(taille_x, taille_y, tab);
-
-
-    cout<<"Le jeu commence avec: "<< nb_Joueur<< "joueurs" <<endl;
-
-    //Affichage des joueurs et leur couleurs
-    for( int i=0; i< nb_Joueur; i++){
-        cout<<"Player: "<<joueurs[i]->getId()<< " -Color: ( "
-        <<(int)joueurs[i]->getCouleur().getR()<<", " 
-        <<(int)joueurs[i]->getCouleur().getV()<<", " 
-        <<(int)joueurs[i]->getCouleur().getB()<<" )"<<endl;
-
-    }
-
 }
 
 int Jeu::LancerDe(unsigned int id_joueur){
@@ -202,6 +180,39 @@ void Jeu::Gerer_Tour(Joueur &joueur){
 
     cout <<"Fin du tour du joueur " <<joueur.getId() <<endl;
 
+}
+
+void Jeu::Demarer_Jeu(char tab[4])
+{
+    
+    int taille_x, taille_y;         //taille plateau
+    taille_x = 30;    //affichage a part 
+    taille_y = 15;
+
+    AffichageLimiteTerrain_SDL(taille_x, taille_y, tab);
+
+
+    cout<<"Le jeu commence avec: "<< nb_Joueur<< "joueurs" <<endl;
+
+    //Affichage des joueurs et leur couleurs
+    for( int i=0; i< nb_Joueur; i++){
+        cout<<"Player: "<<joueurs[i]->getId()<< " -Color: ( "
+        <<(int)joueurs[i]->getCouleur().getR()<<", " 
+        <<(int)joueurs[i]->getCouleur().getV()<<", " 
+        <<(int)joueurs[i]->getCouleur().getB()<<" )"<<endl;
+
+    }
+    
+    bool continu;
+    continu= true;
+    do{
+
+        for(int i=0; i<nb_Joueur; i++){
+            Gerer_Tour(*joueurs[i]);  //on passe par reference
+        }
+
+        if(joeur)
+    }
 
 
 }
