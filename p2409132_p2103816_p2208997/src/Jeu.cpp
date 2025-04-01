@@ -84,7 +84,7 @@ vector<Pion*> Jeu:: RecupDesPionsEnJeu(Joueur &joueur){
 }
 
 bool Jeu::GererEntreeJeu(Joueur &joueur, int val_de){
-    val_de = de.GetVal();
+    //val_de = de.GetVal();
     if (val_de==6){
         //chercher un pion qui n'est pas encore sorti
         for(int i=0; i<4; i++){
@@ -92,13 +92,14 @@ bool Jeu::GererEntreeJeu(Joueur &joueur, int val_de){
             if(pion_sorti != nullptr && !pion_sorti->GetEstSorti()){ //si le pion n'est pas sorti
                 pion_sorti->SortirBase();
                 cout<<"le joueur: "<< joueur.getId() <<" a fait sortir un pion" <<endl;
+                cout << "Statut après sortie : " << pion_sorti->GetEstSorti() << endl;  // Vérifie si c'est bien true
                 return true;
             }
 
         }
         
     }
-    cout<<"Aucun pion en jeu(no 6)"<<endl;
+    //cout<<"Aucun pion en jeu(no 6)"<<endl;
     return false;
 }
 
@@ -152,46 +153,66 @@ void Jeu::VerifierArrivee(Pion* pion, Joueur &joueur){
 }
 
 void Jeu::Gerer_Tour(Joueur &joueur){
+    //pour debuguer
+    if(joueur.Joueur_Gagnant()){
+        cout<<"Le joueur "<< joueur.getId()<< "a deja gagné !" <<endl;
+        return ; 
+    }
+
     if(joueur.Joueur_Gagnant()==false)
     {
         cout<<"Tour du joueur: "<< joueur.getId()<<"!"<<endl;
         
+       //Recup les pions en jeu avant de lancer le dé
+       vector<Pion*> pions_en_jeu=RecupDesPionsEnJeu(joueur);
+
         //1.lancé du dé
+        int val_de=0;
         De de;
-        int val_de=JoueurLanceDe(joueur.getId(), de);
+        val_de=JoueurLanceDe(joueur.getId(), de);
 
-
-        // recuperer les pions en jeu
-        vector<Pion*> pions_en_jeu=RecupDesPionsEnJeu(joueur);
+        //2.si aucun pio n'est en jeu, essayer de faire entrer un pion
 
         //gerer le cas ou aucun pion n'est sur le plateau
         if(pions_en_jeu.empty()){
-            if(GererEntreeJeu(joueur, val_de)) return ;
-            return ;
+            //val_de=JoueurLanceDe(joueur.getId(), de);
+            if(GererEntreeJeu(joueur, val_de)){
+                cout<<"Un pion du joueur " <<joueur.getId()<< " est entré en jeu "<<endl;
+                return ; //fin du tour si un pion a éte mis en jeu
+
+            }else{
+                cout<<"Aucun pion ne peut entrer en jeu.Fin du tour joueur "<<joueur.getId()<< endl;
+                return ; //fin du tour si aucun pion ne peut entrer en jeu
+            }
+          
         }
 
         //choisir un pion à deplacer
         Pion* pion_choisi=ChoisirPion(pions_en_jeu, joueur);
-        
+        if(!pion_choisi){
+            cout<<"Aucun pion valide selectionne" <<endl;
+            return;
+        }
+
         //deplacer le pion
         DeplacerPion(pion_choisi, val_de);
 
-        //verifier les collisions
-        VerifierCollision(pion_choisi,joueur);
-
-        //veifier si un pion a atteint l'arrivee
+        //veifier si un pion a atteint l'arrivee avant de verifier la collision
         VerifierArrivee(pion_choisi, joueur);
 
+        //verifier les collisions sssi le pion n'a pas atteint l'arrivee
+        if(!pion_choisi->GetEstArrive()){
+            VerifierCollision(pion_choisi,joueur);
+        }
+        
+        //verifier si le joueur a gagne apres son move
         if(joueur.Joueur_Gagnant())
         {
             joueurs_gagnants.push_back(&joueur);        //passe l'adresse 
         }
 
         cout <<"Fin du tour du joueur " <<joueur.getId() <<endl;        
-    }else{
-        cout<<"le joueur a deja fini"<<endl;
     }
-
 
 }
 

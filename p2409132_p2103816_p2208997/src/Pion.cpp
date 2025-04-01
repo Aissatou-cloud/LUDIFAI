@@ -1,4 +1,6 @@
 #include "Pion.h"
+#include <iostream>
+using namespace std; 
 
 
 Pion::Pion(int idf)
@@ -44,7 +46,9 @@ void Pion::SeDeplace(int nb)   //verification du bon pion dans plateau
 
 void Pion::SortirBase(){
     est_sorti=true; //Le pion est maintenant en jeu
-    i=1;  //supposons que la position de depart soit 0
+    i=1;  //supposons que la position de depart soit 1
+    cout<<"Pion "<<id <<" sorti de la base"<<endl;
+
 }
 
 void Pion::RetournerBase(){
