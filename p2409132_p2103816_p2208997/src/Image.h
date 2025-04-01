@@ -1,13 +1,10 @@
-
+#ifndef IMAGE_H
+#define IMAGE_H
 #include <cassert>
 #include <time.h>
 #include <stdlib.h>
 #include <iostream>
 #include <filesystem>
-
-
-#include <SDL2/SDL.h>           //affichage graphique   
-#include <SDL2/SDL_image.h>     //charger des imags
 #include <SDL2/SDL_ttf.h>       //gerer polices de texte
 
 
@@ -57,3 +54,6 @@ public:
     void setSurface(SDL_Surface *surf);
 
  };
+
+
+ #endif
