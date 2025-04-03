@@ -17,6 +17,7 @@ private:
     SDL_Renderer *m_renderer; ///< Moteur du rendu graphique
     Image m_plateau; ///< image du plateau
     Image m_faces_de[6]; ///<image du dé
+    Image m_de_inter[5]; ///image intermediaire du dé
     Image m_tab_pion[4]; ///< image des pions 
     TTF_Font *m_font_j1; //Police de texte
     TTF_Font *m_font_j2; //Police de texte
