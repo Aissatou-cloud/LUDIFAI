@@ -69,6 +69,11 @@ AffichageSDL::AffichageSDL() m_window(nullptr), m_renderer(nullptr), m_font(null
         m_faces_de[i].loadFromFile(nom_fichier.c_str(), m_renderer);
     }
 
+    for(int i=0; i<5; i++)
+    {
+        string nom_fichier2 ="data/de/de_int"+to_string(i)+".png";
+        m_de_inter[i].loadFromFile(nom_fichier2.c_str(), m_renderer);
+    }
 }
 
 //libere la meoire allouee
