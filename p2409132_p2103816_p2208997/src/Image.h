@@ -6,6 +6,8 @@
 #include <iostream>
 #include <filesystem>
 #include <SDL2/SDL_ttf.h>       //gerer polices de texte
+#include <SDL2/SDL_image.h>
+
 
 
 
@@ -18,7 +20,7 @@
 class Image{
 private:
     SDL_Surface *m_surface; ///<charger et manipuler des images
-    SDL_Texture *m_texture ///<affichage de l'image sur l'ecran
+    SDL_Texture *m_texture; ///<affichage de l'image sur l'ecran
     bool m_hasChanged;  ///< si imae a change
     
 public:
@@ -30,7 +32,7 @@ public:
      * @param filename le fichier
      * @param m_renderer le renderer
      */
-    void loadFromFile(const char *filename, SDL_Rendere *m_renderer);  
+    void loadFromFile(const char *filename, SDL_Renderer *m_renderer);  
 
     /**
      * @brief
