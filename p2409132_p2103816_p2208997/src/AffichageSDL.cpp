@@ -70,3 +70,48 @@ AffichageSDL::AffichageSDL() m_window(nullptr), m_renderer(nullptr), m_font(null
     }
 
 }
+
+//libere la meoire allouee
+AffichageSDL::~AffichageSDL(){
+    TTF_Quit();
+    IMG_Quit();
+    SDL_DestroyRenderer(m_renderer);
+    SDL_DestroyWindow(m_window);
+    SDL_Quit();
+
+}
+
+void AffichageSDL:: SdlAff(){
+    
+    // Remplir l'écran de blanc
+    //SDL_SetRenderDrawColor : définit la couleur de fond du rendu
+    //( 130, 140, 255, 255) : correspond a une teinte bleue
+    // clair avec une opacite  maximale (255)
+    SDL_SetRenderDrawColor(m_renderer, 130, 140, 255, 255);
+
+    //efface l'ecran avec cette couleur :
+    // IMPORTANT :pour ne pas supersposer l'ancien rendu avec
+    // le nouveau
+    SDL_RenderClear(m_renderer);
+
+    // Affiche du texte
+    //fonction definit dans classe image
+    m_font_im.draw(m_renderer, 320 - 50, 50, 100, 50);
+
+    //2.Affichage du plateau 
+    m_plateau.draw(m_renderer, 0, 0); //à haut en gauche
+
+    /*3.affchage des pions de chaque joueur*/
+    for(int j=0; j<nb_Joueur; j++){
+        for(int i=0; i<4; i++){
+            Pion* pion=joueur[j]->GetPion(i);
+
+            //recuperer la case actuelle du pion
+            unsigned char caseIndex= pion->GetI();
+
+            //recuperer les coordonnees du pion
+        }
+    }
+
+
+}
