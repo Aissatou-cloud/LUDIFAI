@@ -4,6 +4,7 @@
 #include "De.h"   //a enlever pour jeu
 #include "Color.h"
 #include "Jeu.h"
+#include "AffichageSDL.h"
 
 using namespace std;
 
@@ -69,6 +70,9 @@ int main() {
      }
 
      j.Demarer_Jeu(t);
+
+     AffichageSDL sj;
+     sj.SdlBoucle();
 
     return 0;
 }

@@ -2,8 +2,12 @@
 #ifndef IMAGEVIEWER_H
 #define IMAGEVIEWER_H
 
+#include <stdlib.h>
+#include <filesystem>
+
 #include <SDL2/SDL.h>           //affichage graphique   
 #include <SDL2/SDL_image.h>     //charger des images
+#include <SDL2/SDL_ttf.h>  
 
 #include "Image.h"
 
@@ -19,11 +23,11 @@ private:
     Image m_faces_de[6]; ///<image du dé
     Image m_de_inter[5]; ///image intermediaire du dé
     Image m_tab_pion[4]; ///< image des pions 
-    TTF_Font m_font_j1; //Police de texte
-    TTF_Font m_font_j2; //Police de texte
-    TTF_Font m_font_j3; //Police de texte
-    TTF_Font m_font_j4; //Police de texte
-    TTF_Font m_font; ///< Police de texte
+    TTF_Font *m_font_j1; //Police de texte
+    TTF_Font *m_font_j2; //Police de texte
+    TTF_Font *m_font_j3; //Police de texte
+    TTF_Font *m_font_j4; //Police de texte
+    TTF_Font *m_font; ///< Police de texte
 
     /**
      * @brief fonction qui gere l'affichage

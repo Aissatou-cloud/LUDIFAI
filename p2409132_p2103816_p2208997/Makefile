@@ -1,10 +1,19 @@
-all: bin/mainTest1
+all: bin/mainTest1 bin/mainsdl
+
+bin/mainsdl: obj/mainsdl.o obj/AffichageSDL.o obj/Image.o
+	g++ -ggdb -Wall obj/mainsdl.o obj/AffichageSDL.o obj/Image.o $(shell sdl2-config --libs) -lSDL2_image -lSDL2_ttf -o bin/mainsdl
 
 bin/mainTest1: obj/mainTest1.o obj/Jeu.o obj/Joueur.o obj/Pion.o obj/De.o obj/Color.o 
 	g++ -ggdb -Wall obj/mainTest1.o obj/Jeu.o obj/Joueur.o obj/Pion.o obj/De.o obj/Color.o -o bin/mainTest1
 	
-obj/mainTest1.o: src/mainTest1.cpp src/Jeu.h src/Joueur.h src/Pion.h src/De.h src/Color.h
+obj/mainTest1.o: src/mainTest1.cpp 	src/AffichageSDL.h src/Jeu.h src/Joueur.h src/Pion.h src/De.h src/Color.h
 	g++ -ggdb -Wall -c src/mainTest1.cpp -o obj/mainTest1.o
+
+obj/mainsdl.o: src/mainsdl.cpp src/AffichageSDL.h
+	g++ -ggdb -Wall -c src/mainsdl.cpp -o obj/mainsdl.o
+
+obj/AffichageSDL.o:	src/AffichageSDL.cpp src/AffichageSDL.h src/Image.h
+	g++ -ggdb -Wall $(shell sdl2-config --cflags) -c src/AffichageSDL.cpp -o obj/AffichageSDL.o
 
 obj/Jeu.o: src/Jeu.cpp src/Jeu.h src/Joueur.h src/De.h
 	g++ -ggdb -Wall -c src/Jeu.cpp -o obj/Jeu.o
@@ -21,6 +30,9 @@ obj/Pion.o: src/Pion.cpp src/Pion.h
 obj/Color.o: src/Color.cpp src/Color.h
 	g++ -ggdb -Wall -c src/Color.cpp -o obj/Color.o
 
+obj/Image.o: src/Image.cpp src/Image.h
+	g++ -ggdb -Wall $(shell sdl2-config --cflags) -c src/Image.cpp -o obj/Image.o
+
 clean:
-	rm -f obj/*.o bin/mainTest1
+	rm -f obj/*.o bin/mainTest1 bin/mainsdl
 

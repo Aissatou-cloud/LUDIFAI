@@ -1,11 +1,14 @@
 #include "AffichageSDL.h"
+#include <iostream>
 #include <string>
 
-AffichageSDL::AffichageSDL() m_window(nullptr), m_renderer(nullptr), m_font(nullptr), m_font_j1(nullptr), m_font_j2(nullptr), m_font_j2(nullptr), m_font_j3(nullptr), m_font_j4(nullptr)
+using namespace std;
+
+AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nullptr), m_font_j1(nullptr), m_font_j2(nullptr), m_font_j3(nullptr), m_font_j4(nullptr)
 {
     //Initialisation de la SDL
-    SDL_Rect r;     //a voir si on enleve
-    r.w = (w<0) ? m_surface->w      //...
+    //SDL_Rect r;     //a voir si on enleve
+    //r.w = (w<0) ? m_surface->w      //...
     cout<<"SDL: init"<<endl;
     if(SDL_Init(SDL_INIT_VIDEO)<0)
     {
@@ -47,7 +50,7 @@ AffichageSDL::AffichageSDL() m_window(nullptr), m_renderer(nullptr), m_font(null
     if(m_window == NULL)
     {
         cout<<"Erreur lors de la creation de la fenetre: "<<SDL_GetError()<<endl;
-        SDL_QUIT();
+        SDL_Quit();
         exit(1);
     }
 
@@ -58,7 +61,7 @@ AffichageSDL::AffichageSDL() m_window(nullptr), m_renderer(nullptr), m_font(null
 
     //Image plateau
     m_plateau.loadFromFile("data/plateau.png", m_renderer);
-    m_tab_pion[0].loadFromFile("data/pion/rond_vert", m_renderer);        //vert, jaune bleu rouge
+    /*m_tab_pion[0].loadFromFile("data/pion/rond_vert", m_renderer);        //vert, jaune bleu rouge
     m_tab_pion[1].loadFromFile("data/pion/rond_jaune", m_renderer);
     m_tab_pion[2].loadFromFile("data/pion/rond_bleu", m_renderer);
     m_tab_pion[3].loadFromFile("data/pion/rond_rouge", m_renderer);
@@ -73,7 +76,7 @@ AffichageSDL::AffichageSDL() m_window(nullptr), m_renderer(nullptr), m_font(null
     {
         string nom_fichier2 ="data/de/de_int"+to_string(i)+".png";
         m_de_inter[i].loadFromFile(nom_fichier2.c_str(), m_renderer);
-    }
+    }*/
 }
 
 //libere la meoire allouee
@@ -101,12 +104,12 @@ void AffichageSDL:: SdlAff(){
 
     // Affiche du texte
     //fonction definit dans classe image
-    m_font_im.draw(m_renderer, 320 - 50, 50, 100, 50);
+    //m_font_im.draw(m_renderer, 320 - 50, 50, 100, 50);
 
     //2.Affichage du plateau 
     m_plateau.draw(m_renderer, 0, 0); //à haut en gauche
 
-    /*3.affchage des pions de chaque joueur*/
+    /*3.affchage des pions de chaque joueur
     for(int j=0; j<nb_Joueur; j++){
         for(int i=0; i<4; i++){
             Pion* pion=joueur[j]->GetPion(i);
@@ -116,7 +119,47 @@ void AffichageSDL:: SdlAff(){
 
             //recuperer les coordonnees du pion
         }
+    }*/
+
+
+}
+
+void AffichageSDL::SdlBoucle()
+{
+    SDL_Event events;   //Stocke les événements (clavier, souris, fermeture, etc.).
+    bool quit = false;  //Contrôle la boucle (true = fin du programme).
+
+    // tant que ce n'est pas la fin ...
+    while (!quit)
+    {
+
+        // tant qu'il y a des evenements à traiter (cette boucle n'est pas bloquante)
+        while (SDL_PollEvent(&events))  // vérifie s'il y a des événements à traiter.
+        {                               //S'il y a un événement, il est stocké dans events.
+            if (events.type == SDL_QUIT)
+                quit = true; //Si l'utilisateur clique sur la croix de la fenêtre (SDL_QUIT),
+                             // on met quit = true pour quitter la boucle.
+            else if (events.type == SDL_KEYDOWN)        //si une touche est pressee (SDL_KEYDOWN ), on verifie laquelle
+            {
+                switch (events.key.keysym.scancode) // contient le code scancode de la touche qui a été pressée. 
+                                                    //Le scancode est un identifiant numérique unique qui représente 
+                                                    //chaque touche du clavier indépendamment de sa position sur le clavier 
+                                                    //ou de la disposition du clavier.
+                { 
+                case SDL_SCANCODE_ESCAPE:       //scancode pour la touche Échap (Escape) sur le clavier.
+                case SDL_SCANCODE_Q:            //Scancode pour la touche Q sur le clavier.
+                    quit = true;
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+
+        // on affiche le jeu sur le buffer caché
+        SdlAff();   // maj du rendu , cette fonction efface et redessine les elements du jeu
+
+        // on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
+        SDL_RenderPresent(m_renderer);  //afiche le rendu (sinon les modifications ne sont pas visibles)
     }
-
-
 }
