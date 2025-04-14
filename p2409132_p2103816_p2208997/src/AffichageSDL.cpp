@@ -69,10 +69,10 @@ AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nul
 
     //de
     m_faces_de[0].loadFromFile("data/de/de_1.png", m_renderer);
-    for(int i=0; i<6; i++)
+    for(int i=2; i<=6; i++)
     {
         string nom_fichier = "data/de/de_"+to_string(i)+".png";
-        m_faces_de[i].loadFromFile(nom_fichier.c_str(), m_renderer);
+        m_faces_de[i-1].loadFromFile(nom_fichier.c_str(), m_renderer);
     }
     /*
     for(int i=0; i<5; i++)
@@ -92,7 +92,7 @@ AffichageSDL::~AffichageSDL(){
 
 }
 
-void AffichageSDL:: SdlAff(bool de_lancer, int val_de){
+void AffichageSDL:: SdlAff(bool de_lancer, De de){
 
     // Remplir l'écran de blanc
     //SDL_SetRenderDrawColor : définit la couleur de fond du rendu
@@ -127,16 +127,18 @@ void AffichageSDL:: SdlAff(bool de_lancer, int val_de){
     }*/
 
     //affichage du dé si pas tirer
-    m_faces_de[0].draw(m_renderer, dimx/2, dimy/2);
+    m_faces_de[de.GetVal()-1].draw(m_renderer, dimx/2, dimy/2);
     //si tirer (pour l'instant sans prendre en compte le joueur pour test)
     if(de_lancer)
     {
-        for(int i=1; i<6; i++)
+        for(int i=0; i<6; i++)
         {
             m_faces_de[i].draw(m_renderer, dimx/2, dimy/2);
             SDL_RenderPresent(m_renderer);
+            SDL_Delay(50);      //petite pause
         }
-        m_faces_de[val_de-1].draw(m_renderer, dimx/2, dimy/2);
+        m_faces_de[de.GetVal()-1].draw(m_renderer, dimx/2, dimy/2);
+        de_lancer = false;
     }
 
 
@@ -171,11 +173,11 @@ void AffichageSDL::SdlBoucle()
                 case SDL_SCANCODE_Q:            //Scancode pour la touche Q sur le clavier.
                     quit = true;
                     break;
-                case SDL_SCANCODE_ESCAPE:
+                case SDL_SCANCODE_SPACE:
                     de.LancerDe();
                     val_de = de.GetVal();
                     de_lancer = true;
-
+                    break;
                 default:
                     break;
                 }
@@ -183,7 +185,12 @@ void AffichageSDL::SdlBoucle()
         }
 
         // on affiche le jeu sur le buffer caché
-        SdlAff(de_lancer, val_de);   // maj du rendu , cette fonction efface et redessine les elements du jeu
+        SdlAff(de_lancer, de);   // maj du rendu , cette fonction efface et redessine les elements du jeu
+
+        if(de_lancer)
+        {
+            de_lancer = false;
+        }
 
         // on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
         SDL_RenderPresent(m_renderer);  //afiche le rendu (sinon les modifications ne sont pas visibles)
