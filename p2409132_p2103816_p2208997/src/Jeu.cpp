@@ -17,6 +17,54 @@ Jeu::Jeu(): nb_Joueur(4)
         joueurs.push_back(new Joueur(i,0, 0, 0)); //ajoute a la fin du vector
       //gerer la couleur 
     }
+    for(int i=0; i<5; i++){
+        chemin[i]={6*40, (13-i)*40};
+    }
+    for(int i=10; i>=5; i--){
+        chemin[i]={(10-i)*40, 8*40};
+    }
+    chemin[11]={0, 7*40};
+    for(int i=12; i<18; i++){
+        chemin[i]={(12-i)*40, 6*40};
+    }
+    for(int i=23; i>=18; i--){
+        chemin[i]={6*40, (23-i)*40};
+    }
+    chemin[24]={7*40, 0};
+    for(int i=25; i<31; i++){
+        chemin[i]={8*40, (i-25)*40};
+    }
+    for(int i=31; i<37; i++){
+        chemin[i]={(i-12)*40, 6*40};
+    }
+    chemin[37]={14*40, 7*40};
+    for(int i=38; i<44; i++){
+        chemin[i]={(52-i)*40, 8*40};
+    }
+    for(int i=44; i<50; i++){
+        chemin[i]={8*40, (i-35)*40};
+    }
+    chemin[50]={7*40, 14*40};
+    chemin[51]={6*40, 14*40};
+    chemin[52]={6*40, 13*40};
+
+    for(int i=0; i<6; i++){
+        zone_Gagnante_R[i]={7*40, (13-i)*40};
+    }
+    for(int i=0; i<6; i++){
+        zone_Gagnante_J[i]={7*40, (i+1)*40};
+    }
+    for(int i=0; i<6; i++){
+        zone_Gagnante_V[i]={(i+1)*40, 7*40};
+    }
+    for(int i=0; i<6; i++){
+        zone_Gagnante_B[i]={(13-i)*40, 7*40};
+    }
+
+    case_Depart_R=0;
+    case_Depart_V=13;
+    case_Depart_J=26;
+    case_Depart_B=39;
 }
 
 Jeu::Jeu(int nb_j): nb_Joueur(nb_j){

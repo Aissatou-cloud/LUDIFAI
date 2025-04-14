@@ -69,10 +69,7 @@ int main() {
 
      }
 
-     j.Demarer_Jeu(t);
 
-     AffichageSDL sj;
-     sj.SdlBoucle();
 
     return 0;
 }
