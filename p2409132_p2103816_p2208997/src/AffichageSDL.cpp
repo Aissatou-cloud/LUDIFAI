@@ -92,7 +92,7 @@ AffichageSDL::~AffichageSDL(){
 
 }
 
-void AffichageSDL:: SdlAff(bool de_lancer){
+void AffichageSDL:: SdlAff(bool de_lancer, int val_de){
 
     // Remplir l'écran de blanc
     //SDL_SetRenderDrawColor : définit la couleur de fond du rendu
@@ -136,7 +136,7 @@ void AffichageSDL:: SdlAff(bool de_lancer){
             m_faces_de[i].draw(m_renderer, dimx/2, dimy/2);
             SDL_RenderPresent(m_renderer);
         }
-        m_faces_de[de.GetVal()-1].draw(m_renderer, dimx/2, dimy/2);
+        m_faces_de[val_de-1].draw(m_renderer, dimx/2, dimy/2);
     }
 
 
@@ -183,7 +183,7 @@ void AffichageSDL::SdlBoucle()
         }
 
         // on affiche le jeu sur le buffer caché
-        SdlAff(de_lancer);   // maj du rendu , cette fonction efface et redessine les elements du jeu
+        SdlAff(de_lancer, val_de);   // maj du rendu , cette fonction efface et redessine les elements du jeu
 
         // on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
         SDL_RenderPresent(m_renderer);  //afiche le rendu (sinon les modifications ne sont pas visibles)

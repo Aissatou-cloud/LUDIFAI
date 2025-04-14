@@ -32,15 +32,16 @@ private:
 
     /**
      * @brief fonction qui gere l'affichage
+     * @param de_lancer si le dé a ete lancer
+     * @param val_de valeur du de du jeu 
      */
-    void SdlAff();
+    void SdlAff(bool de_lancer, int val_de);
 
 public:
     /**
      * @brief Initialise SDL et charge les ressources(Constructeur)
-     * @param de_lancer si le dé a ete lancer
      */
-    AffichageSDL(bool de_lancer); 
+    AffichageSDL(); 
     /**
      * @brief (Destructeur) libere de la memoire allouee
      */
