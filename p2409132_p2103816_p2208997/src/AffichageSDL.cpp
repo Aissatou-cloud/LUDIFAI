@@ -62,8 +62,8 @@ AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nul
     //Image plateau
     m_plateau.loadFromFile("data/plateau.png", m_renderer);
 
-    /*m_tab_pion[0].loadFromFile("data/pion/rond_vert", m_renderer);        //vert, jaune bleu rouge
-    m_tab_pion[1].loadFromFile("data/pion/rond_jaune", m_renderer);
+    m_tab_pion[0].loadFromFile("data/pion/rond_rouge", m_renderer);        //vert, jaune bleu rouge
+    /*m_tab_pion[1].loadFromFile("data/pion/rond_jaune", m_renderer);
     m_tab_pion[2].loadFromFile("data/pion/rond_bleu", m_renderer);
     m_tab_pion[3].loadFromFile("data/pion/rond_rouge", m_renderer);*/
 
@@ -90,6 +90,31 @@ AffichageSDL::~AffichageSDL(){
     SDL_DestroyWindow(m_window);
     SDL_Quit();
 
+}
+
+void AffichageSDL:: AffPionRouge(Jeu &jeu){
+    Joueur* joueur_Rouge=jeu.getJouer(0);; //joueur 0 = rouge
+
+    for(int i=0; i<4; i++){
+        Pion* pion=joeur_Rouge->getPion(i);
+
+        //ne rien afficher si pon est en base
+        if(!pion->getEstSorti()) continue;
+        //sinon
+        int position= pion->getI(); //position i du pion
+
+        int x, y;
+        if(position <=53){ //dans le chemin commun a tous 
+            pair<int, int> coord=jeu.GetCoordonnees(position);
+            x=coord.first;
+            y=coord.second;
+
+        }else{ //dans sa zone d'arrivee donc gagnante
+            pair<int, int> coord=jeu.GetZoneGagnateRouge(position);
+            x=coord.first;
+            y=coord.second;
+        }
+    }
 }
 
 void AffichageSDL:: SdlAff(bool de_lancer, De de){

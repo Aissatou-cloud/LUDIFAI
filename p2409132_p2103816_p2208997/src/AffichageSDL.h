@@ -35,6 +35,7 @@ private:
      * @param de_lancer si le dé a ete lancer
      * @param de de du jeu 
      */
+    void AffPionRouge(Jeu &jeu) ; 
     void SdlAff(bool de_lancer, De de);
 
 public:

@@ -122,6 +122,10 @@ class Jeu
         void VerifierArrivee(Pion* pion, Joueur &joueur);
        
 
+        pair<int, int>  GetCoordonnes(int index) const;
+        pair<int, int>  GetZoneGagnateRouge(int index) const;
+        Joueur* GetJoueur(int id) ;
+
 };
 
 #endif

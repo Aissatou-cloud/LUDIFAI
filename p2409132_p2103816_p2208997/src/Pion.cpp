@@ -39,7 +39,7 @@ bool Pion::GetEstArrive() const
     return est_arrive;
 }
 
-void Pion::SeDeplace(int nb)   //verification du bon pion dans plateau
+void Pion::SetI(int nb)   //verification du bon pion dans plateau
 {
     i+=nb;
 }

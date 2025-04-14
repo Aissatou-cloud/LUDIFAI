@@ -170,7 +170,7 @@ Pion* Jeu::ChoisirPion(vector<Pion*> PionsEnJeu, Joueur &joueur ){
 }
 
 void Jeu::DeplacerPion(Pion* pion, int val_de){
-    pion->SeDeplace(val_de);
+    pion->SetI(val_de);
     cout<<"le pion "<< pion->GetId()<< "avance de " <<val_de <<"cases." <<endl;
 }
 
@@ -305,3 +305,15 @@ void Jeu::Demarer_Jeu(char tab[4])
 
 }
 
+
+pair<int, int> Jeu::  GetCoordonnes(int index) const{
+    return chemin[index];
+}
+
+pair<int, int> Jeu:: GetZoneGagnateRouge(int index) const{
+    return zone_Gagnante_R[index];
+}
+
+Joueur* Jeu:: GetJoueur(int id) {    
+    return joueurs[id];
+}

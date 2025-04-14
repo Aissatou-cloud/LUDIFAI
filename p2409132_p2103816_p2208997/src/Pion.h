@@ -48,7 +48,7 @@ class Pion{
         * @brief Deplace le pion en fonction du nombre du dé lancé
         * @param nb nombre de place à incrémenter a la position du pion 
         */
-        void SeDeplace(int nb);
+        void SetI(int nb);
         void SortirBase(); // sortir le pion
         void RetournerBase(); // retourner à la base
 
