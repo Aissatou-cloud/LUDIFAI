@@ -39,7 +39,7 @@ AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nul
 
     //taille fenêtre
     int dimx, dimy;
-    dimx = dimy = 1000;     //Largeur, Hauteur
+    dimx = dimy = 600;     //Largeur, Hauteur
 
     //SDL_WINDOWPOS_CENTERED : POSITION X (CENTRE SUR L'AXE X)
     //SDL_WINDOWPOS_CENTERED : POSITION Y (CENTRE SUR L'AXE Y)
@@ -61,17 +61,20 @@ AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nul
 
     //Image plateau
     m_plateau.loadFromFile("data/plateau.png", m_renderer);
+
     /*m_tab_pion[0].loadFromFile("data/pion/rond_vert", m_renderer);        //vert, jaune bleu rouge
     m_tab_pion[1].loadFromFile("data/pion/rond_jaune", m_renderer);
     m_tab_pion[2].loadFromFile("data/pion/rond_bleu", m_renderer);
-    m_tab_pion[3].loadFromFile("data/pion/rond_rouge", m_renderer);
+    m_tab_pion[3].loadFromFile("data/pion/rond_rouge", m_renderer);*/
 
+    //de
+    m_faces_de[0].loadFromFile("data/de/de_1.png", m_renderer);
     for(int i=0; i<6; i++)
     {
         string nom_fichier = "data/de/de_"+to_string(i)+".png";
         m_faces_de[i].loadFromFile(nom_fichier.c_str(), m_renderer);
     }
-
+    /*
     for(int i=0; i<5; i++)
     {
         string nom_fichier2 ="data/de/de_int"+to_string(i)+".png";
@@ -89,8 +92,8 @@ AffichageSDL::~AffichageSDL(){
 
 }
 
-void AffichageSDL:: SdlAff(){
-    
+void AffichageSDL:: SdlAff(bool de_lancer){
+
     // Remplir l'écran de blanc
     //SDL_SetRenderDrawColor : définit la couleur de fond du rendu
     //( 130, 140, 255, 255) : correspond a une teinte bleue
@@ -107,7 +110,9 @@ void AffichageSDL:: SdlAff(){
     //m_font_im.draw(m_renderer, 320 - 50, 50, 100, 50);
 
     //2.Affichage du plateau 
-    m_plateau.draw(m_renderer, 0, 0); //à haut en gauche
+    int dimx, dimy;
+    SDL_GetWindowSize(m_window, &dimx, &dimy);
+    m_plateau.draw(m_renderer, 0, 0, dimx, dimy); //à haut en gauche
 
     /*3.affchage des pions de chaque joueur
     for(int j=0; j<nb_Joueur; j++){
@@ -121,6 +126,20 @@ void AffichageSDL:: SdlAff(){
         }
     }*/
 
+    //affichage du dé si pas tirer
+    m_faces_de[0].draw(m_renderer, dimx/2, dimy/2);
+    //si tirer (pour l'instant sans prendre en compte le joueur pour test)
+    if(de_lancer)
+    {
+        for(int i=1; i<6; i++)
+        {
+            m_faces_de[i].draw(m_renderer, dimx/2, dimy/2);
+            SDL_RenderPresent(m_renderer);
+        }
+        m_faces_de[de.GetVal()-1].draw(m_renderer, dimx/2, dimy/2);
+    }
+
+
 
 }
 
@@ -128,7 +147,10 @@ void AffichageSDL::SdlBoucle()
 {
     SDL_Event events;   //Stocke les événements (clavier, souris, fermeture, etc.).
     bool quit = false;  //Contrôle la boucle (true = fin du programme).
+    bool de_lancer = false;
 
+    De de;
+    int val_de;
     // tant que ce n'est pas la fin ...
     while (!quit)
     {
@@ -146,10 +168,14 @@ void AffichageSDL::SdlBoucle()
                                                     //chaque touche du clavier indépendamment de sa position sur le clavier 
                                                     //ou de la disposition du clavier.
                 { 
-                case SDL_SCANCODE_ESCAPE:       //scancode pour la touche Échap (Escape) sur le clavier.
                 case SDL_SCANCODE_Q:            //Scancode pour la touche Q sur le clavier.
                     quit = true;
                     break;
+                case SDL_SCANCODE_ESCAPE:
+                    de.LancerDe();
+                    val_de = de.GetVal();
+                    de_lancer = true;
+
                 default:
                     break;
                 }
@@ -157,7 +183,7 @@ void AffichageSDL::SdlBoucle()
         }
 
         // on affiche le jeu sur le buffer caché
-        SdlAff();   // maj du rendu , cette fonction efface et redessine les elements du jeu
+        SdlAff(de_lancer);   // maj du rendu , cette fonction efface et redessine les elements du jeu
 
         // on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
         SDL_RenderPresent(m_renderer);  //afiche le rendu (sinon les modifications ne sont pas visibles)
