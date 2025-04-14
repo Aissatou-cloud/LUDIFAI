@@ -33,9 +33,9 @@ private:
     /**
      * @brief fonction qui gere l'affichage
      * @param de_lancer si le dé a ete lancer
-     * @param val_de valeur du de du jeu 
+     * @param de de du jeu 
      */
-    void SdlAff(bool de_lancer, int val_de);
+    void SdlAff(bool de_lancer, De de);
 
 public:
     /**
