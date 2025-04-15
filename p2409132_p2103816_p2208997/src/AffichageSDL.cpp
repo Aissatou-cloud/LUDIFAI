@@ -210,6 +210,9 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
     SDL_Event events;   //Stocke les événements (clavier, souris, fermeture, etc.).
     bool quit = false;  //Contrôle la boucle (true = fin du programme).
     bool de_lancer = false;
+    bool sortir_pion = false;
+    bool de_lancer_aff = false;
+    
 
     De de;
     
@@ -235,26 +238,32 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
                 case SDL_SCANCODE_ESCAPE:            //Scancode pour la touche Q sur le clavier.
                     quit = true;
                     break;
-                case SDL_SCANCODE_SPACE:
-                    Jeu.GetDe().LancerDe();
-                    cout<<"la valeur du dé: "<<Jeu.GetDe().GetVal()<<endl;
+
+                case SDL_SCANCODE_SPACE: 
                     de_lancer = true;
+                    de_lancer_aff = true;
                     break;
+
+                case SDL_SCANCODE_RETURN:
+                    sortir_pion = true;
+
                 default:
                     break;
                 }
             }
         }
 
-        SdlAff(de_lancer, de, Jeu);   // maj du rendu , cette fonction efface et redessine les elements du jeu
+        
+        
 
-
-        if(de_lancer)
+        if(de_lancer || sortir_pion)
         {
-            de_lancer = false;
+            Jeu.Gerer_Jeu(de_lancer, sortir_pion);
+            cout<<"de lancer et val: "<<Jeu.GetDe().GetVal()<<endl;
         }
+        SdlAff(de_lancer_aff, de, Jeu); 
+        de_lancer_aff = false;
 
-        // on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
         SDL_RenderPresent(m_renderer);  //afiche le rendu (sinon les modifications ne sont pas visibles)
     }
 }

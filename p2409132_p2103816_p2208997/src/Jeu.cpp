@@ -347,26 +347,56 @@ De& Jeu::GetDe()
 }
 
 
-void Jeu::Gerer_Tour(Joueur & j, bool sortir_pion)
+void Jeu::Gerer_Tour(Joueur & j, bool & sortir_pion, bool & lancer_de)
 {
-    pair<int,int> cordoDepart; //= tab_Depart[j.getId()];
+    //pair<int,int> cordoDepart = LesCasesDepart[j.getId()];
 
-    if((de.GetVal()==6) && (j.GetNbpionArrives()<4|| (sortir_pion)) )
+    //if(de.GetVal()==6 && (j.GetNbpionArrives()<4|| (sortir_pion)) )
+    if (sortir_pion && de.GetVal()==6)
     {
-        j.SortirPionBase(cordoDepart);
+        cout<<"sortir_pion"<<endl;
+        j.SortirPionBase(make_pair(10,10));
     }else{
         //deplacement
         //collision
     }
+    sortir_pion=false;
+    lancer_de = false; 
 }
 
-void Jeu::Gerer_Jeu (bool lancer_de, bool sortir_pion)
+/*void Jeu::Gerer_Jeu (bool &lancer_de, bool &sortir_pion)
 {
-    if(lancer_de)
+    /*if(lancer_de)
     {
+        
         for(int i=4; i<nb_Joueur; i++)
         {
             Gerer_Tour(*joueurs[i], sortir_pion);
         }
     }
+    
+   if(lancer_de || sortir_pion)
+   {
+    cout<<"de a ete lancer et sortir pion: "<<sortir_pion<<endl;
+    Gerer_Tour(*joueurs[0], sortir_pion, lancer_de);  
+   }
+   //Gerer_Tour(*joueurs[1], sortir_pion);
+}*/
+
+
+void Jeu::Gerer_Jeu(bool & lancer_de, bool &sortir_pion)
+{
+    if(lancer_de) de.LancerDe();
+    lancer_de=false;
+
+    if(sortir_pion)
+    {
+        sortir_pion =false;
+        cout<<"sorti du pion"<<endl;
+        joueurs[0]->SortirPionBase(make_pair(10,10));
+    }else{
+        //delacement et collisison
+    }
+    
+
 }

@@ -123,7 +123,7 @@ void Joueur::RemplirCoordonneePoule(float cx, float cy)
 
 void Joueur::SortirPionBase(pair<int,int> CoordSortiBase)
 {
-	assert(CoordSortiBase.first);
+	/*assert(CoordSortiBase.first);
 	assert(CoordSortiBase.second);
 
 	int id_pion_a_sortir=-1; //gerer cas tout le pions sont sorti
@@ -139,7 +139,8 @@ void Joueur::SortirPionBase(pair<int,int> CoordSortiBase)
 	
 	if(id_pion_a_sortir!=-1)
 	{
-		tab[id_pion_a_sortir].SortirDeLaBase();			//sortir pion de la base
-		tab[id_pion_a_sortir].CoordonneesPionPoule(CoordSortiBase.first, CoordSortiBase.second);	//met a jour les coordonées	
-	}
+		tab[id_pion_a_sortir].SortirDeLaBase(CoordSortiBase.first, CoordSortiBase.second);	//sort pion en mettant a jour les coordonées	
+	}*/
+
+	tab[0].SortirDeLaBase(CoordSortiBase.first, CoordSortiBase.second);
 }

@@ -130,14 +130,14 @@ class Jeu
         * @param joueur le joueur actuel 
 		* @param sortir_pion si le joueur veut sortir un pion de la base
         */
-        void Gerer_Tour(Joueur & j, bool sortir_pion);
+        void Gerer_Tour(Joueur & j, bool & sortir_pion, bool & lancer_de);
 
         /**
          * @brief Gère le jeu pour un tour
          * @param lancer_de si le dé a ete lancer
          * @param sortir_pion si on veut sortir un pion de la base
          */
-        void Gerer_Jeu (bool lancer_de, bool sortir_pion);
+        void Gerer_Jeu (bool &lancer_de, bool &sortir_pion);
 };
 
 #endif
