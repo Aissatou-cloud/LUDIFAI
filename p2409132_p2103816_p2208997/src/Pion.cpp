@@ -54,7 +54,7 @@ void Pion::SetI(int nb)   //verification du bon pion dans plateau
     cout<<"Le pion se deplace et se trouve en "<<i<<endl;
 }
 
-void Pion::SortirBase(){
+void Pion::SortirDeLaBase(){
     est_sorti=true; //Le pion est maintenant en jeu
     i=1;  //supposons que la position de depart soit 1
     cout<<"Pion "<<id <<" sorti de la base [0 : non sortie /1 : sortie]:"<<est_sorti<<endl;

@@ -52,7 +52,7 @@ class Pion{
         * @param nb nombre de place à incrémenter a la position du pion 
         */
         void SetI(int nb);
-        void SortirBase(); // sortir le pion
+        void SortirDeLaBase(); // sortir le pion
         void RetournerBase(); // retourner à la base
 
         /**

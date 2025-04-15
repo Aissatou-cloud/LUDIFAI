@@ -345,3 +345,28 @@ De& Jeu::GetDe()
 {
     return de;
 }
+
+
+void Jeu::Gerer_Tour(Joueur & j, bool sortir_pion)
+{
+    pair<int,int> cordoDepart; //= tab_Depart[j.getId()];
+
+    if((de.GetVal()==6) && (j.GetNbpionArrives()<4|| (sortir_pion)) )
+    {
+        j.SortirPionBase(cordoDepart);
+    }else{
+        //deplacement
+        //collision
+    }
+}
+
+void Jeu::Gerer_Jeu (bool lancer_de, bool sortir_pion)
+{
+    if(lancer_de)
+    {
+        for(int i=4; i<nb_Joueur; i++)
+        {
+            Gerer_Tour(*joueurs[i], sortir_pion);
+        }
+    }
+}

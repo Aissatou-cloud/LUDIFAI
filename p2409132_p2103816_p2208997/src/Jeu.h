@@ -56,13 +56,7 @@ class Jeu
         * @brief Demarer jeu place les pions et les joueurs pour le debut du jeu
         */
         void Demarer_Jeu(char tab[4]);
-        
-        /**
-        * @brief gere les tours pour chaque joueur
-        * @param joueur le joueur actuel 
-		* @param tab de caractere (uniquement pour console)
-        */
-        //void Gerer_Tour(Joueur & joueur);
+    
 
         /**
         * @brief affiche le jeu sous la console 
@@ -130,6 +124,20 @@ class Jeu
 
         pair<int, int>  GetCoordonnes(int index) const;
         pair<int, int>  GetZoneGagnateRouge(int index) const;
+
+        /**
+        * @brief gere les tours pour chaque joueur
+        * @param joueur le joueur actuel 
+		* @param sortir_pion si le joueur veut sortir un pion de la base
+        */
+        void Gerer_Tour(Joueur & j, bool sortir_pion);
+
+        /**
+         * @brief Gère le jeu pour un tour
+         * @param lancer_de si le dé a ete lancer
+         * @param sortir_pion si on veut sortir un pion de la base
+         */
+        void Gerer_Jeu (bool lancer_de, bool sortir_pion);
 };
 
 #endif

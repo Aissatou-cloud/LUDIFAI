@@ -21,7 +21,7 @@ class Joueur
 		~Joueur();
 		unsigned int getId() const;
 		Color getCouleur() const ;
-    	int getNbpionArrives() const;
+    	int GetNbpionArrives() const;
 		void IncrementerNbPionArrive();
 		Pion& GetPion(int indice); //recuperation du pion
 		void GetPionsEnJeu(Pion pions_en_jeu[4]);  //recuperation du tableau statique de pions qui sont en jeu
@@ -31,6 +31,8 @@ class Joueur
 		float GetYPion(int id_pion) const;
 		
 		void RemplirCoordonneePoule(float cx, float cy);
+
+		void SortirPionBase(pair<int,int> CoordSortiBase);
 };
 
 #endif

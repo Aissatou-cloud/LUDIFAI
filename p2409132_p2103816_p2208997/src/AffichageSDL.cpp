@@ -175,7 +175,6 @@ void AffichageSDL:: SdlAff(bool de_lancer, De de, Jeu &Jeu){
         }
     }*/
 
-    //j1.RemplirCoordonneePoule(1.75,12.5);  //ne devrait pas être ici
     for (int i=0; i<4; i++)
     {
         //cout<<"Pion "<<i<<" X: "<<Jeu.GetJoueur(0)->GetPion(i).GetXPion()<<" Y: "<<Jeu.GetJoueur(0)->GetPion(i).GetYPion()<<endl;

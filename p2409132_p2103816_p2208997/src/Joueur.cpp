@@ -47,7 +47,7 @@ unsigned int Joueur::getId() const
 
 bool Joueur::Joueur_Gagnant()
 {
-	if(getNbpionArrives()==4)
+	if(GetNbpionArrives()==4)
 	{
 		a_gagner=true;
 	}else{
@@ -59,7 +59,7 @@ bool Joueur::Joueur_Gagnant()
 
 
 
-	int Joueur::getNbpionArrives() const
+	int Joueur::GetNbpionArrives() const
 	{
 		return nbpionarrives;
 	}
@@ -119,4 +119,27 @@ void Joueur::RemplirCoordonneePoule(float cx, float cy)
 	tab[1].CoordonneesPionPoule(cx+1.75, cy);
 	tab[2].CoordonneesPionPoule(cx, cy-1.75);
 	tab[3].CoordonneesPionPoule(cx+1.75, cy-1.75);
+}
+
+void Joueur::SortirPionBase(pair<int,int> CoordSortiBase)
+{
+	assert(CoordSortiBase.first);
+	assert(CoordSortiBase.second);
+
+	int id_pion_a_sortir=-1; //gerer cas tout le pions sont sorti
+
+	for (int i = 0; i < 4; i++) 
+	{
+    	if (!tab[i].GetEstSorti())
+		{
+        	id_pion_a_sortir = i;
+        	break;
+    	}
+	}
+	
+	if(id_pion_a_sortir!=-1)
+	{
+		tab[id_pion_a_sortir].SortirDeLaBase();			//sortir pion de la base
+		tab[id_pion_a_sortir].CoordonneesPionPoule(CoordSortiBase.first, CoordSortiBase.second);	//met a jour les coordonées	
+	}
 }
