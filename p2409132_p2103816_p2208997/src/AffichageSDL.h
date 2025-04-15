@@ -11,6 +11,7 @@
 #include "Jeu.h"
 #include "Image.h"
 #include "De.h"
+#include "Joueur.h"
 
 /**
  * 
@@ -28,16 +29,22 @@ private:
     Image m_plateau; ///< image du plateau
     Image m_faces_de[6]; ///<image du dé
     Image m_de_inter[5]; ///image intermediaire du dé
-    Image m_tab_pion[4]; ///< image des pions 
+    Image m_pion_rouge[4]; /// image pion rouge
     
 
     /**
      * @brief fonction qui gere l'affichage
      * @param de_lancer si le dé a ete lancer
      * @param de de du jeu 
+     * @param j1 joueur
      */
     void AffPionRouge(Jeu &jeu) ; 
+<<<<<<< HEAD
     void SdlAff(bool de_lancer, De de, Jeu & jeu);
+=======
+    //void SdlAff(bool de_lancer, De de);
+    void SdlAff(bool de_lancer, De de, Joueur j1);
+>>>>>>> b961aa7e715689feaa3497b0704a819048f16c9c
 
 public:
     /**

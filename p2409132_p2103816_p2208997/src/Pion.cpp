@@ -9,6 +9,8 @@ Pion::Pion(int idf)
     id = idf;
     est_sorti = false;
     est_arrive = false;
+    x =0;
+    y =0;
 }
 
 //destructeur a voir car il ne sert a rien sans sdl
@@ -54,6 +56,23 @@ void Pion::SortirBase(){
 void Pion::RetournerBase(){
     est_sorti=false;
     i=0;
+}
+
+void Pion::CoordonneesPionPoule(float cx, float cy)
+{
+    x= cx;
+    y= cy;
+}
+
+
+float Pion::GetCoordoneeXPoule ()
+{
+	return x;
+}
+
+float Pion::GetCoordoneeYPoule ()
+{
+	return y;
 }
 
 
