@@ -38,6 +38,7 @@ private:
      * @param de de du jeu 
      * @param j1 joueur
      */
+<<<<<<< HEAD
     void AffPionRouge(Jeu &jeu) ; 
 <<<<<<< HEAD
     void SdlAff(bool de_lancer, De de, Jeu & jeu);
@@ -45,6 +46,11 @@ private:
     //void SdlAff(bool de_lancer, De de);
     void SdlAff(bool de_lancer, De de, Joueur j1);
 >>>>>>> b961aa7e715689feaa3497b0704a819048f16c9c
+=======
+    //void AffPionRouge(Jeu &jeu) ; 
+    //void SdlAff(bool de_lancer, De de);
+    void SdlAff(bool de_lancer, De de, Joueur& j1);
+>>>>>>> 583f44b (....)
 
 public:
     /**

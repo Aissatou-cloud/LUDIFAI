@@ -7,7 +7,6 @@ int main()
 {
     AffichageSDL sj;
     
-    
     sj.SdlBoucle();
 
     return 0;

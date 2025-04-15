@@ -60,11 +60,12 @@ AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nul
     SDL_RENDERER_ACCELERATED : accceleration materielle 
     */
     m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
+    assert( m_renderer);
 
     //Image plateau
     m_plateau.loadFromFile("data/plateau.png", m_renderer);
 
-    m_tab_pion[0].loadFromFile("data/pion/rond_rouge.png", m_renderer);        //vert, jaune bleu rouge
+    //m_tab_pion[0].loadFromFile("data/pion/rond_rouge", m_renderer);        //vert, jaune bleu rouge
     /*m_tab_pion[1].loadFromFile("data/pion/rond_jaune", m_renderer);
     m_tab_pion[2].loadFromFile("data/pion/rond_bleu", m_renderer);
     m_tab_pion[3].loadFromFile("data/pion/rond_rouge", m_renderer);*/
@@ -103,8 +104,9 @@ AffichageSDL::~AffichageSDL(){
 
 }
 
-void AffichageSDL:: AffPionRouge(Jeu &jeu){
-    Joueur* joueur_Rouge=jeu.GetJoueur(0);; //joueur 0 = rouge
+
+/*void AffichageSDL:: AffPionRouge(Jeu &jeu){
+    Joueur* joueur_Rouge=jeu.getJouer(0);; //joueur 0 = rouge
 
     int x, y;
     for(int i=0; i<4; i++){
@@ -126,6 +128,7 @@ void AffichageSDL:: AffPionRouge(Jeu &jeu){
             y=coord.second;
         }
     }
+<<<<<<< HEAD
     //Affiche le pion rouge à la bonne position
     m_tab_pion[0].draw(m_renderer, x, y, 40, 40);
 }
@@ -136,6 +139,11 @@ void AffichageSDL:: SdlAff(bool de_lancer, De de, Jeu & jeu){
 void AffichageSDL:: SdlAff(bool de_lancer, De de){
 void AffichageSDL:: SdlAff(bool de_lancer, De de, Joueur j1){
 >>>>>>> b961aa7e715689feaa3497b0704a819048f16c9c
+=======
+}*/
+
+//void AffichageSDL:: SdlAff(bool de_lancer, De de){
+void AffichageSDL:: SdlAff(bool de_lancer, De de, Joueur& j1){
 
     // Remplir l'écran de blanc
     //SDL_SetRenderDrawColor : définit la couleur de fond du rendu
@@ -173,12 +181,12 @@ void AffichageSDL:: SdlAff(bool de_lancer, De de, Joueur j1){
     }*/
 
     
-    j1.RemplirCoordonneePoule(1.87,12.13);  //ne devrait pas être ici
+    j1.RemplirCoordonneePoule(1.75,12.5);  //ne devrait pas être ici
     for (int i=0; i<4; i++)
     {
         cout<<"Pion "<<i<<" X: "<<j1.GetXPion(i)<<" Y: "<<j1.GetYPion(i)<<endl;
 
-        m_pion_rouge[i].draw(m_renderer, j1.GetXPion(i)*40, j1.GetYPion(i)*40, 40.3, 40.3);
+        m_pion_rouge[i].draw(m_renderer, j1.GetXPion(i)*40, j1.GetYPion(i)*40, 30, 30);
     }
 
 
@@ -210,14 +218,11 @@ void AffichageSDL::SdlBoucle()
     bool de_lancer = false;
 
     De de;
-<<<<<<< HEAD
-    int val_de;
     Jeu  jeu;
-=======
+
     Joueur j1;
     
-    
->>>>>>> b961aa7e715689feaa3497b0704a819048f16c9c
+
     // tant que ce n'est pas la fin ...
     while (!quit)
     {
@@ -235,7 +240,7 @@ void AffichageSDL::SdlBoucle()
                                                     //chaque touche du clavier indépendamment de sa position sur le clavier 
                                                     //ou de la disposition du clavier.
                 { 
-                case SDL_SCANCODE_Q:            //Scancode pour la touche Q sur le clavier.
+                case SDL_SCANCODE_ESCAPE:            //Scancode pour la touche Q sur le clavier.
                     quit = true;
                     break;
                 case SDL_SCANCODE_SPACE:
@@ -249,11 +254,9 @@ void AffichageSDL::SdlBoucle()
         }
 
         // on affiche le jeu sur le buffer caché
-<<<<<<< HEAD
-        SdlAff(de_lancer, de, jeu);   // maj du rendu , cette fonction efface et redessine les elements du jeu
-=======
+
+        //SdlAff(de_lancer, de, jeu);   // maj du rendu , cette fonction efface et redessine les elements du jeu
         SdlAff(de_lancer, de, j1);   // maj du rendu , cette fonction efface et redessine les elements du jeu
->>>>>>> b961aa7e715689feaa3497b0704a819048f16c9c
 
         if(de_lancer)
         {

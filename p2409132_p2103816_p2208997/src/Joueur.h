@@ -16,18 +16,19 @@ class Joueur
 		bool a_gagner;
     public:
     	Joueur();
+		//Joueur(const Joueur& j) : 
 		Joueur(unsigned int indent,unsigned char r, unsigned char v, unsigned char b);
 		~Joueur();
 		int getId() const;
 		Color getCouleur() const ;
-    	int getNbpionArrives();
+    	int getNbpionArrives() const;
 		void IncrementerNbPionArrive();
 		Pion& GetPion(int indice); //recuperation du pion
 		void GetPionsEnJeu(Pion pions_en_jeu[4]);  //recuperation du tableau statique de pions qui sont en jeu
 		bool Joueur_Gagnant();
 
-		float GetXPion(int id_pion);
-		float GetYPion(int id_pion);
+		float GetXPion(int id_pion) const;
+		float GetYPion(int id_pion) const;
 		
 		void RemplirCoordonneePoule(float cx, float cy);
 };
