@@ -62,7 +62,7 @@ AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nul
     //Image plateau
     m_plateau.loadFromFile("data/plateau.png", m_renderer);
 
-    m_tab_pion[0].loadFromFile("data/pion/rond_rouge", m_renderer);        //vert, jaune bleu rouge
+    m_tab_pion[0].loadFromFile("data/pion/rond_rouge.png", m_renderer);        //vert, jaune bleu rouge
     /*m_tab_pion[1].loadFromFile("data/pion/rond_jaune", m_renderer);
     m_tab_pion[2].loadFromFile("data/pion/rond_bleu", m_renderer);
     m_tab_pion[3].loadFromFile("data/pion/rond_rouge", m_renderer);*/
@@ -93,19 +93,19 @@ AffichageSDL::~AffichageSDL(){
 }
 
 void AffichageSDL:: AffPionRouge(Jeu &jeu){
-    Joueur* joueur_Rouge=jeu.getJouer(0);; //joueur 0 = rouge
+    Joueur* joueur_Rouge=jeu.GetJoueur(0);; //joueur 0 = rouge
 
+    int x, y;
     for(int i=0; i<4; i++){
-        Pion* pion=joeur_Rouge->getPion(i);
+        Pion* pion=joueur_Rouge->GetPion(i);
 
         //ne rien afficher si pon est en base
-        if(!pion->getEstSorti()) continue;
+        if(!pion->GetEstSorti()) continue;
         //sinon
-        int position= pion->getI(); //position i du pion
+        int position= pion->GetI(); //position i du pion
 
-        int x, y;
         if(position <=53){ //dans le chemin commun a tous 
-            pair<int, int> coord=jeu.GetCoordonnees(position);
+            pair<int, int> coord=jeu.GetCoordonnes(position);
             x=coord.first;
             y=coord.second;
 
@@ -115,9 +115,11 @@ void AffichageSDL:: AffPionRouge(Jeu &jeu){
             y=coord.second;
         }
     }
+    //Affiche le pion rouge à la bonne position
+    m_tab_pion[0].draw(m_renderer, x, y, 40, 40);
 }
 
-void AffichageSDL:: SdlAff(bool de_lancer, De de){
+void AffichageSDL:: SdlAff(bool de_lancer, De de, Jeu & jeu){
 
     // Remplir l'écran de blanc
     //SDL_SetRenderDrawColor : définit la couleur de fond du rendu
@@ -138,6 +140,9 @@ void AffichageSDL:: SdlAff(bool de_lancer, De de){
     int dimx, dimy;
     SDL_GetWindowSize(m_window, &dimx, &dimy);
     m_plateau.draw(m_renderer, 0, 0, dimx, dimy); //à haut en gauche
+
+    //Affiche les pions rouges
+    AffPionRouge(jeu);
 
     /*3.affchage des pions de chaque joueur
     for(int j=0; j<nb_Joueur; j++){
@@ -178,6 +183,7 @@ void AffichageSDL::SdlBoucle()
 
     De de;
     int val_de;
+    Jeu  jeu;
     // tant que ce n'est pas la fin ...
     while (!quit)
     {
@@ -210,7 +216,7 @@ void AffichageSDL::SdlBoucle()
         }
 
         // on affiche le jeu sur le buffer caché
-        SdlAff(de_lancer, de);   // maj du rendu , cette fonction efface et redessine les elements du jeu
+        SdlAff(de_lancer, de, jeu);   // maj du rendu , cette fonction efface et redessine les elements du jeu
 
         if(de_lancer)
         {

@@ -4,10 +4,11 @@
 #include <stdlib.h>
 #include <filesystem>
 
+
 #include <SDL2/SDL.h>           //affichage graphique   
 //#include <SDL2/SDL_image.h>     //charger des images
 //#include <SDL2/SDL_ttf.h>  
-
+#include "Jeu.h"
 #include "Image.h"
 #include "De.h"
 
@@ -36,7 +37,7 @@ private:
      * @param de de du jeu 
      */
     void AffPionRouge(Jeu &jeu) ; 
-    void SdlAff(bool de_lancer, De de);
+    void SdlAff(bool de_lancer, De de, Jeu & jeu);
 
 public:
     /**

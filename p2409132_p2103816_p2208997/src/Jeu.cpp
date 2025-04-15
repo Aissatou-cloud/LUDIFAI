@@ -83,6 +83,21 @@ Jeu::~Jeu()
     }
 } //Plus besoin de delete[] car 'vector' gere la mem automatiquement, pour chq joueur du vector on delete
 
+
+
+pair<int, int> Jeu::  GetCoordonnes(int index) const{
+    return chemin[index];
+}
+
+pair<int, int> Jeu:: GetZoneGagnateRouge(int index) const{
+    return zone_Gagnante_R[index];
+}
+
+Joueur* Jeu:: GetJoueur(int id) {    
+    return joueurs[id];
+}
+
+
 void Jeu::AffichageLimiteTerrain_SDL(int x, int y, char t[4])
 {
 for (int i = 0; i < y; i++)  
@@ -306,14 +321,3 @@ void Jeu::Demarer_Jeu(char tab[4])
 }
 
 
-pair<int, int> Jeu::  GetCoordonnes(int index) const{
-    return chemin[index];
-}
-
-pair<int, int> Jeu:: GetZoneGagnateRouge(int index) const{
-    return zone_Gagnante_R[index];
-}
-
-Joueur* Jeu:: GetJoueur(int id) {    
-    return joueurs[id];
-}
