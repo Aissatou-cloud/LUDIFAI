@@ -12,6 +12,8 @@ class Pion{
         int id;             ///identifiant 
         bool est_sorti;     ///si pion est sorti de la poule
         bool est_arrive;    ///si pion est arrive a case d'arrivée
+        float x;
+        float y;
 
     public: 
         /**
@@ -52,7 +54,22 @@ class Pion{
         void SortirBase(); // sortir le pion
         void RetournerBase(); // retourner à la base
 
-        
+        /**
+		* @brief remplir coordonnée des pions dans la poule 
+		* @param x coordonnée x du pion
+		* @param y coordonée y du pion 
+		*/
+		void CoordonneesPionPoule(float x, float y);
+
+		/**
+		* @brief Retourne les coordonnées x d'un pion
+		 */
+		float GetCoordoneeXPoule ();	
+		
+		/**
+		* @brief Retourne les coordonnées y d'un pion
+		 */
+		 float GetCoordoneeYPoule ();
 };
 
 #endif

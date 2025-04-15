@@ -25,7 +25,11 @@ class Joueur
 		Pion* GetPion(int indice); //recuperation du pion
 		vector<Pion*> GetPionsEnJeu();  //recuperation du vecteur de pions qui sont en jeu
 		bool Joueur_Gagnant();
-    
+
+		float GetXPion(int id_pion);
+		float GetYPion(int id_pion);
+		
+		void RemplirCoordonneePoule(float cx, float cy);
 };
 
 #endif
