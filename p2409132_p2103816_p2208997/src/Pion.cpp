@@ -74,12 +74,12 @@ void Pion::CoordonneesPionPoule(float cx, float cy)
 }
 
 
-float Pion::GetCoordoneeXPoule ()
+float Pion::GetXPion () const
 {
 	return x;
 }
 
-float Pion::GetCoordoneeYPoule ()
+float Pion::GetYPion () const
 {
 	return y;
 }

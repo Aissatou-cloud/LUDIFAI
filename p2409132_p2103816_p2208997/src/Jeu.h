@@ -55,13 +55,13 @@ class Jeu
         * @brief Demarer jeu place les pions et les joueurs pour le debut du jeu
         */
         void Demarer_Jeu(char tab[4]);
-
+        
         /**
         * @brief gere les tours pour chaque joueur
         * @param joueur le joueur actuel 
 		* @param tab de caractere (uniquement pour console)
         */
-        void Gerer_Tour(Joueur & joueur);
+        //void Gerer_Tour(Joueur & joueur);
 
         /**
         * @brief affiche le jeu sous la console 
@@ -77,13 +77,13 @@ class Jeu
         * @param id_joueur joueur qui lance le dé
         * @param de de du jeu 
         */
-        int JoueurLanceDe(unsigned int id_joueur, De de);
+        //int JoueurLanceDe(unsigned int id_joueur, De de);
 
         /**
         * @brief recupere le l'ensemble des pions qui sont deja en jeu d'un joueur
         * @param joueur le joueur
         */
-        void RecupDesPionsEnJeu(Joueur &joueur, Pion pionsenjeu[4], bool &vide);
+        //void RecupDesPionsEnJeu(Joueur &joueur, Pion pionsenjeu[4], bool &vide);
 
                 
         /**
@@ -91,41 +91,44 @@ class Jeu
         * @param joueur le joueur
         * @param val_de la valeur du de
         */
-        bool GererEntreeJeu(Joueur &joueur, int val_de);
+        //bool GererEntreeJeu(Joueur &joueur, int val_de);
 
         /**
         * @brief choisir le pion qui doit sortir 
         * @param choix un entier retournant le chois de l'utilisateur
         * @param joueur le joueur
         */
-        Pion& ChoisirPion(Joueur &joueur, int val_de);
+        //Pion& ChoisirPion(Joueur &joueur, int val_de);
 
         /**
         * @brief Deplace le pion sur le plateau 
         * @param pion 1 ptr sur Pion
         * @param val_de la valeur du de
         */
-        void DeplacerPion(Pion & pion, int val_de);
+        //void DeplacerPion(Pion & pion, int val_de);
 
         /**
         * @brief verifie la collision entre les autres pions des autres joeur et le joueur
         * @param pion_deplace 1 ptr sur Pion qui est le pion du joueur a deplacer
         * @param jouur_actuel le joueur qui joue le tour
         */
-        void VerifierCollision(Pion pion_deplace, Joueur &joueur_ctuel);
+        //void VerifierCollision(Pion pion_deplace, Joueur &joueur_ctuel);
 
         /**
         * @brief verifie si le pion est arrive et incremente le nbponarives
         * @param pion 1 ptr sur Pion
         * @param joueur le joueur actuel
         */
+
+        De& GetDe();
+        Joueur * GetJoueur(unsigned int id) const;
+
         void VerifierArrivee(Pion pion, Joueur &joueur);
 		bool Pionsjouables(Joueur &joueur, int val_de);
        
 
         pair<int, int>  GetCoordonnes(int index) const;
         pair<int, int>  GetZoneGagnateRouge(int index) const;
-        Joueur* GetJoueur(int id) ;
 
 };
 

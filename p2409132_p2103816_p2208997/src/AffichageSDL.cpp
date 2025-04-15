@@ -76,6 +76,9 @@ AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nul
     for(int i=0; i<4; i++)
     {
         m_pion_rouge[i].loadFromFile("data/pion/rond_rouge.png", m_renderer);
+        m_pion_vert[i].loadFromFile("data/pion/rond_vert.png", m_renderer);
+        m_pion_jaune[i].loadFromFile("data/pion/rond_jaune.png", m_renderer);
+        m_pion_bleu[i].loadFromFile("data/pion/rond_bleu.png", m_renderer);
     }
    
 
@@ -143,7 +146,7 @@ void AffichageSDL:: SdlAff(bool de_lancer, De de, Joueur j1){
 }*/
 
 //void AffichageSDL:: SdlAff(bool de_lancer, De de){
-void AffichageSDL:: SdlAff(bool de_lancer, De de, Joueur& j1){
+void AffichageSDL:: SdlAff(bool de_lancer, De de, Jeu &Jeu){
 
     // Remplir l'écran de blanc
     //SDL_SetRenderDrawColor : définit la couleur de fond du rendu
@@ -166,7 +169,7 @@ void AffichageSDL:: SdlAff(bool de_lancer, De de, Joueur& j1){
     m_plateau.draw(m_renderer, 0, 0, dimx, dimy); //à haut en gauche
 
     //Affiche les pions rouges
-    AffPionRouge(jeu);
+    //AffPionRouge(jeu);
 
     /*3.affchage des pions de chaque joueur
     for(int j=0; j<nb_Joueur; j++){
@@ -181,27 +184,31 @@ void AffichageSDL:: SdlAff(bool de_lancer, De de, Joueur& j1){
     }*/
 
     
-    j1.RemplirCoordonneePoule(1.75,12.5);  //ne devrait pas être ici
+    //j1.RemplirCoordonneePoule(1.75,12.5);  //ne devrait pas être ici
     for (int i=0; i<4; i++)
     {
-        cout<<"Pion "<<i<<" X: "<<j1.GetXPion(i)<<" Y: "<<j1.GetYPion(i)<<endl;
+        //cout<<"Pion "<<i<<" X: "<<Jeu.GetJoueur(0)->GetPion(i).GetXPion()<<" Y: "<<Jeu.GetJoueur(0)->GetPion(i).GetYPion()<<endl;
 
-        m_pion_rouge[i].draw(m_renderer, j1.GetXPion(i)*40, j1.GetYPion(i)*40, 30, 30);
+        m_pion_rouge[i].draw(m_renderer, Jeu.GetJoueur(0)->GetPion(i).GetXPion()*40, Jeu.GetJoueur(0)->GetPion(i).GetYPion()*40, 30, 30);
+        m_pion_vert[i].draw(m_renderer, Jeu.GetJoueur(1)->GetPion(i).GetXPion()*40, Jeu.GetJoueur(1)->GetPion(i).GetYPion()*40, 30, 30);
+        m_pion_jaune[i].draw(m_renderer, Jeu.GetJoueur(2)->GetPion(i).GetXPion()*40, Jeu.GetJoueur(2)->GetPion(i).GetYPion()*40, 30, 30);
+        m_pion_bleu[i].draw(m_renderer, Jeu.GetJoueur(3)->GetPion(i).GetXPion()*40, Jeu.GetJoueur(3)->GetPion(i).GetYPion()*40, 30, 30);
     }
 
 
     //affichage du dé si pas tirer
-    m_faces_de[de.GetVal()-1].draw(m_renderer, dimx/2, dimy/2);
+    m_faces_de[Jeu.GetDe().GetVal()-1].draw(m_renderer, dimx/2-35, dimy/2-37);
     //si tirer (pour l'instant sans prendre en compte le joueur pour test)
     if(de_lancer)
     {
         for(int i=0; i<6; i++)
         {
-            m_faces_de[i].draw(m_renderer, dimx/2, dimy/2);
+            m_faces_de[i].draw(m_renderer, dimx/2-35, dimy/2-37);
             SDL_RenderPresent(m_renderer);
             SDL_Delay(50);      //petite pause
         }
-        m_faces_de[de.GetVal()-1].draw(m_renderer, dimx/2, dimy/2);
+        cout<<Jeu.GetDe().GetVal()<<endl;
+        m_faces_de[Jeu.GetDe().GetVal()-1].draw(m_renderer, dimx/2-35, dimy/2-37);
         de_lancer = false;
     }
 
@@ -211,16 +218,15 @@ void AffichageSDL:: SdlAff(bool de_lancer, De de, Joueur& j1){
 
 }
 
-void AffichageSDL::SdlBoucle()
+void AffichageSDL::SdlBoucle(Jeu &Jeu)
 {
     SDL_Event events;   //Stocke les événements (clavier, souris, fermeture, etc.).
     bool quit = false;  //Contrôle la boucle (true = fin du programme).
     bool de_lancer = false;
 
     De de;
-    Jeu  jeu;
 
-    Joueur j1;
+    //Joueur j1;
     
 
     // tant que ce n'est pas la fin ...
@@ -244,7 +250,8 @@ void AffichageSDL::SdlBoucle()
                     quit = true;
                     break;
                 case SDL_SCANCODE_SPACE:
-                    de.LancerDe();
+                    Jeu.GetDe().LancerDe();
+                    cout<<"la valeur du dé: "<<Jeu.GetDe().GetVal()<<endl;
                     de_lancer = true;
                     break;
                 default:
@@ -256,7 +263,7 @@ void AffichageSDL::SdlBoucle()
         // on affiche le jeu sur le buffer caché
 
         //SdlAff(de_lancer, de, jeu);   // maj du rendu , cette fonction efface et redessine les elements du jeu
-        SdlAff(de_lancer, de, j1);   // maj du rendu , cette fonction efface et redessine les elements du jeu
+        SdlAff(de_lancer, de, Jeu);   // maj du rendu , cette fonction efface et redessine les elements du jeu
 
         if(de_lancer)
         {

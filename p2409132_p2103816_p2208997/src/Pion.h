@@ -65,12 +65,12 @@ class Pion{
 		/**
 		* @brief Retourne les coordonnées x d'un pion
 		 */
-		float GetCoordoneeXPoule ();	
+		float GetXPion ()const;	
 		
 		/**
 		* @brief Retourne les coordonnées y d'un pion
 		 */
-		 float GetCoordoneeYPoule ();
+		 float GetYPion ()const;
 };
 
 #endif

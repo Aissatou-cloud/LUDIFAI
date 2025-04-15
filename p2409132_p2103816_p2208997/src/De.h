@@ -30,6 +30,7 @@ class De{
         * @brief Lance le de
         */
        void LancerDe();
+
 };
 
 #endif

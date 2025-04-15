@@ -70,9 +70,9 @@ int main() {
      }
 
 
-     AffichageSDL sj;
+     //AffichageSDL sj;
 
-     sj.SdlBoucle();
+     //sj.SdlBoucle();
 
     return 0;
 }

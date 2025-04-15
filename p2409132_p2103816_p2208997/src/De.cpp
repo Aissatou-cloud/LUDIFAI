@@ -21,3 +21,4 @@ int De::GetVal() const
 {
     return val;
 }
+

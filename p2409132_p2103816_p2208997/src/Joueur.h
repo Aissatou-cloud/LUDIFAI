@@ -19,7 +19,7 @@ class Joueur
 		//Joueur(const Joueur& j) : 
 		Joueur(unsigned int indent,unsigned char r, unsigned char v, unsigned char b);
 		~Joueur();
-		int getId() const;
+		unsigned int getId() const;
 		Color getCouleur() const ;
     	int getNbpionArrives() const;
 		void IncrementerNbPionArrive();

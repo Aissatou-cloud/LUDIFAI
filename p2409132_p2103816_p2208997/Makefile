@@ -9,7 +9,7 @@ bin/mainTest1: obj/mainTest1.o obj/AffichageSDL.o obj/Jeu.o obj/Joueur.o obj/Pio
 obj/mainTest1.o: src/mainTest1.cpp 	src/AffichageSDL.h src/Jeu.h src/Joueur.h src/Pion.h src/De.h src/Color.h src/Image.h
 	g++ -ggdb -Wall -c src/mainTest1.cpp -o obj/mainTest1.o
 
-obj/mainsdl.o: src/mainsdl.cpp src/AffichageSDL.h src/Image.h src/De.h src/Joueur.h
+obj/mainsdl.o: src/mainsdl.cpp src/AffichageSDL.h src/Image.h src/De.h src/Joueur.h src/Jeu.h
 	g++ -ggdb -Wall -c src/mainsdl.cpp -o obj/mainsdl.o
 
 obj/AffichageSDL.o:	src/AffichageSDL.cpp src/AffichageSDL.h src/Jeu.h src/Image.h src/De.h

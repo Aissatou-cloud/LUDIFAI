@@ -18,21 +18,32 @@ Joueur::Joueur(unsigned int ident, unsigned char r, unsigned char v, unsigned ch
 {
 	couleur.setColor(r,v,b); //correctement initialise
 	for (unsigned int i=0; i<4; i++){
-		tab[i] = new Pion(i);  
+		//tab[i] = new Pion(i);  
+		tab[i] = Pion(i);
 	}
 }
 
 Joueur::~Joueur()
 {
-	for (unsigned int i = 0; i < 4; i++) 
+	/*for (unsigned int i = 0; i < 4; i++) 
 	{
 		couleur.setColor(r,v,b); //correctement initialise
 		for (unsigned int i=0; i<4; i++){
 			tab[i] = Pion(i);  
 		}
 	}
-	return pions_en_jeu;
+	return pions_en_jeu;*/
+	id=4; //vu qu on peut pas mettre -1 
+	nbpionarrives = 0;
+	a_gagner = false;
+	couleur.setColor(0,0,0); //noir
+	//peut pas vider un tableau statique
 }
+
+unsigned int Joueur::getId() const
+{
+	return id;
+} 
 
 bool Joueur::Joueur_Gagnant()
 {
@@ -45,17 +56,10 @@ bool Joueur::Joueur_Gagnant()
 	return a_gagner;
 }
 
-float Joueur::GetXPion(int id_pion) const
-{
-	assert( id_pion>=0);
-	assert( id_pion<4);
-	assert( tab[ id_pion]);
-	return tab[id_pion]->GetCoordoneeXPoule();
-}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	int Joueur::getNbpionArrives()
+
+
+	int Joueur::getNbpionArrives() const
 	{
 		return nbpionarrives;
 	}
@@ -86,35 +90,33 @@ float Joueur::GetXPion(int id_pion) const
 		}
 	}
 
-	bool Joueur::Joueur_Gagnant()
-	{
-		if(getNbpionArrives()==4)
-		{
-			a_gagner=true;
-		}else{
-			a_gagner=false;
-		}
-		return a_gagner;
-	}
 
 float Joueur::GetYPion(int id_pion) const
 
 {
 	assert( id_pion>=0);
 	assert( id_pion<4);
-	assert( tab[ id_pion]);
-	return tab[id_pion]->GetCoordoneeYPoule();
+	//assert( tab[ id_pion]);
+	return tab[id_pion].GetYPion();
+}
+
+float Joueur::GetXPion(int id_pion) const
+{
+	assert( id_pion>=0);
+	assert( id_pion<4);
+	//assert(tab[id_pion]);
+	return tab[id_pion].GetXPion();
 }
 
 
 void Joueur::RemplirCoordonneePoule(float cx, float cy)
 {
-	assert( tab[0]);
-	assert( tab[1]);
-	assert( tab[2]);
-	assert( tab[3]);
-	tab[0]->CoordonneesPionPoule(cx, cy);
-	tab[1]->CoordonneesPionPoule(cx+1.75, cy);
-	tab[2]->CoordonneesPionPoule(cx, cy-1.75);
-	tab[3]->CoordonneesPionPoule(cx+1.75, cy-1.75);
+	//assert( tab[0]); pas besoin de assert car tableau statique
+	//assert( tab[1]);
+	//assert( tab[2]);
+	//assert( tab[3]);
+	tab[0].CoordonneesPionPoule(cx, cy);
+	tab[1].CoordonneesPionPoule(cx+1.75, cy);
+	tab[2].CoordonneesPionPoule(cx, cy-1.75);
+	tab[3].CoordonneesPionPoule(cx+1.75, cy-1.75);
 }

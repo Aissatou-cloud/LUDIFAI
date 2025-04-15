@@ -1,5 +1,6 @@
 #include "Jeu.h"
 #include <iostream>
+#include <cassert>
 
 using namespace std;
 
@@ -7,6 +8,8 @@ Jeu::Jeu(): nb_Joueur(4)
 {
     //int nb_Joueur=4;
     De de;
+    
+
     /*Comme on a un vector de joeur on aura pas besoin d'allouer et desallouer dynmiquement
     car vector le gere automatiquemnt pour nous
     et aussi VECTOR nous permet d'ajouter(PUSH.BACK) ou de retirer des joueurs avec ces methodes
@@ -17,6 +20,15 @@ Jeu::Jeu(): nb_Joueur(4)
         joueurs.push_back(new Joueur(i,0, 0, 0)); //ajoute a la fin du vector
       //gerer la couleur 
     }
+
+
+
+    joueurs[0]->RemplirCoordonneePoule(1.75, 12.5);  //rouge
+    joueurs[1]->RemplirCoordonneePoule(1.75, 3.5);  //vert
+    joueurs[2]->RemplirCoordonneePoule(10.75, 3.5); //jaune
+    joueurs[3]->RemplirCoordonneePoule(10.75, 12.5); //bleu
+
+
     for(int i=0; i<5; i++){
         chemin[i]={6*40, (13-i)*40};
     }
@@ -65,8 +77,6 @@ Jeu::Jeu(): nb_Joueur(4)
     case_Depart_V=13;
     case_Depart_J=26;
     case_Depart_B=39;
-
-    j1.RemplirCoordonneePoule(1.75,12.5);
 }
 
 Jeu::Jeu(int nb_j): nb_Joueur(nb_j){
@@ -114,7 +124,7 @@ for (int i = 0; i < y; i++)
 		}	std::cout <<std::endl; 
 	}
 }
-
+/*
 int Jeu::JoueurLanceDe(unsigned int id_joueur, De de){
     de.LancerDe();
     cout<<"le joueur: "<<joueurs[id_joueur]->getId()<< "a lance le de : "<<de.GetVal()<< endl;
@@ -266,7 +276,7 @@ void Jeu::Gerer_Tour(Joueur &joueur){
 
 }
 
-
+*/
 void Jeu::Demarer_Jeu(char tab[4])
 {
     
@@ -294,9 +304,9 @@ void Jeu::Demarer_Jeu(char tab[4])
     continu= true;
     do{
 
-        for(int i=0; i<nb_Joueur; i++){
+        /*for(int i=0; i<nb_Joueur; i++){
             Gerer_Tour(*joueurs[i]);  //on passe par reference
-        }
+        }*/
 
         if(joueurs_gagnants.size()==(static_cast<long unsigned int>(nb_Joueur)-1))
         {
@@ -316,6 +326,14 @@ pair<int, int> Jeu:: GetZoneGagnateRouge(int index) const{
     return zone_Gagnante_R[index];
 }
 
-Joueur* Jeu:: GetJoueur(int id) {    
+
+Joueur* Jeu::GetJoueur(unsigned int id) const
+{
+    assert(id<4);
     return joueurs[id];
+}
+
+De& Jeu::GetDe()
+{
+    return de;
 }

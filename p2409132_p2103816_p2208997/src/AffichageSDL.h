@@ -29,7 +29,10 @@ private:
     Image m_plateau; ///< image du plateau
     Image m_faces_de[6]; ///<image du dé
     Image m_de_inter[5]; ///image intermediaire du dé
-    Image m_pion_rouge[4]; /// image pion rouge
+    Image m_pion_rouge[4]; /// image pion Rouge
+    Image m_pion_vert[4];   ///Image pion Vert
+    Image m_pion_jaune[4];   ///Image pion Jaune
+    Image m_pion_bleu[4];   ///Image pion Bleu
     
 
     /**
@@ -38,19 +41,13 @@ private:
      * @param de de du jeu 
      * @param j1 joueur
      */
-<<<<<<< HEAD
-    void AffPionRouge(Jeu &jeu) ; 
-<<<<<<< HEAD
-    void SdlAff(bool de_lancer, De de, Jeu & jeu);
-=======
-    //void SdlAff(bool de_lancer, De de);
-    void SdlAff(bool de_lancer, De de, Joueur j1);
->>>>>>> b961aa7e715689feaa3497b0704a819048f16c9c
-=======
+
+
+    //void SdlAff(bool de_lancer, De de, Jeu & jeu);
+
     //void AffPionRouge(Jeu &jeu) ; 
     //void SdlAff(bool de_lancer, De de);
-    void SdlAff(bool de_lancer, De de, Joueur& j1);
->>>>>>> 583f44b (....)
+    void SdlAff(bool de_lancer, De de, Jeu &Jeu);
 
 public:
     /**
@@ -65,7 +62,7 @@ public:
     /**
      * @brief Boucle principale qui gere les evenements du jeu
      */
-    void SdlBoucle();
+    void SdlBoucle(Jeu &J);
 };
 
 

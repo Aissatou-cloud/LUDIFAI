@@ -5,9 +5,11 @@ using namespace std;
 
 int main()
 {
+    srand(time(NULL));
     AffichageSDL sj;
     
-    sj.SdlBoucle();
+    Jeu J;
+    sj.SdlBoucle(J);
 
     return 0;
 }
