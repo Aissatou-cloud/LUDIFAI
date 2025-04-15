@@ -38,7 +38,7 @@ private:
      * @param j1 joueur
      */
     void AffPionRouge(Jeu &jeu) ; 
-    void SdlAff(bool de_lancer, De de);
+    //void SdlAff(bool de_lancer, De de);
     void SdlAff(bool de_lancer, De de, Joueur j1);
 
 public:

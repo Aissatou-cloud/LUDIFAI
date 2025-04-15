@@ -70,12 +70,9 @@ int main() {
      }
 
 
-<<<<<<< HEAD
-=======
      AffichageSDL sj;
 
      sj.SdlBoucle();
->>>>>>> 829fd9f (ajout plateau)
 
     return 0;
 }
