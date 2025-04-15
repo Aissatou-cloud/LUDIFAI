@@ -130,7 +130,6 @@ class Jeu
 
         pair<int, int>  GetCoordonnes(int index) const;
         pair<int, int>  GetZoneGagnateRouge(int index) const;
-
 };
 
 #endif

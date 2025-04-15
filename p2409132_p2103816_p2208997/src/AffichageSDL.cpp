@@ -133,9 +133,9 @@ AffichageSDL::~AffichageSDL(){
         //Affiche le pion rouge à la bonne position
         m_pion_rouge[i].draw(m_renderer, x, y, 40, 40);
     }
-
-
 }*/
+
+
 
 
 void AffichageSDL:: SdlAff(bool de_lancer, De de, Jeu &Jeu){
@@ -175,7 +175,6 @@ void AffichageSDL:: SdlAff(bool de_lancer, De de, Jeu &Jeu){
         }
     }*/
 
-    
     //j1.RemplirCoordonneePoule(1.75,12.5);  //ne devrait pas être ici
     for (int i=0; i<4; i++)
     {
@@ -185,6 +184,7 @@ void AffichageSDL:: SdlAff(bool de_lancer, De de, Jeu &Jeu){
         m_pion_vert[i].draw(m_renderer, Jeu.GetJoueur(1)->GetPion(i).GetXPion()*40, Jeu.GetJoueur(1)->GetPion(i).GetYPion()*40, 30, 30);
         m_pion_jaune[i].draw(m_renderer, Jeu.GetJoueur(2)->GetPion(i).GetXPion()*40, Jeu.GetJoueur(2)->GetPion(i).GetYPion()*40, 30, 30);
         m_pion_bleu[i].draw(m_renderer, Jeu.GetJoueur(3)->GetPion(i).GetXPion()*40, Jeu.GetJoueur(3)->GetPion(i).GetYPion()*40, 30, 30);
+
     }
 
 
@@ -213,8 +213,7 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
     bool de_lancer = false;
 
     De de;
-
-    //Joueur j1;
+    
     
 
     // tant que ce n'est pas la fin ...
@@ -248,10 +247,8 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
             }
         }
 
-        // on affiche le jeu sur le buffer caché
-
-        //SdlAff(de_lancer, de, jeu);   // maj du rendu , cette fonction efface et redessine les elements du jeu
         SdlAff(de_lancer, de, Jeu);   // maj du rendu , cette fonction efface et redessine les elements du jeu
+
 
         if(de_lancer)
         {
