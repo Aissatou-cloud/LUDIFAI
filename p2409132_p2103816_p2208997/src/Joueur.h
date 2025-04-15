@@ -11,7 +11,7 @@ class Joueur
 	private:
     	unsigned int id;
     	int nbpionarrives;
-    	Pion * tab[4];  //a changer 
+    	Pion tab[4];  
     	Color couleur; 	
 		bool a_gagner;
     public:
@@ -22,8 +22,8 @@ class Joueur
 		Color getCouleur() const ;
     	int getNbpionArrives();
 		void IncrementerNbPionArrive();
-		Pion* GetPion(int indice); //recuperation du pion
-		vector<Pion*> GetPionsEnJeu();  //recuperation du vecteur de pions qui sont en jeu
+		Pion& GetPion(int indice); //recuperation du pion
+		void GetPionsEnJeu(Pion pions_en_jeu[4]);  //recuperation du tableau statique de pions qui sont en jeu
 		bool Joueur_Gagnant();
     
 };

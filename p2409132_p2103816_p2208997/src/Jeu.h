@@ -71,7 +71,7 @@ class Jeu
         * @brief recupere le l'ensemble des pions qui sont deja en jeu d'un joueur
         * @param joueur le joueur
         */
-        vector<Pion*> RecupDesPionsEnJeu(Joueur &joueur);
+        void RecupDesPionsEnJeu(Joueur &joueur, Pion pionsenjeu[4], bool &vide);
 
                 
         /**
@@ -82,32 +82,33 @@ class Jeu
         bool GererEntreeJeu(Joueur &joueur, int val_de);
 
         /**
-        * @brief choisir la pion qui doit sortir 
-        * @param PionsEnJeu un tableau de Pion en jeu du joueur
+        * @brief choisir le pion qui doit sortir 
+        * @param choix un entier retournant le chois de l'utilisateur
         * @param joueur le joueur
         */
-        Pion* ChoisirPion(vector<Pion*> PionsEnJeu, Joueur &joueur );
+        Pion& ChoisirPion(Joueur &joueur, int val_de);
 
         /**
         * @brief Deplace le pion sur le plateau 
         * @param pion 1 ptr sur Pion
         * @param val_de la valeur du de
         */
-        void DeplacerPion(Pion* pion, int val_de);
+        void DeplacerPion(Pion & pion, int val_de);
 
         /**
         * @brief verifie la collision entre les autres pions des autres joeur et le joueur
         * @param pion_deplace 1 ptr sur Pion qui est le pion du joueur a deplacer
         * @param jouur_actuel le joueur qui joue le tour
         */
-        void VerifierCollision(Pion* pion_deplace, Joueur &joueur_ctuel);
+        void VerifierCollision(Pion pion_deplace, Joueur &joueur_ctuel);
 
         /**
         * @brief verifie si le pion est arrive et incremente le nbponarives
         * @param pion 1 ptr sur Pion
         * @param joueur le joueur actuel
         */
-        void VerifierArrivee(Pion* pion, Joueur &joueur);
+        void VerifierArrivee(Pion pion, Joueur &joueur);
+		bool Pionsjouables(Joueur &joueur, int val_de);
        
 
 };

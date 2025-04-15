@@ -11,6 +11,13 @@ Pion::Pion(int idf)
     est_arrive = false;
 }
 
+Pion::Pion()
+{
+    i=0;    //dans la poule
+    id = -1;
+    est_sorti = false;
+    est_arrive = false;
+}
 //destructeur a voir car il ne sert a rien sans sdl
 Pion::~Pion()
 {
@@ -42,18 +49,20 @@ bool Pion::GetEstArrive() const
 void Pion::SeDeplace(int nb)   //verification du bon pion dans plateau
 {
     i+=nb;
+    cout<<"Le pion se deplace et se trouve en "<<i<<endl;
 }
 
 void Pion::SortirBase(){
     est_sorti=true; //Le pion est maintenant en jeu
     i=1;  //supposons que la position de depart soit 1
-    cout<<"Pion "<<id <<" sorti de la base"<<endl;
+    cout<<"Pion "<<id <<" sorti de la base [0 : non sortie /1 : sortie]:"<<est_sorti<<endl;
 
 }
 
 void Pion::RetournerBase(){
     est_sorti=false;
     i=0;
+    cout<<"Pion "<<id <<"dans la base"<<endl;
 }
 
 

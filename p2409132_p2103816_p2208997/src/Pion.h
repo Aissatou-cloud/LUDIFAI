@@ -14,6 +14,7 @@ class Pion{
         bool est_arrive;    ///si pion est arrive a case d'arrivée
 
     public: 
+        Pion();
         /**
         * @brief Constructeur qui initialise un pion dans la poule
         */

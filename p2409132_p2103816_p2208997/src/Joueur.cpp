@@ -1,12 +1,13 @@
 #include <iostream>
 #include "Joueur.h"
+#include <cassert>
 
 using namespace std;
 
 	Joueur::Joueur(): id(1), nbpionarrives(0), a_gagner(false)
 	{
 		for(unsigned int i=0; i<4; i++){
-			tab[i]=new Pion(i); //cree 4 pions avec un identifiant unique
+			tab[i]=Pion(i); //cree 4 pions avec un identifiant unique
 		}
 
 	}
@@ -15,17 +16,12 @@ using namespace std;
 	{
 		couleur.setColor(r,v,b); //correctement initialise
 		for (unsigned int i=0; i<4; i++){
-			tab[i] = new Pion(i);  
+			tab[i] = Pion(i);  
 		}
 	}
 
 	Joueur::~Joueur()
 	{
-		for (unsigned int i = 0; i < 4; i++) 
-		{
-			delete tab[i];
-			tab[i]=nullptr;  
-		}
 	}
 
 	int Joueur:: getId()const{
@@ -44,23 +40,23 @@ using namespace std;
 
 	Color Joueur:: getCouleur() const {return couleur ;}
 
-	Pion* Joueur::GetPion(int indice){ //recuperation du pion on en as besoin dans Jeu 
-		if(indice <0 && indice >=4){
-			return tab[indice]; //return 1 ptr vers le pion demande
-		}else{
-			return nullptr; //return nullptr if invalide index
-		}
+	Pion& Joueur::GetPion(int indice)
+	{
+		assert(indice >=0 && indice <=3);
+		return tab[indice];
+		
 	}
 
-	vector<Pion*> Joueur::GetPionsEnJeu(){
-		vector<Pion*> pions_en_jeu; //init du vecteur qui contiendra les pions en jeu
-
+	void Joueur::GetPionsEnJeu(Pion pions_en_jeu[4])
+	{
+		int index=0;
 		for(int i=0; i<4; i++){
-			if(!tab[i]->GetEstArrive() && tab[i]->GetEstSorti()){
-				pions_en_jeu.push_back(tab[i]); //ajoute le pion s'il est sorti mais pas arrive dans le tableau
+			if(!tab[i].GetEstArrive() && tab[i].GetEstSorti())
+			{
+				pions_en_jeu[index]=tab[i];
+				index++;
 			}
 		}
-		return pions_en_jeu;
 	}
 
 	bool Joueur::Joueur_Gagnant()
