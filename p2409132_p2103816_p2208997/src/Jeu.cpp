@@ -73,6 +73,12 @@ Jeu::Jeu(): nb_Joueur(4)
         zone_Gagnante_B[i]={(13-i)*40, 7*40};
     }
 
+    //le tableau des coord de depart de chaque pion des chaque joueur
+    LesCasesDepart[0]=chemin[0];
+    LesCasesDepart[1]=chemin[13];
+    LesCasesDepart[2]=chemin[26];
+    LesCasesDepart[3]=chemin[39];
+    //les case de depart de chaque joueur
     case_Depart_R=0;
     case_Depart_V=13;
     case_Depart_J=26;

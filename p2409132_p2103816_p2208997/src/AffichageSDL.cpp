@@ -109,7 +109,7 @@ AffichageSDL::~AffichageSDL(){
 
 
 /*void AffichageSDL:: AffPionRouge(Jeu &jeu){
-    Joueur* joueur_Rouge=jeu.getJouer(0);; //joueur 0 = rouge
+    Joueur* joueur_Rouge=jeu.getJoueur(0);; //joueur 0 = rouge
 
     int x, y;
     for(int i=0; i<4; i++){
@@ -130,22 +130,14 @@ AffichageSDL::~AffichageSDL(){
             x=coord.first;
             y=coord.second;
         }
+        //Affiche le pion rouge à la bonne position
+        m_pion_rouge[i].draw(m_renderer, x, y, 40, 40);
     }
-<<<<<<< HEAD
-    //Affiche le pion rouge à la bonne position
-    m_tab_pion[0].draw(m_renderer, x, y, 40, 40);
-}
 
-<<<<<<< HEAD
-void AffichageSDL:: SdlAff(bool de_lancer, De de, Jeu & jeu){
-=======
-void AffichageSDL:: SdlAff(bool de_lancer, De de){
-void AffichageSDL:: SdlAff(bool de_lancer, De de, Joueur j1){
->>>>>>> b961aa7e715689feaa3497b0704a819048f16c9c
-=======
+
 }*/
 
-//void AffichageSDL:: SdlAff(bool de_lancer, De de){
+
 void AffichageSDL:: SdlAff(bool de_lancer, De de, Jeu &Jeu){
 
     // Remplir l'écran de blanc
@@ -211,10 +203,6 @@ void AffichageSDL:: SdlAff(bool de_lancer, De de, Jeu &Jeu){
         m_faces_de[Jeu.GetDe().GetVal()-1].draw(m_renderer, dimx/2-35, dimy/2-37);
         de_lancer = false;
     }
-
-    
-
-
 
 }
 

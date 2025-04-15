@@ -26,6 +26,7 @@ class Jeu
         pair<int, int> zone_Gagnante_V[6];
         pair<int, int> zone_Gagnante_J[6];
         pair<int, int> zone_Gagnante_B[6];
+        pair<int, int> LesCasesDepart[4];
         int case_Depart_R;
         int case_Depart_V;
         int case_Depart_J;
