@@ -16,6 +16,54 @@ Jeu::Jeu(): nb_Joueur(4)
         joueurs.push_back(new Joueur(i,0, 0, 0)); //ajoute a la fin du vector
       //gerer la couleur 
     }
+    for(int i=0; i<5; i++){
+        chemin[i]={6*40, (13-i)*40};
+    }
+    for(int i=10; i>=5; i--){
+        chemin[i]={(10-i)*40, 8*40};
+    }
+    chemin[11]={0, 7*40};
+    for(int i=12; i<18; i++){
+        chemin[i]={(12-i)*40, 6*40};
+    }
+    for(int i=23; i>=18; i--){
+        chemin[i]={6*40, (23-i)*40};
+    }
+    chemin[24]={7*40, 0};
+    for(int i=25; i<31; i++){
+        chemin[i]={8*40, (i-25)*40};
+    }
+    for(int i=31; i<37; i++){
+        chemin[i]={(i-12)*40, 6*40};
+    }
+    chemin[37]={14*40, 7*40};
+    for(int i=38; i<44; i++){
+        chemin[i]={(52-i)*40, 8*40};
+    }
+    for(int i=44; i<50; i++){
+        chemin[i]={8*40, (i-35)*40};
+    }
+    chemin[50]={7*40, 14*40};
+    chemin[51]={6*40, 14*40};
+    chemin[52]={6*40, 13*40};
+
+    for(int i=0; i<6; i++){
+        zone_Gagnante_R[i]={7*40, (13-i)*40};
+    }
+    for(int i=0; i<6; i++){
+        zone_Gagnante_J[i]={7*40, (i+1)*40};
+    }
+    for(int i=0; i<6; i++){
+        zone_Gagnante_V[i]={(i+1)*40, 7*40};
+    }
+    for(int i=0; i<6; i++){
+        zone_Gagnante_B[i]={(13-i)*40, 7*40};
+    }
+
+    case_Depart_R=0;
+    case_Depart_V=13;
+    case_Depart_J=26;
+    case_Depart_B=39;
 }
 
 Jeu::Jeu(int nb_j): nb_Joueur(nb_j){
@@ -33,6 +81,21 @@ Jeu::~Jeu()
         delete joueur;
     }
 }
+
+
+
+pair<int, int> Jeu::  GetCoordonnes(int index) const{
+    return chemin[index];
+}
+
+pair<int, int> Jeu:: GetZoneGagnateRouge(int index) const{
+    return zone_Gagnante_R[index];
+}
+
+Joueur* Jeu:: GetJoueur(int id) {    
+    return joueurs[id];
+}
+
 
 void Jeu::AffichageLimiteTerrain_SDL(int x, int y, char t[4])
 {
@@ -132,6 +195,7 @@ bool Jeu::Pionsjouables(Joueur &joueur, int val_de)
 	return false;
 }
 
+<<<<<<< HEAD
 Pion& Jeu::ChoisirPion(Joueur &joueur, int val_de) //ok
 {
     cout<<"-------------choisirpion"<<endl;
@@ -166,6 +230,11 @@ Pion& Jeu::ChoisirPion(Joueur &joueur, int val_de) //ok
 		}
 	}
     return joueur.GetPion(choix);
+=======
+void Jeu::DeplacerPion(Pion* pion, int val_de){
+    pion->SetI(val_de);
+    cout<<"le pion "<< pion->GetId()<< "avance de " <<val_de <<"cases." <<endl;
+>>>>>>> 72ea47a634b2c832c08041ff2d67195a8de42ea6
 }
 
 void Jeu::DeplacerPion(Pion &pion, int val_de) //ok
@@ -293,4 +362,5 @@ void Jeu::Demarer_Jeu(char tab[4])
         }
     } while(continu);
 }
+
 

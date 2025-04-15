@@ -9,6 +9,8 @@ Pion::Pion(int idf)
     id = idf;
     est_sorti = false;
     est_arrive = false;
+    x =0;
+    y =0;
 }
 
 Pion::Pion()
@@ -46,7 +48,7 @@ bool Pion::GetEstArrive() const
     return est_arrive;
 }
 
-void Pion::SeDeplace(int nb)   //verification du bon pion dans plateau
+void Pion::SetI(int nb)   //verification du bon pion dans plateau
 {
     i+=nb;
     cout<<"Le pion se deplace et se trouve en "<<i<<endl;
@@ -63,6 +65,23 @@ void Pion::RetournerBase(){
     est_sorti=false;
     i=0;
     cout<<"Pion "<<id <<"dans la base"<<endl;
+}
+
+void Pion::CoordonneesPionPoule(float cx, float cy)
+{
+    x= cx;
+    y= cy;
+}
+
+
+float Pion::GetCoordoneeXPoule ()
+{
+	return x;
+}
+
+float Pion::GetCoordoneeYPoule ()
+{
+	return y;
 }
 
 

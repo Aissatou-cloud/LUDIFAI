@@ -21,6 +21,18 @@ class Jeu
         vector<Joueur*> joueurs_gagnants;   ///tableau dynamique des joueurs gagnants
         //vector<Joueur> * joueurs;      ///creer tableau de nb Joueur présent
         De de;              ///le de du jeu 
+        pair<int, int> chemin[53];
+        pair<int, int> zone_Gagnante_R[6];
+        pair<int, int> zone_Gagnante_V[6];
+        pair<int, int> zone_Gagnante_J[6];
+        pair<int, int> zone_Gagnante_B[6];
+        int case_Depart_R;
+        int case_Depart_V;
+        int case_Depart_J;
+        int case_Depart_B;
+
+
+
 
     public:
         /**
@@ -110,6 +122,10 @@ class Jeu
         void VerifierArrivee(Pion pion, Joueur &joueur);
 		bool Pionsjouables(Joueur &joueur, int val_de);
        
+
+        pair<int, int>  GetCoordonnes(int index) const;
+        pair<int, int>  GetZoneGagnateRouge(int index) const;
+        Joueur* GetJoueur(int id) ;
 
 };
 

@@ -25,7 +25,11 @@ class Joueur
 		Pion& GetPion(int indice); //recuperation du pion
 		void GetPionsEnJeu(Pion pions_en_jeu[4]);  //recuperation du tableau statique de pions qui sont en jeu
 		bool Joueur_Gagnant();
-    
+
+		float GetXPion(int id_pion);
+		float GetYPion(int id_pion);
+		
+		void RemplirCoordonneePoule(float cx, float cy);
 };
 
 #endif

@@ -4,6 +4,7 @@
 #include "De.h"   //a enlever pour jeu
 #include "Color.h"
 #include "Jeu.h"
+#include "AffichageSDL.h"
 
 using namespace std;
 
@@ -29,7 +30,7 @@ int main() {
     cout << "Pion créé avec ID " << pion1.GetId() 
          << ", Position : " << (int)pion1.GetI() << endl;
 
-    pion1.SeDeplace(6); // Déplacement de 6 cases
+    pion1.SetI(6); // Déplacement de 6 cases
     cout << "Après déplacement : Position = " << (int)pion1.GetI() << endl;
 
     // Test de la classe Joueur
@@ -68,7 +69,10 @@ int main() {
 
      }
 
-     j.Demarer_Jeu(t);
+
+     AffichageSDL sj;
+
+     sj.SdlBoucle();
 
     return 0;
 }
