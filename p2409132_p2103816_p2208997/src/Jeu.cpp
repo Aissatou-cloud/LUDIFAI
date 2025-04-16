@@ -7,6 +7,7 @@ using namespace std;
 Jeu::Jeu(): nb_Joueur(4)
 {
     //int nb_Joueur=4;
+    etat = ATTENTE_LANCER_DE;
     De de;
     
 
@@ -30,7 +31,7 @@ Jeu::Jeu(): nb_Joueur(4)
 
 
     for(int i=0; i<5; i++){
-        chemin[i]={6*40, (13-i)*40};
+        chemin[i]={6, (13-i)};
     }
     for(int i=10; i>=5; i--){
         chemin[i]={(10-i)*40, 8*40};
@@ -189,10 +190,6 @@ Pion* Jeu::ChoisirPion(vector<Pion*> PionsEnJeu, Joueur &joueur ){
     return joueur.GetPion(choix -1);
 }
 
-void Jeu::DeplacerPion(Pion* pion, int val_de){
-    pion->SetI(val_de);
-    cout<<"le pion "<< pion->GetId()<< "avance de " <<val_de <<"cases." <<endl;
-}
 
 
 
@@ -218,7 +215,7 @@ void Jeu::VerifierArrivee(Pion* pion, Joueur &joueur){
         joueur.IncrementerNbPionArrive(); //on increment le nbpionarrive, impossible de faire nbpionarrivee ++ car membre privee
         cout<<"Le pion " <<pion->GetId()<<" du joueur "<<joueur.getId()<< " est arrive "<<endl;
 
-    }
+    } 
 }
 
 void Jeu::Gerer_Tour(Joueur &joueur){
@@ -353,7 +350,7 @@ void Jeu::Gerer_Tour(Joueur & j, bool & sortir_pion, bool & lancer_de)
     //pair<int,int> cordoDepart = LesCasesDepart[j.getId()];
 
     //if(de.GetVal()==6 && (j.GetNbpionArrives()<4|| (sortir_pion)) )
-    if (sortir_pion && de.GetVal()==6)
+    if (sortir_pion)// && de.GetVal()==6)
     {
         cout<<"sortir_pion"<<endl;
         j.SortirPionBase(make_pair(10,10));
@@ -364,16 +361,16 @@ void Jeu::Gerer_Tour(Joueur & j, bool & sortir_pion, bool & lancer_de)
     sortir_pion=false;
     lancer_de = false; 
 }
-
-/*void Jeu::Gerer_Jeu (bool &lancer_de, bool &sortir_pion)
+/*
+void Jeu::Gerer_Jeu (bool &lancer_de, bool &sortir_pion)
 {
-    /*if(lancer_de)
+    if(lancer_de)
     {
         
-        for(int i=4; i<nb_Joueur; i++)
-        {
-            Gerer_Tour(*joueurs[i], sortir_pion);
-        }
+        //for(int i=4; i<nb_Joueur; i++)
+        //{
+            Gerer_Tour(*joueurs[0], sortir_pion, lancer_de);
+        //}
     }
     
    if(lancer_de || sortir_pion)
@@ -384,18 +381,22 @@ void Jeu::Gerer_Tour(Joueur & j, bool & sortir_pion, bool & lancer_de)
    //Gerer_Tour(*joueurs[1], sortir_pion);
 }*/
 
-
+/*
 void Jeu::Gerer_Jeu(bool & lancer_de, bool &sortir_pion)
 {
     if(lancer_de) de.LancerDe();
-    lancer_de=false;
+    
 
     if(sortir_pion)
     {
-        sortir_pion =false;
         cout<<"sorti du pion"<<endl;
-        joueurs[0]->SortirPionBase(make_pair(10,10));
+        joueurs[0]->SortirPionBase(make_pair(10,10));    
+        //lancer_de=false;
+        sortir_pion = false;
     }else{
+        //lancer_de=false;
+        sortir_pion = false;
+        
         //delacement et collisison
     }
     
@@ -446,4 +447,47 @@ void Jeu::VerifierCollision(Pion* pion_deplace, Joueur &joueur_actuel){
         }
     }
 
+}*/
+
+
+/*void Jeu::DeplacerPion(Pion* pion, int val_de){
+    pion->SetI(val_de);
+    cout<<"le pion "<< pion->GetId()<< "avance de " <<val_de <<"cases." <<endl;
+}*/
+
+EtatJeu Jeu::GetEtat() const
+{
+    return etat;
+}
+
+void Jeu::SetEtat(EtatJeu etat_jeu)
+{
+    etat = etat_jeu;
+}
+
+void Jeu::Gerer_Jeu()
+{
+    switch (etat)
+    {
+        case ATTENTE_LANCER_DE:
+            de.LancerDe();
+            cout << "Dé lancé, valeur = " << de.GetVal() << endl;
+            etat = ATTENTE_SORTIE_PION;
+            break;
+
+        case ATTENTE_SORTIE_PION:
+            if(de.GetVal()==6 && joueurs[0]->GetNbpionArrives()<4)
+            {
+                cout << "Sortie de pion" << endl;
+                cout << "le x et y de chemin[1]: ("<<chemin[0].first <<" ;" << chemin[0].second <<" )"<<endl;
+                GetJoueur(0)->SortirPionBase(chemin[0]);
+                etat = FIN_TOUR;
+                             
+            }
+            break;   
+
+        default:
+            etat = ATTENTE_LANCER_DE;
+            break;
+    }
 }

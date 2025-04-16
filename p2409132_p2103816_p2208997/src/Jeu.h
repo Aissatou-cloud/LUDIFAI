@@ -12,10 +12,18 @@ using namespace std;
 * @class Jeu
 * @brief Définit le jeu et le fait marcher 
 */
+enum EtatJeu {      /// les etat du jeu
+    ATTENTE_LANCER_DE,
+    ATTENTE_SORTIE_PION,
+    ATTENTE_DEPLACEMENT,
+    FIN_TOUR
+};
+
 
 class Jeu
 {
     private:
+        EtatJeu etat;       ///l'etat du jeu actuel
         int nb_Joueur;      ///nb de joueur 
         vector<Joueur*> joueurs; ///Tableau dyna de joueur
         vector<Joueur*> joueurs_gagnants;   ///tableau dynamique des joueurs gagnants
@@ -51,6 +59,17 @@ class Jeu
         * @brief Destructeur
          */
         ~Jeu();
+
+        /**
+        * @brief retourne l'etat actuel du jeu
+        */
+        EtatJeu GetEtat() const;
+
+        /**
+        * @brief modifie l'etat
+        * @param etat_jeu l etat du jeu
+        */
+        void SetEtat(EtatJeu etat_jeu);
 
         /**
         * @brief Demarer jeu place les pions et les joueurs pour le debut du jeu
@@ -138,12 +157,14 @@ class Jeu
          * @param lancer_de si le dé a ete lancer
          * @param sortir_pion si on veut sortir un pion de la base
          */
-        void Gerer_Jeu (bool &lancer_de, bool &sortir_pion);
+        /*void Gerer_Jeu (bool &lancer_de, bool &sortir_pion);
         /**
          * @brief donne la case depart du pion en fonction de son id
          * @param j le joueur
          */
         void IdVersCase(Joueur &j) const;
+        //void Gerer_Jeu (bool &lancer_de, bool &sortir_pion);
+        void Gerer_Jeu ();
 };
 
 #endif

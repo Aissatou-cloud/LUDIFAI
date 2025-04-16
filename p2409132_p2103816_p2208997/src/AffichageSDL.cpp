@@ -205,6 +205,8 @@ void AffichageSDL:: SdlAff(bool de_lancer, De de, Jeu &Jeu){
 
 }
 
+
+/*
 void AffichageSDL::SdlBoucle(Jeu &Jeu)
 {
     SDL_Event events;   //Stocke les événements (clavier, souris, fermeture, etc.).
@@ -212,7 +214,9 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
     bool de_lancer = false;
     bool sortir_pion = false;
     bool de_lancer_aff = false;
-    
+
+    //int val_de = 0;
+    //bool autoriser_sortie = false;
 
     De de;
     
@@ -225,9 +229,11 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
         // tant qu'il y a des evenements à traiter (cette boucle n'est pas bloquante)
         while (SDL_PollEvent(&events))  // vérifie s'il y a des événements à traiter.
         {                               //S'il y a un événement, il est stocké dans events.
-            if (events.type == SDL_QUIT)
+            if (events.type == SDL_QUIT){
                 quit = true; //Si l'utilisateur clique sur la croix de la fenêtre (SDL_QUIT),
-                             // on met quit = true pour quitter la boucle.
+                // on met quit = true pour quitter la boucle.
+            }
+              
             else if (events.type == SDL_KEYDOWN)        //si une touche est pressee (SDL_KEYDOWN ), on verifie laquelle
             {
                 switch (events.key.keysym.scancode) // contient le code scancode de la touche qui a été pressée. 
@@ -240,12 +246,15 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
                     break;
 
                 case SDL_SCANCODE_SPACE: 
-                    de_lancer = true;
-                    de_lancer_aff = true;
+                        de_lancer = true;
+                        de_lancer_aff = true;
                     break;
 
                 case SDL_SCANCODE_RETURN:
+
                     sortir_pion = true;
+
+                   
 
                 default:
                     break;
@@ -256,14 +265,151 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
         
         
 
-        if(de_lancer || sortir_pion)
+        if(de_lancer)// || sortir_pion)
         {
+            cout<<"de  lancer"<<de_lancer<<endl;
+            cout<<"sortir_pion"<<sortir_pion<<endl;
             Jeu.Gerer_Jeu(de_lancer, sortir_pion);
             cout<<"de lancer et val: "<<Jeu.GetDe().GetVal()<<endl;
+            de_lancer=false;
+
         }
+
         SdlAff(de_lancer_aff, de, Jeu); 
         de_lancer_aff = false;
 
         SDL_RenderPresent(m_renderer);  //afiche le rendu (sinon les modifications ne sont pas visibles)
+    }
+}*/
+
+// Enum pour les états du jeu
+/*enum EtatJeu {
+    ATTENTE_LANCER_DE,
+    ATTENTE_ACTION,
+    FIN_TOUR
+};
+
+void AffichageSDL::SdlBoucle(Jeu &Jeu)
+{
+    SDL_Event events;
+    bool quit = false;
+    bool de_lancer_aff = false;
+
+    EtatJeu etat = ATTENTE_LANCER_DE;
+    while (!quit)
+    {
+        
+
+        while (SDL_PollEvent(&events))
+        {
+            if (events.type == SDL_QUIT)
+                quit = true;
+
+            if (events.type == SDL_KEYDOWN)
+            {
+                switch (events.key.keysym.scancode)
+                {
+                case SDL_SCANCODE_ESCAPE:
+                    quit = true;
+                    break;
+
+                case SDL_SCANCODE_SPACE:
+                    if (etat == ATTENTE_LANCER_DE)
+                    {
+                        Jeu.GetDe().LancerDe();
+                        cout << "Dé lancé, valeur = " << Jeu.GetDe().GetVal() << endl;
+                        etat = ATTENTE_ACTION;
+                        de_lancer_aff = true;
+                    }
+                    break;
+
+                case SDL_SCANCODE_RETURN:
+                    if (etat == ATTENTE_ACTION)
+                    {
+                        cout << "Sortie de pion" << endl;
+                        Jeu.GetJoueur(0)->SortirPionBase({10, 10});
+                        etat = FIN_TOUR;
+                    }
+                    break;
+
+                case SDL_SCANCODE_N: // Touche pour passer au tour suivant par exemple
+                    //if (etat == FIN_TOUR)
+                    //{
+                        etat = ATTENTE_LANCER_DE;
+                    //}
+                    break;
+
+                default:
+                    //etat = ATTENTE_LANCER_DE;
+                    break;
+                }
+            }
+        }
+
+        // Affichage
+
+        SdlAff(de_lancer_aff, Jeu.GetDe(), Jeu);
+        de_lancer_aff =false;
+        SDL_RenderPresent(m_renderer);
+    }
+}*/
+
+
+
+void AffichageSDL::SdlBoucle(Jeu &Jeu)
+{
+    SDL_Event events;
+    bool quit = false;
+    bool de_lancer_aff = false;
+
+    while (!quit)
+    {
+        
+
+        while (SDL_PollEvent(&events))
+        {
+            if (events.type == SDL_QUIT)
+                quit = true;
+
+            if (events.type == SDL_KEYDOWN)
+            {
+                switch (events.key.keysym.scancode)
+                {
+                case SDL_SCANCODE_ESCAPE:
+                    quit = true;
+                    break;
+
+                case SDL_SCANCODE_SPACE:
+                    if (Jeu.GetEtat()==ATTENTE_LANCER_DE)
+                    {
+                        Jeu.Gerer_Jeu();
+                        de_lancer_aff = true;
+                    }
+                    break;
+
+                case SDL_SCANCODE_RETURN:
+                    if (Jeu.GetEtat() == ATTENTE_SORTIE_PION)
+                    {
+                        Jeu.Gerer_Jeu();
+                    }
+                    break;
+
+
+                case SDL_SCANCODE_N: 
+                    Jeu.SetEtat(ATTENTE_LANCER_DE);
+                    break;
+
+                default:
+                    //etat = ATTENTE_LANCER_DE;
+                    break;
+                }
+            }
+        }
+
+        // Affichage
+
+        SdlAff(de_lancer_aff, Jeu.GetDe(), Jeu);
+        de_lancer_aff =false;
+        SDL_RenderPresent(m_renderer);
     }
 }
