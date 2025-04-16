@@ -195,6 +195,7 @@ void Jeu::DeplacerPion(Pion* pion, int val_de){
 }
 
 
+
 void Jeu::VerifierCollision(Pion* pion_deplace, Joueur &joueur_actuel){
     for(size_t i=0; i<joueurs.size(); i++){     // ici i de type size_t type entier non signé pour représenter taille des objets en mémoire,
         Joueur& autre_joueur = *joueurs[i];   //Utlisation de la boucle 
@@ -398,5 +399,51 @@ void Jeu::Gerer_Jeu(bool & lancer_de, bool &sortir_pion)
         //delacement et collisison
     }
     
+
+}
+
+
+int  Jeu:: IdVersCase(Joueur &j) const{
+    switch(j.GetId()){
+        case 0:
+            return case_Depart_R;
+        case 1:
+             return case_Depart_V;
+        
+        case 2:
+            return case_Depart_J;
+            
+        case 3:
+            return case_Depart_B;
+            
+        default:
+            cout <<"Valeur inattendu "<<endl;
+            return -1;
+            
+            
+    }
+
+}
+
+void Jeu::VerifierCollision(Pion* pion_deplace, Joueur &joueur_actuel){
+
+    int case_joueur_actuel =(IdVersCase(joueur_actuel) +(static_cast<int>(pion_deplace->SGetI()) -1)) % 52;
+
+
+    for(size_t i=0; i<joueurs.size(); i++){     // ici i de type size_t type entier non signé pour représenter taille des objets en mémoire,
+        Joueur& autre_joueur = *joueurs[i];   //Utlisation de la boucle 
+
+        if(autre_joueur.getId() !=joueur_actuel.getId()){
+            for(int j=0; j<4; j++){
+                int case_autre_joueur =(IdVersCase(autre_joueur) +(static_cast<int>(autre_joueur.GetPion(j)->GetI()) -1)) % 52;
+
+                if(case_autre_joueur == case_joueur_actuel){
+                    autre_joueur.GetPion(j)->RetournerBase();
+                    cout << "Le pion adverse "<< autre_joueur.GetPion(j)->GetId()
+                    <<" retourne àa la base"<<endl;   
+                }
+            }
+        }
+    }
 
 }

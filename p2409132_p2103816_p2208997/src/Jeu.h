@@ -127,8 +127,9 @@ class Jeu
 
         /**
         * @brief gere les tours pour chaque joueur
-        * @param joueur le joueur actuel 
+        * @param j le joueur actuel 
 		* @param sortir_pion si le joueur veut sortir un pion de la base
+        * @param lancer_de 
         */
         void Gerer_Tour(Joueur & j, bool & sortir_pion, bool & lancer_de);
 
@@ -138,6 +139,11 @@ class Jeu
          * @param sortir_pion si on veut sortir un pion de la base
          */
         void Gerer_Jeu (bool &lancer_de, bool &sortir_pion);
+        /**
+         * @brief donne la case depart du pion en fonction de son id
+         * @param j le joueur
+         */
+        void IdVersCase(Joueur &j) const;
 };
 
 #endif
