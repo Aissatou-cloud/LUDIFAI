@@ -63,6 +63,15 @@ public:
      * @brief Boucle principale qui gere les evenements du jeu
      */
     void SdlBoucle(Jeu &J);
+    /**
+    * @brief animation pour voir les pions se deplacer 1 par 1
+    * @param Jeu jeu
+    * @param joueur_actuel joueur a qui on effectue animation
+    * @param id_pion pion a deplacer
+    * @param i_depart ancienne position
+    * @param i_arrivee nouvelle position
+    */
+    void AnimerDeplacement (Jeu &Jeu, int joueur_actuel,int id_pion, int i_depart, int i_arrivee);
 };
 
 

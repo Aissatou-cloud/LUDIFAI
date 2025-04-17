@@ -8,7 +8,7 @@
 
 class Pion{
     private: 
-        unsigned char i;    ///position du pion dans le chemin
+        unsigned int i;    ///position du pion dans le chemin
         int id;             ///identifiant 
         bool est_sorti;     ///si pion est sorti de la poule
         bool est_arrive;    ///si pion est arrive a case d'arrivée
@@ -30,7 +30,7 @@ class Pion{
         /**
         * @brief Retourne position du pion 
         */        
-        unsigned char GetI() const;
+        unsigned int GetI() const;
 
         /**
         * @brief Retourne identifiant du pion
@@ -52,6 +52,7 @@ class Pion{
         * @param nb nombre de place à incrémenter a la position du pion 
         */
         void SetI(int nb);
+        void ChangerI(int nb);
         void SortirDeLaBase(float newx, float newy); // sortir le pion
         void RetournerBase(); // retourner à la base
 
@@ -71,6 +72,18 @@ class Pion{
 		* @brief Retourne les coordonnées y d'un pion
 		 */
 		 float GetYPion ()const;
+
+        /**
+		* @brief modifie les coordonnées x d'un pion
+        * @param cx x a modifider
+		 */
+		void SetX (float cx);	
+		
+        /**
+		* @brief modifie les coordonnées x d'un pion
+        * @param cy x a modifider
+		 */
+        void SetY (float cy);
 };
 
 #endif

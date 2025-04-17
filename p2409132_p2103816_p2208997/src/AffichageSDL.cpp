@@ -206,6 +206,27 @@ void AffichageSDL:: SdlAff(bool de_lancer, De de, Jeu &Jeu){
 }
 
 
+void AffichageSDL::AnimerDeplacement (Jeu &Jeu, int joueur_actuel, int id_pion, int i_depart, int i_arrivee)
+{
+    int case_dep = Jeu.IdVersCase(*Jeu.GetJoueur(joueur_actuel));
+
+    for(int i= i_depart +1; i<=i_arrivee; i++)
+    {
+        //Jeu.GetJoueur(joueur_actuel)->GetPion(id_pion).ChangerI(i);
+        int index_chemin = (i + case_dep)%52;
+        Jeu.GetJoueur(joueur_actuel)->SetXpion(id_pion, Jeu.GetChemin(index_chemin).first);
+        Jeu.GetJoueur(joueur_actuel)->SetYpion(id_pion, Jeu.GetChemin(index_chemin).second);
+
+        SdlAff(false, Jeu.GetDe(), Jeu);
+        SDL_RenderPresent(m_renderer);
+        SDL_Delay(200);
+    }
+
+
+}
+
+
+
 /*
 void AffichageSDL::SdlBoucle(Jeu &Jeu)
 {
@@ -361,6 +382,7 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
     SDL_Event events;
     bool quit = false;
     bool de_lancer_aff = false;
+    cout<<"Le pion 0 de J0 a pour i= "<<Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetPion(0).GetI()<<endl;
 
     while (!quit)
     {
@@ -382,21 +404,75 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
                 case SDL_SCANCODE_SPACE:
                     if (Jeu.GetEtat()==ATTENTE_LANCER_DE)
                     {
-                        Jeu.Gerer_Jeu();
+                        Jeu.Gerer_Jeu(0);   //changer?
                         de_lancer_aff = true;
                     }
                     break;
 
                 case SDL_SCANCODE_RETURN:
-                    if (Jeu.GetEtat() == ATTENTE_SORTIE_PION)
+                    if (Jeu.GetEtat() == ATTENTE_ACTION)
                     {
-                        Jeu.Gerer_Jeu();
+                        Jeu.SetEtat(ATTENTE_SORTIE_PION);
+                        Jeu.Gerer_Jeu(0);   //changer?
                     }
                     break;
 
+                case SDL_SCANCODE_1:         //pion avec id=0         
+                    if(Jeu.GetEtat() == ATTENTE_ACTION)
+                    {//a remplacer 0 par GetJoueur(joueur_actuel)
+                        int i_depart = Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetPion(0).GetI();
+
+                        Jeu.SetEtat(ATTENTE_DEPLACEMENT);
+                        Jeu.Gerer_Jeu(0);
+
+                        int i_arrivee = Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetPion(0).GetI();
+                        AnimerDeplacement(Jeu, Jeu.GetJoueurActuel(), 0, i_depart, i_arrivee);  //premier 0 est le joueur a remplacer
+                    }
+                    break;
+
+                case SDL_SCANCODE_2:        //pion avzec id=1           
+                    if(Jeu.GetEtat() == ATTENTE_ACTION)
+                    {//a remplacer 0 par GetJoueur(joueur_actuel)
+                        int i_depart = Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetPion(1).GetI();
+
+                        Jeu.SetEtat(ATTENTE_DEPLACEMENT);
+                        Jeu.Gerer_Jeu(1);
+
+                        int i_arrivee = Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetPion(1).GetI();
+                        AnimerDeplacement(Jeu, Jeu.GetJoueurActuel(), 1, i_depart, i_arrivee);  //premier 0 est le joueur a remplacer
+                    }
+                    break;
+
+                case SDL_SCANCODE_3:        //pion avec id=2              
+                    if(Jeu.GetEtat() == ATTENTE_ACTION)
+                    {//a remplacer 0 par GetJoueur(joueur_actuel)
+                        int i_depart = Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetPion(2).GetI();
+
+                        Jeu.SetEtat(ATTENTE_DEPLACEMENT);
+                        Jeu.Gerer_Jeu(2);
+
+                        int i_arrivee = Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetPion(2).GetI();
+                        AnimerDeplacement(Jeu, Jeu.GetJoueurActuel(), 2, i_depart, i_arrivee);  //premier 0 est le joueur a remplacer
+                    }
+                    break;
+
+                case SDL_SCANCODE_4:        //pion avec id=3              
+                    if(Jeu.GetEtat() == ATTENTE_ACTION)
+                    {//a remplacer 0 par GetJoueur(joueur_actuel)
+                        int i_depart = Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetPion(3).GetI();
+
+                        Jeu.SetEtat(ATTENTE_DEPLACEMENT);
+                        Jeu.Gerer_Jeu(3);
+
+                        int i_arrivee = Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetPion(3).GetI();
+                        AnimerDeplacement(Jeu, Jeu.GetJoueurActuel(), 3, i_depart, i_arrivee);  //premier 0 est le joueur a remplacer
+                    }
+                    break;
 
                 case SDL_SCANCODE_N: 
-                    Jeu.SetEtat(ATTENTE_LANCER_DE);
+                    Jeu.SetEtat(FIN_TOUR);
+                    Jeu.Gerer_Jeu(0);
+
                     break;
 
                 default:

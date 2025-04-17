@@ -9,6 +9,7 @@ Jeu::Jeu(): nb_Joueur(4)
     //int nb_Joueur=4;
     etat = ATTENTE_LANCER_DE;
     De de;
+    joueur_actuel = 0;
     
 
     /*Comme on a un vector de joeur on aura pas besoin d'allouer et desallouer dynmiquement
@@ -33,45 +34,53 @@ Jeu::Jeu(): nb_Joueur(4)
     for(int i=0; i<5; i++){
         chemin[i]={6, (13-i)};
     }
-    for(int i=10; i>=5; i--){
-        chemin[i]={(10-i)*40, 8*40};
+    //for(int i=10; i>5; i--){
+        //chemin[i]={(10-i), 8};
+    //}
+    for(int i=5; i<=10; i++)   //me
+    {
+        chemin[i]={(10-i), 8};
     }
-    chemin[11]={0, 7*40};
-    for(int i=12; i<18; i++){
-        chemin[i]={(12-i)*40, 6*40};
+    chemin[11]={0, 7};
+    /*for(int i=12; i<18; i++){
+        chemin[i]={(12-i), 6};
+    }*/
+    for(int i=12; i<18; i++)
+    {
+        chemin[i]={(i-12), 6};
     }
     for(int i=23; i>=18; i--){
-        chemin[i]={6*40, (23-i)*40};
+        chemin[i]={6, (23-i)};
     }
-    chemin[24]={7*40, 0};
+    chemin[24]={7, 0};
     for(int i=25; i<31; i++){
-        chemin[i]={8*40, (i-25)*40};
+        chemin[i]={8, (i-25)};
     }
-    for(int i=31; i<37; i++){
-        chemin[i]={(i-12)*40, 6*40};
+    for(int i=31; i<37; i++){   //////10 11 12 13
+        chemin[i]={(i-22), 6};
     }
-    chemin[37]={14*40, 7*40};
+    chemin[37]={14, 7};
     for(int i=38; i<44; i++){
-        chemin[i]={(52-i)*40, 8*40};
+        chemin[i]={(52-i), 8};
     }
     for(int i=44; i<50; i++){
-        chemin[i]={8*40, (i-35)*40};
+        chemin[i]={8, (i-35)};
     }
-    chemin[50]={7*40, 14*40};
-    chemin[51]={6*40, 14*40};
-    chemin[52]={6*40, 13*40};
+    chemin[50]={7, 14};
+    chemin[51]={6, 14};
+    chemin[52]={6, 13};
 
     for(int i=0; i<6; i++){
-        zone_Gagnante_R[i]={7*40, (13-i)*40};
+        zone_Gagnante_R[i]={7, (13-i)};
     }
     for(int i=0; i<6; i++){
-        zone_Gagnante_J[i]={7*40, (i+1)*40};
+        zone_Gagnante_J[i]={7, (i+1)};
     }
     for(int i=0; i<6; i++){
-        zone_Gagnante_V[i]={(i+1)*40, 7*40};
+        zone_Gagnante_V[i]={(i+1), 7};
     }
     for(int i=0; i<6; i++){
-        zone_Gagnante_B[i]={(13-i)*40, 7*40};
+        zone_Gagnante_B[i]={(13-i), 7};
     }
 
     //le tableau des coord de depart de chaque pion des chaque joueur
@@ -404,27 +413,7 @@ void Jeu::Gerer_Jeu(bool & lancer_de, bool &sortir_pion)
 }
 
 
-int  Jeu:: IdVersCase(Joueur &j) const{
-    switch(j.GetId()){
-        case 0:
-            return case_Depart_R;
-        case 1:
-             return case_Depart_V;
-        
-        case 2:
-            return case_Depart_J;
-            
-        case 3:
-            return case_Depart_B;
-            
-        default:
-            cout <<"Valeur inattendu "<<endl;
-            return -1;
-            
-            
-    }
 
-}
 
 void Jeu::VerifierCollision(Pion* pion_deplace, Joueur &joueur_actuel){
 
@@ -465,29 +454,119 @@ void Jeu::SetEtat(EtatJeu etat_jeu)
     etat = etat_jeu;
 }
 
-void Jeu::Gerer_Jeu()
+
+pair<int,int> Jeu::GetChemin(int i)
 {
+    return chemin[i];
+}
+
+int Jeu::GetJoueurActuel() const
+{
+    return joueur_actuel;
+}
+
+void Jeu::SetJoueurActuel(int i)
+{
+    joueur_actuel = i;
+}
+
+int  Jeu:: IdVersCase(Joueur &j) const{
+    switch(j.getId()){
+        case 0:
+            return case_Depart_R;
+        case 1:
+             return case_Depart_V;
+        
+        case 2:
+            return case_Depart_J;
+            
+        case 3:
+            return case_Depart_B;
+            
+        default:
+            cout <<"Valeur inattendu "<<endl;
+            return -1;
+            
+            
+    }
+
+}
+
+void Jeu::Gerer_Jeu(int id_pion_deplacer)
+{
+    //for (int i=0; i<nb_joueur; i++) //pour faire un tour a tester
+    int i_depart=0;  //ok
+    int i_apres = 0;
+    int case_depart = 0;  //ok
+    int i_reel=0;   //ok
+    int index_chemin = 0;    //ok
+
+
     switch (etat)
     {
+        case ATTENTE_ACTION:
+            break;
+
         case ATTENTE_LANCER_DE:
             de.LancerDe();
+            cout<<"Joueur actuel: "<<joueur_actuel<<endl;
             cout << "Dé lancé, valeur = " << de.GetVal() << endl;
-            etat = ATTENTE_SORTIE_PION;
+            etat = ATTENTE_ACTION;
             break;
 
         case ATTENTE_SORTIE_PION:
-            if(de.GetVal()==6 && joueurs[0]->GetNbpionArrives()<4)
+            if(de.GetVal()==6 && joueurs[GetJoueurActuel()]->GetNbpionArrives()<4)
             {
                 cout << "Sortie de pion" << endl;
                 cout << "le x et y de chemin[1]: ("<<chemin[0].first <<" ;" << chemin[0].second <<" )"<<endl;
-                GetJoueur(0)->SortirPionBase(chemin[0]);
+                GetJoueur(joueur_actuel)->SortirPionBase(LesCasesDepart[joueur_actuel]);
                 etat = FIN_TOUR;
                              
             }
-            break;   
+            break;  
+            
+        case ATTENTE_DEPLACEMENT:
+            //rajouter condition si pion est sorti
+            i_depart = joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI();
+            cout<<"I depart: "<<i_depart<<endl;
+            case_depart = IdVersCase(*joueurs[joueur_actuel]);
 
-        default:
+            if(joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetEstSorti())
+            {
+                if(i_apres<59)   //a changer normalement c est l'indice de leur ancienne position dans le chemin
+                {
+                    joueurs[joueur_actuel]->DeplacerUnPion(id_pion_deplacer, de.GetVal());  //met a jour le i
+                    cout<<"i apres deplacement: "<<joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI()<<endl;
+                    int i_reel = joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI();
+                    int index_chemin = (i_reel + case_depart) % 52;
+        
+                    cout << "i pion = " << i_reel << endl;
+                    cout << "i chemin = " << index_chemin << endl;
+
+                    joueurs[joueur_actuel]->SetXpion(id_pion_deplacer, chemin[index_chemin].first);
+                    joueurs[joueur_actuel]->SetYpion(id_pion_deplacer, chemin[index_chemin].second);  
+
+                }else{  //cas ou +val de depasse cases final on met direct le pion a la case final;
+
+                    joueurs[joueur_actuel]->GetPion(id_pion_deplacer).ChangerI(58);  //met a jour le i
+                    cout<<"i= "<<joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI()<<endl;
+                    joueurs[joueur_actuel]->SetXpion(id_pion_deplacer, chemin[joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI()].first);   //a voir si pas 58
+                    joueurs[joueur_actuel]->SetYpion(id_pion_deplacer, chemin[joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI()].second);                     
+                }   
+            }
+
+            etat = FIN_TOUR;
+            break;
+
+        case FIN_TOUR:
+            joueur_actuel = (joueur_actuel + 1)%4;
+            cout << "Nouveau joueur : " << joueur_actuel << endl;
             etat = ATTENTE_LANCER_DE;
+            break;
+    
+        
+        default:     
+            joueur_actuel = joueur_actuel + 1;
             break;
     }
 }

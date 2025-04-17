@@ -128,7 +128,7 @@ void Joueur::SortirPionBase(pair<int,int> CoordSortiBase)
 
 	int id_pion_a_sortir=-1; //gerer cas tout le pions sont sorti
 
-	for (int i = 0; i < 3; i++) 
+	for (int i = 0; i <= 3; i++) 
 	{
     	if (!tab[i].GetEstSorti())
 		{
@@ -141,4 +141,22 @@ void Joueur::SortirPionBase(pair<int,int> CoordSortiBase)
 	{
 		tab[id_pion_a_sortir].SortirDeLaBase(CoordSortiBase.first, CoordSortiBase.second);	//sort pion en mettant a jour les coordonées	
 	}
+}
+
+
+void Joueur::DeplacerUnPion(int id_p, int val_de)
+{
+	tab[id_p].SetI(val_de);
+    cout<<"le pion "<<id_p<< "avance de " <<val_de <<"cases." <<endl;
+
+}
+
+void Joueur::SetXpion(int id_p, float cx)
+{
+	tab[id_p].SetX(cx);
+}
+
+void Joueur::SetYpion(int id_p, float cy)
+{
+	tab[id_p].SetY(cy);
 }

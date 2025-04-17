@@ -14,6 +14,7 @@ using namespace std;
 */
 enum EtatJeu {      /// les etat du jeu
     ATTENTE_LANCER_DE,
+    ATTENTE_ACTION,
     ATTENTE_SORTIE_PION,
     ATTENTE_DEPLACEMENT,
     FIN_TOUR
@@ -25,6 +26,7 @@ class Jeu
     private:
         EtatJeu etat;       ///l'etat du jeu actuel
         int nb_Joueur;      ///nb de joueur 
+        int joueur_actuel;
         vector<Joueur*> joueurs; ///Tableau dyna de joueur
         vector<Joueur*> joueurs_gagnants;   ///tableau dynamique des joueurs gagnants
         //vector<Joueur> * joueurs;      ///creer tableau de nb Joueur présent
@@ -70,6 +72,25 @@ class Jeu
         * @param etat_jeu l etat du jeu
         */
         void SetEtat(EtatJeu etat_jeu);
+
+        /**
+        * @brief retourne les coordonnée d'un point du chemin
+        * @param i indice du chemin 
+        */
+        pair<int,int> GetChemin(int i);
+
+
+        /**
+        * @brief  Retourne le joueurs actuel
+        */
+       int GetJoueurActuel() const ;
+
+        /**
+        * @brief Modifie le joueurs actuel
+        * @param i indice du joueur 
+        */
+       void SetJoueurActuel(int i);
+
 
         /**
         * @brief Demarer jeu place les pions et les joueurs pour le debut du jeu
@@ -157,14 +178,14 @@ class Jeu
          * @param lancer_de si le dé a ete lancer
          * @param sortir_pion si on veut sortir un pion de la base
          */
-        /*void Gerer_Jeu (bool &lancer_de, bool &sortir_pion);
+        /*void Gerer_Jeu (bool &lancer_de, bool &sortir_pion);*/
         /**
          * @brief donne la case depart du pion en fonction de son id
          * @param j le joueur
          */
-        void IdVersCase(Joueur &j) const;
+        int IdVersCase(Joueur &j) const;
         //void Gerer_Jeu (bool &lancer_de, bool &sortir_pion);
-        void Gerer_Jeu ();
+        void Gerer_Jeu (int id_pion_deplacer);
 };
 
 #endif

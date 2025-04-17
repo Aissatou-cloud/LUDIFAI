@@ -29,10 +29,15 @@ class Joueur
 
 		float GetXPion(int id_pion) const;
 		float GetYPion(int id_pion) const;
+
+		void SetXpion(int id_p, float cx);
+		void SetYpion(int id_p, float cy);
 		
 		void RemplirCoordonneePoule(float cx, float cy);
 
 		void SortirPionBase(pair<int,int> CoordSortiBase);
+
+		void DeplacerUnPion(int id_pion, int val_de);
 };
 
 #endif

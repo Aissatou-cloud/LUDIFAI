@@ -28,7 +28,7 @@ Pion::~Pion()
     est_arrive = false;    
 }
 
-unsigned char Pion::GetI() const
+unsigned int Pion::GetI() const
 {
     return i;
 }
@@ -50,13 +50,20 @@ bool Pion::GetEstArrive() const
 
 void Pion::SetI(int nb)   //verification du bon pion dans plateau
 {
+    cout<<"Ancien I: "<<i<<endl;
     i+=nb;
-    cout<<"Le pion se deplace et se trouve en "<<i<<endl;
+    cout<<"Nouveau I: "<<i<<endl;
+    //cout<<"Le pion se deplace et se trouve en "<<i<<endl;
+}
+
+void Pion::ChangerI(int nb)
+{
+    i=nb;
 }
 
 void Pion::SortirDeLaBase(float newx, float newy){
     est_sorti=true; //Le pion est maintenant en jeu
-    i=1;  //supposons que la position de depart soit 1
+    i=0;  //supposons que la position de depart soit 1
     cout<<"Pion "<<id <<" sorti de la base"<<endl;
     x= newx;
     y=newy;
@@ -83,6 +90,16 @@ float Pion::GetXPion () const
 float Pion::GetYPion () const
 {
 	return y;
+}
+
+void Pion::SetX (float cx)
+{
+    x=cx;
+}
+
+void Pion::SetY (float cy)
+{
+    y=cy;
 }
 
 
