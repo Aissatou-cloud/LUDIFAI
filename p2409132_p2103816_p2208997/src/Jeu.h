@@ -147,7 +147,7 @@ class Jeu
         * @param pion_deplace 1 ptr sur Pion qui est le pion du joueur a deplacer
         * @param jouur_actuel le joueur qui joue le tour
         */
-        //void VerifierCollision(Pion pion_deplace, Joueur &joueur_ctuel);
+        void VerifierCollision(Pion &pion_deplace, Joueur &joueur_ctuel);
 
         /**
         * @brief verifie si le pion est arrive et incremente le nbponarives

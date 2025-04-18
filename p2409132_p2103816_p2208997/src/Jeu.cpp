@@ -492,6 +492,46 @@ int  Jeu:: IdVersCase(Joueur &j) const{
 
 }
 
+//FONCTIONS VERIFIERCOLLISIONS
+void Jeu::VerifierCollision(Pion &pion_deplace, Joueur &joueur_actuel)
+{
+	int tab_case_special[4]={0,13,26,39}; // case special ou on ne peux pas supprimer de pion on a aussi les cases en couleurs
+	cout<<"--------------collision"<<endl;
+	int case_joueur_actuel = (IdVersCase(joueur_actuel) + pion_deplace.GetI() ) % 52;
+	cout << "Case actuelle du joueur " << joueur_actuel.getId() << " : " << case_joueur_actuel<<" a fait tant de pas "<< (static_cast<int>(pion_deplace.GetI()))<< endl;
+	for(size_t i=0; i<joueurs.size(); i++) // boucle pour parcourir les joueurs
+	{ 
+		Joueur& autre_joueur = *joueurs[i]; // recuperation des joueurs
+		cout<<"Checkons avec le joueur :"<<autre_joueur.getId()<<endl;
+		if (joueur_actuel.getId()!=autre_joueur.getId()) // on ne doit pas comparer avec lui meme
+		{	
+			for (int j = 0; j < 4; j++) // boucle pour parcourir les pions
+			{
+				Pion& pion_autre_joueur = autre_joueur.GetPion(j); // on recupere un pion
+				int case_autre_joueur = (IdVersCase(autre_joueur) + (pion_autre_joueur.GetI()-i)) % 52; // permet de transformer le nombre de pas en position dans le jeu
+				cout << "  Pion " << j << " de l’adversaire est en case " << case_autre_joueur << endl;
+				
+				for (int c=0; c<4; c++) // parcours les cases speciales
+				{
+					if ((case_autre_joueur!=tab_case_special[c]) || (pion_autre_joueur.GetI()< 52)) // si case coloree ou special alors on fait rien
+					{
+						if (case_autre_joueur == case_joueur_actuel) // si meme endroit alors on fait retourner à la base
+						{
+							cout << ">>> COLLISION détectée ! Le pion adverse retourne à la base." << endl;
+							pion_autre_joueur.RetournerBase();
+							return;
+						}
+					}	
+					else
+					{
+						cout<<"case special donc rien"<<endl;
+					}
+				}
+			}
+		}
+	}
+}
+
 void Jeu::Gerer_Jeu(int id_pion_deplacer)
 {
     //for (int i=0; i<nb_joueur; i++) //pour faire un tour a tester
