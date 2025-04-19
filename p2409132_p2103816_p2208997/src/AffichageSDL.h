@@ -14,7 +14,7 @@
 #include "Joueur.h"
 
 /**
- * 
+ * @class gere l'affichage sdl du jeu 
  */
 class AffichageSDL
 {
@@ -28,11 +28,11 @@ private:
     TTF_Font *m_font_j4; //Police de texte
     Image m_plateau; ///< image du plateau
     Image m_faces_de[6]; ///<image du dé
-    Image m_de_inter[5]; ///image intermediaire du dé
-    Image m_pion_rouge[4]; /// image pion Rouge
-    Image m_pion_vert[4];   ///Image pion Vert
-    Image m_pion_jaune[4];   ///Image pion Jaune
-    Image m_pion_bleu[4];   ///Image pion Bleu
+    Image m_de_inter[5]; ///<image intermediaire du dé
+    Image m_pion_rouge[4]; ///< image pion Rouge
+    Image m_pion_vert[4];   ///<Image pion Vert
+    Image m_pion_jaune[4];   ///<Image pion Jaune
+    Image m_pion_bleu[4];   ///<Image pion Bleu
     
 
     /**
@@ -41,13 +41,13 @@ private:
      * @param de de du jeu 
      * @param j1 joueur
      */
-
+    void SdlAff(bool de_lancer, De de, Jeu &Jeu);
 
     //void SdlAff(bool de_lancer, De de, Jeu & jeu);
 
     //void AffPionRouge(Jeu &jeu) ; 
     //void SdlAff(bool de_lancer, De de);
-    void SdlAff(bool de_lancer, De de, Jeu &Jeu);
+
 
 public:
     /**

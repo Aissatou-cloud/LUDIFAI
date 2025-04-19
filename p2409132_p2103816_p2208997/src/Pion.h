@@ -51,13 +51,24 @@ class Pion{
         * @brief Deplace le pion en fonction du nombre du dé lancé
         * @param nb nombre de place à incrémenter a la position du pion 
         */
-        void SetI(int nb);
+        void SetI(const int nb);
 
         /**
-         * @brief 
+         * @brief change la position du pion
+         * @param nb le nombre de cases que doit changer le i 
          */
-        void ChangerI(int nb);
-        void SortirDeLaBase(float newx, float newy); // sortir le pion
+        void ChangerI(const int nb);
+
+        /**
+         * @brief elle sort le pion donc change les coordonnees dun pion
+         * @param newx le new position du x
+         * @param newy le new position y
+         */
+        void SortirDeLaBase(const float newx, const float newy); 
+
+        /**
+         * @brief retourne le pion dans la poule en changeant le i et ses coordonnées
+         */
         void RetournerBase(); // retourner à la base
 
         /**
@@ -65,7 +76,7 @@ class Pion{
 		* @param x coordonnée x du pion
 		* @param y coordonée y du pion 
 		*/
-		void CoordonneesPionPoule(float x, float y);
+		void CoordonneesPionPoule(const float x, const float y);
 
 		/**
 		* @brief Retourne les coordonnées x d'un pion
@@ -88,6 +99,11 @@ class Pion{
         * @param cy x a modifider
 		 */
         void SetY (float cy);
+
+        /**
+         * @brief fait les tests de toutes les fonctions de la classe
+         */
+        void  testRegression();
 };
 
 #endif

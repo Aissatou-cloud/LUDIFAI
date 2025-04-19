@@ -14,7 +14,8 @@ using namespace std;
 
 
 
-Joueur::Joueur(unsigned int ident, unsigned char r, unsigned char v, unsigned char b):id(ident), nbpionarrives(0)
+Joueur::Joueur(unsigned int ident, unsigned char r, unsigned char v, unsigned char b)
+:id(ident), nbpionarrives(0), a_gagner(false)
 {
 	couleur.setColor(r,v,b); //correctement initialise
 	for (unsigned int i=0; i<4; i++){
@@ -56,65 +57,53 @@ bool Joueur::Joueur_Gagnant()
 	return a_gagner;
 }
 
+int Joueur::GetNbpionArrives() const
+{
+	return nbpionarrives;
+}
 
+void Joueur::IncrementerNbPionArrive()
+{
+	nbpionarrives++;
+}
 
+Color Joueur:: getCouleur() const {return couleur ;}
 
-	int Joueur::GetNbpionArrives() const
-	{
-		return nbpionarrives;
-	}
+Pion& Joueur::GetPion(int indice)
+{
+	assert(indice >=0 && indice <=3);
+	return tab[indice];
+}
 
-	void Joueur::IncrementerNbPionArrive()
-	{
-		nbpionarrives++;
-	}
-
-	Color Joueur:: getCouleur() const {return couleur ;}
-
-	Pion& Joueur::GetPion(int indice)
-	{
-		assert(indice >=0 && indice <=3);
-		return tab[indice];
-		
-	}
-
-	void Joueur::GetPionsEnJeu(Pion pions_en_jeu[4])
-	{
-		int index=0;
-		for(int i=0; i<4; i++){
-			if(!tab[i].GetEstArrive() && tab[i].GetEstSorti())
-			{
-				pions_en_jeu[index]=tab[i];
-				index++;
-			}
+void Joueur::GetPionsEnJeu(Pion pions_en_jeu[4]) const
+{
+	int index=0;
+	for(int i=0; i<4; i++){
+		if(!tab[i].GetEstArrive() && tab[i].GetEstSorti())
+		{
+			pions_en_jeu[index]=tab[i];
+			index++;
 		}
 	}
+}
 
 
 float Joueur::GetYPion(int id_pion) const
 
 {
-	assert( id_pion>=0);
-	assert( id_pion<4);
-	//assert( tab[ id_pion]);
+	assert( id_pion >=0 && id_pion < 4);
 	return tab[id_pion].GetYPion();
 }
 
 float Joueur::GetXPion(int id_pion) const
 {
-	assert( id_pion>=0);
-	assert( id_pion<4);
-	//assert(tab[id_pion]);
+	assert( id_pion >=0 && id_pion < 4);
 	return tab[id_pion].GetXPion();
 }
 
 
 void Joueur::RemplirCoordonneePoule(float cx, float cy)
 {
-	//assert( tab[0]); pas besoin de assert car tableau statique
-	//assert( tab[1]);
-	//assert( tab[2]);
-	//assert( tab[3]);
 	tab[0].CoordonneesPionPoule(cx, cy);
 	tab[1].CoordonneesPionPoule(cx+1.75, cy);
 	tab[2].CoordonneesPionPoule(cx, cy-1.75);
@@ -123,8 +112,8 @@ void Joueur::RemplirCoordonneePoule(float cx, float cy)
 
 void Joueur::SortirPionBase(pair<int,int> CoordSortiBase)
 {
-	assert(CoordSortiBase.first);
-	assert(CoordSortiBase.second);
+	assert(CoordSortiBase.first >= 0);
+	assert(CoordSortiBase.second >= 0);
 
 	int id_pion_a_sortir=-1; //gerer cas tout le pions sont sorti
 
@@ -139,13 +128,15 @@ void Joueur::SortirPionBase(pair<int,int> CoordSortiBase)
 	
 	if(id_pion_a_sortir!=-1)
 	{
-		tab[id_pion_a_sortir].SortirDeLaBase(CoordSortiBase.first, CoordSortiBase.second);	//sort pion en mettant a jour les coordonées	
+		//sort pion en mettant a jour les coordonées	
+		tab[id_pion_a_sortir].SortirDeLaBase(CoordSortiBase.first, CoordSortiBase.second);
 	}
 }
 
 
 void Joueur::DeplacerUnPion(int id_p, int val_de)
 {
+	assert(id_p >= 0 && id_p < 4);
 	tab[id_p].SetI(val_de);
     cout<<"le pion "<<id_p<< "avance de " <<val_de <<"cases." <<endl;
 
@@ -153,10 +144,54 @@ void Joueur::DeplacerUnPion(int id_p, int val_de)
 
 void Joueur::SetXpion(int id_p, float cx)
 {
+	assert(id_p >= 0 && id_p < 4);
 	tab[id_p].SetX(cx);
 }
 
 void Joueur::SetYpion(int id_p, float cy)
 {
+	assert(id_p >= 0 && id_p < 4);
 	tab[id_p].SetY(cy);
+}
+
+void Joueur:: testRegression(){
+	cout << "Début des test de regression de la classe Joueur "<<endl;
+
+	Joueur j1( 0, 55, 0, 0); //joueur rouge
+	assert(j1.getId() == 0);
+    assert(j1.getCouleur().r == 255);
+    assert(j1.getCouleur().v == 0);
+    assert(j1.getCouleur().b == 0);
+
+	for(int i=0; i< 4; i++){
+		assert(j1.GetPion(i).GetId()== i);
+		assert(j1.GetPion(i).GetI()== 0);
+	}
+
+	j1.RemplirCoordonneePoule(100.0f, 100.0f);
+	assert(j1.GetPion(0).GetXPion()== 100.0f);
+	assert(j1.GetPion(1).GetYPion()== 101.75f);
+
+	j1.SortirPionBase({50, 60});
+	int compteur_pion_sortis= 0;
+	for(int i=0; i< 4; i++){
+		if(j1.GetPion(i).GetEstSorti()) compteur_pion_sortis++;
+	}
+	assert(compteur_pion_sortis == 1);
+
+	j1.DeplacerUnPion(0, 5);
+	assert(j1.GetPion(0).GetI()== 5);
+
+	assert(j1.GetNbpionArrives()== 0);
+	j1.IncrementerNbPionArrive();
+    j1.IncrementerNbPionArrive();
+    j1.IncrementerNbPionArrive();
+    j1.IncrementerNbPionArrive();
+    assert(j1.GetNbpionArrives() == 4);
+    assert(j1.Joueur_Gagnant());
+
+	Pion en_jeu[4];
+	j1.GetPionsEnJeu(en_jeu); //devrait contenir au moin 1p s'il est pas arrive et sorti
+
+	cout <<"Tous les test de regression de la classe Joueur sont reussi "<<endl;
 }

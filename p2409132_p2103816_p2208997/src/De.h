@@ -31,6 +31,11 @@ class De{
         */
        void LancerDe();
 
+        /**
+         * @brief fait les tests de toutes les fonctions de la classe
+         */
+        void  testRegression();
+
 };
 
 #endif

@@ -20,32 +20,36 @@ enum EtatJeu {      /// les etat du jeu
     FIN_TOUR
 };
 
-
 class Jeu
 {
     private:
-        EtatJeu etat;       ///l'etat du jeu actuel
-        int nb_Joueur;      ///nb de joueur 
-        int joueur_actuel;
-        vector<Joueur*> joueurs; ///Tableau dyna de joueur
-        vector<Joueur*> joueurs_gagnants;   ///tableau dynamique des joueurs gagnants
-        //vector<Joueur> * joueurs;      ///creer tableau de nb Joueur présent
+        EtatJeu etat;       ///<l'etat du jeu actuel
+        int nb_Joueur;      ///<nb de joueur 
+        int joueur_actuel; ///< le joueur actuel qui joue
+        vector<Joueur*> joueurs; ///<Tableau dyna de joueur
+        vector<Joueur*> joueurs_gagnants;   ///<tableau dynamique des joueurs gagnants
+        //vector<Joueur> * joueurs;      ///<creer tableau de nb Joueur présent
         De de;              ///le de du jeu 
-        pair<int, int> chemin[53];
-        pair<int, int> zone_Gagnante_R[6];
-        pair<int, int> zone_Gagnante_V[6];
-        pair<int, int> zone_Gagnante_J[6];
-        pair<int, int> zone_Gagnante_B[6];
-        pair<int, int> LesCasesDepart[4];
-        int case_Depart_R;
-        int case_Depart_V;
-        int case_Depart_J;
-        int case_Depart_B;
+        pair<int, int> chemin[53]; ///< le chemin commun de tous les piosn 
+        pair<int, int> zone_Gagnante_R[6]; ///< la partie gagnante du jRouge
+        pair<int, int> zone_Gagnante_V[6]; ///< la partie gagnante du jVert
+        pair<int, int> zone_Gagnante_J[6]; ///< la partie gagnante du jJaune
+        pair<int, int> zone_Gagnante_B[6]; ///< la partie gagnante du jBleu
+        pair<int, int> LesCasesDepart[4]; ///< le tab des cases de depart de chaque joueur dans le chemin
+        int case_Depart_R; ///<la case de departRouge
+        int case_Depart_V; ///<la case de departVert
+        int case_Depart_J; ///<la case de departJaune
+        int case_Depart_B; ///<la case de departBleu
 
 
 
 
     public:
+        /**
+         * @ initialise les elements du plateau
+         */
+        void InitialiserPlateau();
+    
         /**
         * @brief Constructeur
         */
@@ -150,20 +154,31 @@ class Jeu
         void VerifierCollision(Pion &pion_deplace, Joueur &joueur_ctuel);
 
         /**
-        * @brief verifie si le pion est arrive et incremente le nbponarives
-        * @param pion 1 ptr sur Pion
-        * @param joueur le joueur actuel
-        */
-
+         * @brief renvoie le de du jeu
+         */
         De& GetDe();
+
+        /**
+         * @brief renvoie le joueur d'identifiant en param
+         * @param id l'identifiant du joueur
+         */
         Joueur * GetJoueur(unsigned int id) const;
 
+        /**
+         * @brief verifie si le pion du joueur est arrive
+         * @param pion le pion du joueur
+         * @param joueur le joueur
+         */
         void VerifierArrivee(Pion pion, Joueur &joueur);
-		bool Pionsjouables(Joueur &joueur, int val_de);
+
+        /**
+         * @brief 
+         */
+		//bool Pionsjouables(Joueur &joueur, int val_de);
        
 
-        pair<int, int>  GetCoordonnes(int index) const;
-        pair<int, int>  GetZoneGagnateRouge(int index) const;
+        //pair<int, int>  GetCoordonnes(int index) const;
+        //pair<int, int>  GetZoneGagnateRouge(int index) const;
 
         /**
         * @brief gere les tours pour chaque joueur
@@ -184,8 +199,17 @@ class Jeu
          * @param j le joueur
          */
         int IdVersCase(Joueur &j) const;
-        //void Gerer_Jeu (bool &lancer_de, bool &sortir_pion);
+
+        /**
+         * @brief Gere le jeu pour chaque tour
+         * @param id_pion_deplacer id du pion a deplacer
+         */
         void Gerer_Jeu (int id_pion_deplacer);
+
+        /**
+         * @brief teste toutes les fonctions de la classe
+         */
+        void testRegression();
 };
 
 #endif
