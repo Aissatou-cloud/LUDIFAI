@@ -5,7 +5,7 @@
 
 using namespace std;
 
-AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nullptr), m_font_j1(nullptr), m_font_j2(nullptr), m_font_j3(nullptr), m_font_j4(nullptr)
+AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nullptr), pseudo_j1(nullptr), pseudo_j2(nullptr), pseudo_j3(nullptr), pseudo_j4(nullptr)
 {
     //Initialisation de la SDL
     //SDL_Rect r;     //a voir si on enleve
@@ -95,6 +95,9 @@ AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nul
         string nom_fichier2 ="data/de/de_int"+to_string(i)+".png";
         m_de_inter[i].loadFromFile(nom_fichier2.c_str(), m_renderer);
     }*/
+
+    m_encadrer.loadFromFile("data/encadrer.png", m_renderer);
+    m_menu.loadFromFile("data/menu.png", m_renderer);
 }
 
 //libere la meoire allouee
@@ -111,7 +114,7 @@ AffichageSDL::~AffichageSDL(){
 
 
 
-void AffichageSDL:: SdlAff(bool de_lancer, De de, Jeu &Jeu){
+void AffichageSDL:: SdlAff(bool menu, bool de_lancer, De de, Jeu &Jeu){
 
     // Remplir l'écran de blanc
     //SDL_SetRenderDrawColor : définit la couleur de fond du rendu
@@ -129,74 +132,109 @@ void AffichageSDL:: SdlAff(bool de_lancer, De de, Jeu &Jeu){
     //m_font_im.draw(m_renderer, 320 - 50, 50, 100, 50);
 
     //2.Affichage du plateau 
-    int dimx, dimy;
+    int dimx, dimy; 
     SDL_GetWindowSize(m_window, &dimx, &dimy);
-    m_plateau.draw(m_renderer, 0, 0, dimx, dimy); //à haut en gauche
-
-    //Affiche les pions rouges
-    //AffPionRouge(jeu);
-
-    /*3.affchage des pions de chaque joueur
-    for(int j=0; j<nb_Joueur; j++){
-        for(int i=0; i<4; i++){
-            Pion* pion=joueur[j]->GetPion(i);
-
-            //recuperer la case actuelle du pion
-            unsigned char caseIndex= pion->GetI();
-
-            //recuperer les coordonnees du pion
-        }
-    }*/
-
-    for (int i=0; i<4; i++)
+    if(menu)
     {
-        //cout<<"Pion "<<i<<" X: "<<Jeu.GetJoueur(0)->GetPion(i).GetXPion()<<" Y: "<<Jeu.GetJoueur(0)->GetPion(i).GetYPion()<<endl;
+        m_menu.draw(m_renderer, 0, 0, dimx, dimy);
+    }else{
 
-        m_pion_rouge[i].draw(m_renderer, Jeu.GetJoueur(0)->GetPion(i).GetXPion()*40, Jeu.GetJoueur(0)->GetPion(i).GetYPion()*40, 30, 30);
-        m_pion_vert[i].draw(m_renderer, Jeu.GetJoueur(1)->GetPion(i).GetXPion()*40, Jeu.GetJoueur(1)->GetPion(i).GetYPion()*40, 30, 30);
-        m_pion_jaune[i].draw(m_renderer, Jeu.GetJoueur(2)->GetPion(i).GetXPion()*40, Jeu.GetJoueur(2)->GetPion(i).GetYPion()*40, 30, 30);
-        m_pion_bleu[i].draw(m_renderer, Jeu.GetJoueur(3)->GetPion(i).GetXPion()*40, Jeu.GetJoueur(3)->GetPion(i).GetYPion()*40, 30, 30);
-
-    }
-
-
-    //affichage du dé si pas tirer
-    m_faces_de[Jeu.GetDe().GetVal()-1].draw(m_renderer, dimx/2-35, dimy/2-37);
-    //si tirer (pour l'instant sans prendre en compte le joueur pour test)
-    if(de_lancer)
-    {
-        for(int i=0; i<6; i++)
+        m_plateau.draw(m_renderer, 0, 0, dimx, dimy); //à haut en gauche
+    
+        //Affiche les pions rouges
+        //AffPionRouge(jeu);
+    
+        /*3.affchage des pions de chaque joueur
+        for(int j=0; j<nb_Joueur; j++){
+            for(int i=0; i<4; i++){
+                Pion* pion=joueur[j]->GetPion(i);
+    
+                //recuperer la case actuelle du pion
+                unsigned char caseIndex= pion->GetI();
+    
+                //recuperer les coordonnees du pion
+            }
+        }*/
+    
+    
+    
+        if(Jeu.GetJoueurActuel()==0)
         {
-            m_faces_de[i].draw(m_renderer, dimx/2-35, dimy/2-37);
-            SDL_RenderPresent(m_renderer);
-            SDL_Delay(50);      //petite pause
+            m_encadrer.draw(m_renderer, 12, 370, 219, 218);
         }
-        cout<<Jeu.GetDe().GetVal()<<endl;
+        if(Jeu.GetJoueurActuel()==1)
+        {
+            m_encadrer.draw(m_renderer, 12, 11, 219, 218);
+        }
+        if(Jeu.GetJoueurActuel()==2)
+        {
+            m_encadrer.draw(m_renderer, 370, 11, 220, 218);
+        }
+        if(Jeu.GetJoueurActuel()==3)
+        {
+            m_encadrer.draw(m_renderer, 370, 370, 220, 218);
+        }
+    
+        for (int i=0; i<4; i++)
+        {
+            //cout<<"Pion "<<i<<" X: "<<Jeu.GetJoueur(0)->GetPion(i).GetXPion()<<" Y: "<<Jeu.GetJoueur(0)->GetPion(i).GetYPion()<<endl;
+    
+            m_pion_rouge[i].draw(m_renderer, Jeu.GetJoueur(0)->GetPion(i).GetXPion()*40, Jeu.GetJoueur(0)->GetPion(i).GetYPion()*40, 30, 30);
+            m_pion_vert[i].draw(m_renderer, Jeu.GetJoueur(1)->GetPion(i).GetXPion()*40, Jeu.GetJoueur(1)->GetPion(i).GetYPion()*40, 30, 30);
+            m_pion_jaune[i].draw(m_renderer, Jeu.GetJoueur(2)->GetPion(i).GetXPion()*40, Jeu.GetJoueur(2)->GetPion(i).GetYPion()*40, 30, 30);
+            m_pion_bleu[i].draw(m_renderer, Jeu.GetJoueur(3)->GetPion(i).GetXPion()*40, Jeu.GetJoueur(3)->GetPion(i).GetYPion()*40, 30, 30);
+    
+        }
+    
+    
+        //affichage du dé si pas tirer
         m_faces_de[Jeu.GetDe().GetVal()-1].draw(m_renderer, dimx/2-35, dimy/2-37);
-        de_lancer = false;
+        //si tirer (pour l'instant sans prendre en compte le joueur pour test)
+        if(de_lancer)
+        {
+            for(int i=0; i<6; i++)
+            {
+                m_faces_de[i].draw(m_renderer, dimx/2-35, dimy/2-37);
+                SDL_RenderPresent(m_renderer);
+                SDL_Delay(50);      //petite pause
+            }
+            cout<<Jeu.GetDe().GetVal()<<endl;
+            m_faces_de[Jeu.GetDe().GetVal()-1].draw(m_renderer, dimx/2-35, dimy/2-37);
+            de_lancer = false;
+        }
     }
+
 
 }
 
 
-void AffichageSDL::AnimerDeplacement (Jeu &Jeu, int joueur_actuel, int id_pion, int i_depart, int i_arrivee)
-{
-    int case_dep = Jeu.IdVersCase(*Jeu.GetJoueur(joueur_actuel));
+void AffichageSDL::AnimerDeplacement(Jeu &Jeu, int id_joueur, int id_pion, int i_depart, int i_arrivee) {
+    for (int i = i_depart + 1; i <= i_arrivee; i++) {
+        float x, y;
 
-    for(int i= i_depart +1; i<=i_arrivee; i++)
-    {
-        //Jeu.GetJoueur(joueur_actuel)->GetPion(id_pion).ChangerI(i);
-        int index_chemin = (i + case_dep)%52;
-        Jeu.GetJoueur(joueur_actuel)->SetXpion(id_pion, Jeu.GetChemin(index_chemin).first);
-        Jeu.GetJoueur(joueur_actuel)->SetYpion(id_pion, Jeu.GetChemin(index_chemin).second);
+        if (i <= 52) {
+            // On est encore sur le chemin classique
+            int case_depart = Jeu.IdVersCase(*Jeu.GetJoueur(id_joueur));
+            int index_chemin = (i + case_depart) % 52;
+            x = Jeu.GetChemin(index_chemin).first;
+            y = Jeu.GetChemin(index_chemin).second;
+        } else {
+            // On est dans la zone gagnante du joueur
+            int index_gagnant = i - 53;
+            const pair<int, int>* tab_zone = Jeu.IdversTableauGagnant(id_joueur);
+            x = tab_zone[index_gagnant].first;
+            y = tab_zone[index_gagnant].second;
+        }
 
-        SdlAff(false, Jeu.GetDe(), Jeu);
+        Jeu.GetJoueur(id_joueur)->SetXpion(id_pion, x);
+        Jeu.GetJoueur(id_joueur)->SetYpion(id_pion, y);
+
+        SdlAff(false, false, Jeu.GetDe(), Jeu);
         SDL_RenderPresent(m_renderer);
         SDL_Delay(200);
     }
-
-
 }
+
 
 
 
@@ -207,6 +245,7 @@ void AffichageSDL::AnimerDeplacement (Jeu &Jeu, int joueur_actuel, int id_pion, 
 void AffichageSDL::SdlBoucle(Jeu &Jeu)
 {
     SDL_Event events;
+    bool menu=true;
     bool quit = false;
     bool de_lancer_aff = false;
     //bool ia_joue=false;
@@ -227,6 +266,10 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
                 {
                 case SDL_SCANCODE_ESCAPE:
                     quit = true;
+                    break;
+
+                case SDL_SCANCODE_0:
+                    menu=false;
                     break;
 
                 case SDL_SCANCODE_SPACE:
@@ -255,7 +298,6 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
 
                         int i_arrivee = Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetPion(0).GetI();
                         AnimerDeplacement(Jeu, Jeu.GetJoueurActuel(), 0, i_depart, i_arrivee);  //premier 0 est le joueur a remplacer
-                        //Jeu.VerifierCollision(joueurs[joueur_actuel]->GetPion(0), *joueurs[joueur_actuel]);
                         Jeu.VerifierCollision(Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetPion(0), *Jeu.GetJoueur(Jeu.GetJoueurActuel()));
                     }
                     break;
@@ -347,7 +389,7 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
 
         // Affichage
 
-        SdlAff(de_lancer_aff, Jeu.GetDe(), Jeu);
+        SdlAff(menu, de_lancer_aff, Jeu.GetDe(), Jeu);
         de_lancer_aff =false;
         SDL_RenderPresent(m_renderer);
     }

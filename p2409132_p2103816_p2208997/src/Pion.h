@@ -10,6 +10,7 @@ class Pion{
     private: 
         unsigned int i;    ///position du pion dans le chemin
         int id;             ///identifiant 
+        int tour;           ///nbr de tour
         bool est_sorti;     ///si pion est sorti de la poule
         bool est_arrive;    ///si pion est arrive a case d'arrivée
         float x;
@@ -26,6 +27,21 @@ class Pion{
         * @brief Destructeur qui vide un pion 
         */
         ~Pion();
+
+        /**
+         * @brief Retourne le nbr de tour
+         */
+        int GetTour() const;
+
+        /**
+         * @brief Incremente le nombre de tour
+         */
+        void IncrementeTour();
+
+        /**
+         * @brief Remet a 0 le nbr de tour
+         */
+        void ResetTour();
         
         /**
         * @brief Retourne position du pion 
@@ -41,6 +57,11 @@ class Pion{
         * @brief Retourne si le pion est sorti de sa poule ou non        
         */
         bool GetEstSorti() const;
+
+        /**
+         * @brief Met a true est arrivé
+         */
+        void SetEstArrive();
 
         /**
         * @brief Retourne si le pion est arrivé a la case d'arrivée ou non        

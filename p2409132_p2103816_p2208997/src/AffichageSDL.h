@@ -22,10 +22,10 @@ private:
     SDL_Window *m_window;  ///<Fenetre de la SDL
     SDL_Renderer *m_renderer; ///< Moteur du rendu graphique
     TTF_Font *m_font; ///< Police de texte
-    TTF_Font *m_font_j1; //Police de texte
-    TTF_Font *m_font_j2; //Police de texte
-    TTF_Font *m_font_j3; //Police de texte
-    TTF_Font *m_font_j4; //Police de texte
+    TTF_Font *pseudo_j1; //Police de texte
+    TTF_Font *pseudo_j2; //Police de texte
+    TTF_Font *pseudo_j3; //Police de texte
+    TTF_Font *pseudo_j4; //Police de texte
     Image m_plateau; ///< image du plateau
     Image m_faces_de[6]; ///<image du dé
     Image m_de_inter[5]; ///<image intermediaire du dé
@@ -33,15 +33,18 @@ private:
     Image m_pion_vert[4];   ///<Image pion Vert
     Image m_pion_jaune[4];   ///<Image pion Jaune
     Image m_pion_bleu[4];   ///<Image pion Bleu
+    Image m_encadrer;
+    Image m_menu;
     
 
     /**
      * @brief fonction qui gere l'affichage
+     * @param menu menu du jeu
      * @param de_lancer si le dé a ete lancer
      * @param de de du jeu 
-     * @param j1 joueur
+     * @param Jeu jeu
      */
-    void SdlAff(bool de_lancer, De de, Jeu &Jeu);
+    void SdlAff(bool menu, bool de_lancer, De de, Jeu &Jeu);
 
     //void SdlAff(bool de_lancer, De de, Jeu & jeu);
 
