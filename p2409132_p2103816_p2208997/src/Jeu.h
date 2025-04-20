@@ -232,6 +232,12 @@ class Jeu
          * @brief teste toutes les fonctions de la classe
          */
         void testRegression();
+
+        /**
+         * @brief Donne le tableau de la zone gagnante en fonction de l'id du joueur, la fonction est const donc on retourne un const
+         */
+        const pair<int, int>* IdversTableauGagnant(int id_joueur) const;
+        
 };
 
 #endif

@@ -270,7 +270,8 @@ void Jeu::SetJoueurActuel(int i)
     joueur_actuel = i;
 }
 
-int  Jeu:: IdVersCase(Joueur &j) const{
+int  Jeu:: IdVersCase(Joueur &j) const
+{
     switch(j.getId()){
         case 0: return case_Depart_R;
         case 1: return case_Depart_V;
@@ -282,28 +283,45 @@ int  Jeu:: IdVersCase(Joueur &j) const{
     }
 }
 
+const pair<int, int>* Jeu::IdversTableauGagnant(int id_joueur) const
+{
+    switch (id_joueur){
+        case 0: return zone_Gagnante_R;
+        case 1: return zone_Gagnante_V;
+        case 2: return zone_Gagnante_J;
+        case 3: return zone_Gagnante_B;
+        default: 
+            cout<<"Id du joueur inexistant"<<endl;
+            return nullptr;
+    }
+}
+
 //FONCTIONS VERIFIERCOLLISIONS
 void Jeu::VerifierCollision(Pion &pion_deplace, Joueur &joueur_actuel)
 {
     //remplacer ici par le tableau depart
 	//int tab_case_special[4]={0,13,26,39}; // case special ou on ne peux pas supprimer de pion on a aussi les cases en couleurs  
-	cout<<"--------------collision"<<endl;
+	//cout<<"--------------collision"<<endl;
 	int case_joueur_actuel = (IdVersCase(joueur_actuel) + pion_deplace.GetI()) % 52;
 
-	cout << "Case actuelle du joueur " << joueur_actuel.getId() << " : " << case_joueur_actuel<<" a fait tant de pas "<< (static_cast<int>(pion_deplace.GetI()))<< endl;
+	//cout << "Case actuelle du joueur " << joueur_actuel.getId() << " : " << case_joueur_actuel<<" a fait tant de pas "<< (static_cast<int>(pion_deplace.GetI()))<< endl;
 	for(size_t i=0; i<joueurs.size(); i++) // boucle pour parcourir les joueurs
 	{ 
 		Joueur& autre_joueur = *joueurs[i]; // recuperation des joueurs
-		cout<<"Checkons avec le joueur :"<<autre_joueur.getId()<<endl;
+		//cout<<"Checkons avec le joueur :"<<autre_joueur.getId()<<endl;
 		if (joueur_actuel.getId()!=autre_joueur.getId()) // on ne doit pas comparer avec lui meme
 		{	
 			for (int j = 0; j < 4; j++) // boucle pour parcourir les pions
 			{
 				Pion& pion_autre_joueur = autre_joueur.GetPion(j); // on recupere un pion
+                if(pion_autre_joueur.GetTour()==1)
+                {
+                    continue;       // si le pion a deja fait un tour CAD il est dans la zone gagnant safe
+                }
 				int case_autre_joueur = (IdVersCase(autre_joueur) + (pion_autre_joueur.GetI())) % 52; // permet de transformer le nombre de pas en position dans le jeu
-				cout << "  Pion " << j << " de l’adversaire est en case " << case_autre_joueur << endl;
+				//cout << "  Pion " << j << " de l’adversaire est en case " << case_autre_joueur << endl;
 				
-				for (int c=0; c<4; c++) // parcours les cases speciales
+				for (int c=0; c<4; c++) // parcours les cases speciales ///a enlever
 				{
 					if ((case_autre_joueur!=IdVersCase(*joueurs[0])) && 
                         (case_autre_joueur!=IdVersCase(*joueurs[1])) &&
@@ -312,7 +330,7 @@ void Jeu::VerifierCollision(Pion &pion_deplace, Joueur &joueur_actuel)
 					{
 						if (case_autre_joueur == case_joueur_actuel) // si meme endroit alors on fait retourner à la base
 						{
-							cout << ">>> COLLISION détectée ! Le pion adverse retourne à la base." << endl;
+							//cout << ">>> COLLISION détectée ! Le pion adverse retourne à la base." << endl;
 							pion_autre_joueur.RetournerBase();
                             autre_joueur.RentrerPionBase(j, coordo_poule[i]);
 							return;
@@ -320,7 +338,7 @@ void Jeu::VerifierCollision(Pion &pion_deplace, Joueur &joueur_actuel)
 					}	
 					else
 					{
-						cout<<"case special donc rien"<<endl;
+						//cout<<"case special donc rien"<<endl;
 					}
 				}
 			}
@@ -389,12 +407,12 @@ void Jeu::Gerer_Jeu(int id_pion_deplacer)
 {
     assert(joueur_actuel >=0 && joueur_actuel < static_cast<int>(joueurs.size()));
     //for (int i=0; i<nb_joueur; i++) //pour faire un tour a tester
-    int i_depart=0;  //ok
-    int i_apres = 0;
+    int i_depart=0;  //pour cout
     int case_depart = 0;  //ok
     int i_reel=0;   //ok
     int index_chemin = 0;    //ok
-
+    int i_gagnant = 0;
+    const pair<int, int> * tab_zone_g;
 
     switch (etat)
     {
@@ -404,7 +422,7 @@ void Jeu::Gerer_Jeu(int id_pion_deplacer)
         case ATTENTE_LANCER_DE:
             de.LancerDe();
             cout<<"Joueur actuel: "<<joueur_actuel<<endl;
-            cout << "Dé lancé, valeur = " << de.GetVal() << endl;
+            cout<< "Dé lancé, valeur = " << de.GetVal() << endl;
             etat = ATTENTE_ACTION;
             break;
 
@@ -427,32 +445,69 @@ void Jeu::Gerer_Jeu(int id_pion_deplacer)
             cout<<"I depart: "<<i_depart<<endl;
             case_depart = IdVersCase(*joueurs[joueur_actuel]);
 
+            
             if(joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetEstSorti())
             {
-                if(i_apres<59)   //a changer normalement c est l'indice de leur ancienne position dans le chemin
+                cout<<"tour= "<<joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetTour()<<endl;
+                if(joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI()<=52  && joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetTour() == 0)   //a changer normalement c est l'indice de leur ancienne position dans le chemin
                 {
                     joueurs[joueur_actuel]->DeplacerUnPion(id_pion_deplacer, de.GetVal());  //met a jour le i
                     cout<<"i apres deplacement: "<<joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI()<<endl;
                     int i_reel = joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI();
                     int index_chemin = (i_reel + case_depart) % 52;
                     
-                    assert(index_chemin >=0 && index_chemin < 53);
-                    cout << "i pion = " << i_reel << endl;
-                    cout << "i chemin = " << index_chemin << endl;
+                    //INCREMENTATION DU TOUR 
+                    if(joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI()>52)
+                    {
+                        //si on rentre dans zone g depuis l'exterieur->transition
+                        joueurs[joueur_actuel]->GetPion(id_pion_deplacer).IncrementeTour();
+                        tab_zone_g = IdversTableauGagnant(joueur_actuel);
+                        i_gagnant = (joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI() - 53);
 
-                    joueurs[joueur_actuel]->SetXpion(id_pion_deplacer, chemin[index_chemin].first);
-                    joueurs[joueur_actuel]->SetYpion(id_pion_deplacer, chemin[index_chemin].second);  
+                        joueurs[joueur_actuel]->SetXpion(id_pion_deplacer, tab_zone_g[i_gagnant].first);
+                        joueurs[joueur_actuel]->SetYpion(id_pion_deplacer, tab_zone_g[i_gagnant].second);
+                        
+                    }else{
+                        assert(index_chemin >=0 && index_chemin < 53);
+                        cout << "i pion = " << i_reel << endl;
+                        cout << "i chemin = " << index_chemin << endl;
+                        //COORDONNEE 
+                        joueurs[joueur_actuel]->SetXpion(id_pion_deplacer, chemin[index_chemin].first);
+                        joueurs[joueur_actuel]->SetYpion(id_pion_deplacer, chemin[index_chemin].second);  
+    
+                    }
+                    
 
-                    //verifie collision
-                    //VerifierCollision(joueurs[joueur_actuel]->GetPion(id_pion_deplacer), *joueurs[joueur_actuel]);
+                }else{      //cas ou l'on est dans la zone
 
-                }else{  //cas ou +val de depasse cases final on met direct le pion a la case final;
+                        //rajouter cas si i + de >58 alors changerI(58)
+                        joueurs[joueur_actuel]->DeplacerUnPion(id_pion_deplacer, de.GetVal());  //met a jour le i
+                        cout<<"i apres deplacement: "<<joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI()<<endl;
+                        int i_reel = joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI();
+                        int index_chemin = (i_reel + case_depart) % 52;
 
-                    joueurs[joueur_actuel]->GetPion(id_pion_deplacer).ChangerI(58);  //met a jour le i
-                    cout<<"i= "<<joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI()<<endl;
-                    joueurs[joueur_actuel]->SetXpion(id_pion_deplacer, chemin[joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI()].first);   //a voir si pas 58
-                    joueurs[joueur_actuel]->SetYpion(id_pion_deplacer, chemin[joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI()].second);                     
-                }   
+
+                        
+                        assert(index_chemin >=0 && index_chemin < 53);
+                        cout << "i pion = " << i_reel << endl;
+                        cout << "i chemin = " << index_chemin << endl;
+
+                        tab_zone_g = IdversTableauGagnant(joueur_actuel);
+                        i_gagnant = (joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI() - 53);
+                        
+                        if(joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI()>=58)
+                        {
+                            joueurs[joueur_actuel]->GetPion(id_pion_deplacer).ChangerI(58);  //met a jour le i
+                            joueurs[joueur_actuel]->GetPion(id_pion_deplacer).SetEstArrive();
+                            cout<<"i= "<<joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI()<<endl;
+                            joueurs[joueur_actuel]->SetXpion(id_pion_deplacer, tab_zone_g[5].first);   //a voir si pas 58
+                            joueurs[joueur_actuel]->SetYpion(id_pion_deplacer, tab_zone_g[5].second);     
+                        }else{
+                            joueurs[joueur_actuel]->SetXpion(id_pion_deplacer, tab_zone_g[i_gagnant].first);
+                            joueurs[joueur_actuel]->SetYpion(id_pion_deplacer, tab_zone_g[i_gagnant].second);
+
+                        }
+                }  
             }
 
             etat = FIN_TOUR;

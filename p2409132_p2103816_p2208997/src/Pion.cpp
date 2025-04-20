@@ -13,6 +13,7 @@ Pion::Pion(int idf)
     est_arrive = false;
     x =0;
     y =0;
+    tour = 0;
     
 }
 
@@ -22,13 +23,30 @@ Pion::Pion()
     id = -1;
     est_sorti = false;
     est_arrive = false;
+    tour = 0;
 }
 //destructeur a voir car il ne sert a rien sans sdl
 Pion::~Pion()
 {
     i=0;    //remet dans la poule
     est_sorti = false;
-    est_arrive = false;    
+    est_arrive = false; 
+    ResetTour();   
+}
+
+int Pion::GetTour() const
+{
+    return tour;
+}
+
+void Pion::IncrementeTour()
+{
+    tour++;
+}
+
+void Pion::ResetTour()
+{
+    tour=0;
 }
 
 unsigned int Pion::GetI() const
@@ -49,6 +67,11 @@ bool Pion::GetEstSorti() const
 bool Pion::GetEstArrive() const 
 {
     return est_arrive;
+}
+
+void Pion::SetEstArrive()
+{
+    est_arrive = true;
 }
 
 void Pion::SetI(const int nb)   //verification du bon pion dans plateau
@@ -103,13 +126,13 @@ float Pion::GetYPion () const
 
 void Pion::SetX (const float cx)
 {
-    assert(cx >= 0 && cx < 600);
+    assert(cx >= 0 && cx < 700);
     x=cx;
 }
 
 void Pion::SetY (const float cy)
 {
-    assert(cy >= 0 && cy < 600);
+    assert(cy >= 0 && cy < 700);
     y=cy;
 }
 
