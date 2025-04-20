@@ -4,39 +4,8 @@
 
 using namespace std;
 
-<<<<<<< HEAD
-void Jeu:: InitialiserPlateau(){
-=======
-Jeu::Jeu(): nb_Joueur(4)
+void Jeu:: InitialiserPlateau()
 {
-    //int nb_Joueur=4;
-    etat = ATTENTE_LANCER_DE;
-    De de;
-    joueur_actuel = 0;
-    
-
-    /*Comme on a un vector de joeur on aura pas besoin d'allouer et desallouer dynmiquement
-    car vector le gere automatiquemnt pour nous
-    et aussi VECTOR nous permet d'ajouter(PUSH.BACK) ou de retirer des joueurs avec ces methodes
-    sans se soucier de la taille du tab 
-     */
-    for (int i=0;i<nb_Joueur; i++)
-    {
-        joueurs.push_back(new Joueur(i,0, 0, 0)); //ajoute a la fin du vector
-      //gerer la couleur 
-    }
-
-    coordo_poule[0] = make_pair(1.75, 12.5);
-    coordo_poule[1] = make_pair(1.75, 3.5);
-    coordo_poule[2] = make_pair(10.75, 3.5);
-    coordo_poule[3] = make_pair(10.75, 12.5);
-
-    joueurs[0]->RemplirCoordonneePoule(coordo_poule[0].first, coordo_poule[0].second);  //rouge
-    joueurs[1]->RemplirCoordonneePoule(coordo_poule[1].first, coordo_poule[1].second);  //vert
-    joueurs[2]->RemplirCoordonneePoule(coordo_poule[2].first, coordo_poule[2].second); //jaune
-    joueurs[3]->RemplirCoordonneePoule(coordo_poule[3].first, coordo_poule[3].second); //bleu
-
->>>>>>> 72dcfe506f4c8be56c42ae6efc429ffcf9641a94
 
     //Inialisation du chemin principal
     for(int i=0; i<5; i++){
@@ -102,6 +71,16 @@ Jeu::Jeu(): nb_Joueur(4)
     joueurs[1]->RemplirCoordonneePoule(1.75, 3.5);  //vert
     joueurs[2]->RemplirCoordonneePoule(10.75, 3.5); //jaune
     joueurs[3]->RemplirCoordonneePoule(10.75, 12.5); //bleu
+
+    coordo_poule[0] = make_pair(1.75, 12.5);
+    coordo_poule[1] = make_pair(1.75, 3.5);
+    coordo_poule[2] = make_pair(10.75, 3.5);
+    coordo_poule[3] = make_pair(10.75, 12.5);
+    
+    joueurs[0]->RemplirCoordonneePoule(coordo_poule[0].first, coordo_poule[0].second);  //rouge
+    joueurs[1]->RemplirCoordonneePoule(coordo_poule[1].first, coordo_poule[1].second);  //vert
+    joueurs[2]->RemplirCoordonneePoule(coordo_poule[2].first, coordo_poule[2].second); //jaune
+    joueurs[3]->RemplirCoordonneePoule(coordo_poule[3].first, coordo_poule[3].second); //bleu
 }
 
 Jeu::Jeu(): etat(ATTENTE_LANCER_DE), nb_Joueur(4), joueur_actuel(0)
@@ -306,12 +285,8 @@ int  Jeu:: IdVersCase(Joueur &j) const{
 //FONCTIONS VERIFIERCOLLISIONS
 void Jeu::VerifierCollision(Pion &pion_deplace, Joueur &joueur_actuel)
 {
-<<<<<<< HEAD
-    int tab_case_special[4]={0,13,26,39}; //cases departs ou collision ne fait rien
-=======
     //remplacer ici par le tableau depart
 	//int tab_case_special[4]={0,13,26,39}; // case special ou on ne peux pas supprimer de pion on a aussi les cases en couleurs  
->>>>>>> 72dcfe506f4c8be56c42ae6efc429ffcf9641a94
 	cout<<"--------------collision"<<endl;
 	int case_joueur_actuel = (IdVersCase(joueur_actuel) + pion_deplace.GetI()) % 52;
 
@@ -325,23 +300,15 @@ void Jeu::VerifierCollision(Pion &pion_deplace, Joueur &joueur_actuel)
 			for (int j = 0; j < 4; j++) // boucle pour parcourir les pions
 			{
 				Pion& pion_autre_joueur = autre_joueur.GetPion(j); // on recupere un pion
-<<<<<<< HEAD
-				int case_autre_joueur = (IdVersCase(autre_joueur) + pion_autre_joueur.GetI()) % 52; // permet de transformer le nombre de pas en position dans le jeu
-=======
 				int case_autre_joueur = (IdVersCase(autre_joueur) + (pion_autre_joueur.GetI())) % 52; // permet de transformer le nombre de pas en position dans le jeu
->>>>>>> 72dcfe506f4c8be56c42ae6efc429ffcf9641a94
 				cout << "  Pion " << j << " de l’adversaire est en case " << case_autre_joueur << endl;
 				
 				for (int c=0; c<4; c++) // parcours les cases speciales
 				{
-<<<<<<< HEAD
-					if ((case_autre_joueur!=tab_case_special[c]) && (pion_autre_joueur.GetI()< 52)) // si case coloree ou special alors on fait rien
-=======
 					if ((case_autre_joueur!=IdVersCase(*joueurs[0])) && 
                         (case_autre_joueur!=IdVersCase(*joueurs[1])) &&
                         (case_autre_joueur!=IdVersCase(*joueurs[2])) &&
                         (case_autre_joueur!=IdVersCase(*joueurs[3])) )//|| (pion_autre_joueur.GetI()< 52)) // interdit de manger dans la case 52 -> zone propre
->>>>>>> 72dcfe506f4c8be56c42ae6efc429ffcf9641a94
 					{
 						if (case_autre_joueur == case_joueur_actuel) // si meme endroit alors on fait retourner à la base
 						{
