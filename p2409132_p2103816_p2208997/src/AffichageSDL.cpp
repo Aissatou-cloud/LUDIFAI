@@ -209,6 +209,7 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
     SDL_Event events;
     bool quit = false;
     bool de_lancer_aff = false;
+    //bool ia_joue=false;
     cout<<"Le pion 0 de J0 a pour i= "<<Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetPion(0).GetI()<<endl;
 
     while (!quit)
@@ -310,6 +311,39 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
                 }
             }
         }
+
+        while(Jeu.IAdoitJouer()){
+            SDL_Delay(1000);
+            cout << "SDL détecte joueur IA: " << Jeu.GetJoueurActuel() 
+            << " (type = " << Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetType() << ")" << endl;
+
+            
+            int id_joueur_ia= Jeu.GetJoueurActuel();
+            int i_depart[4]; //tab pour i initial
+
+            //Sauvegarder les positions initiales pour le deplacement
+            for(int p=0; p<4; p++){
+                i_depart[p]=Jeu.GetJoueur(id_joueur_ia)->GetPion(p).GetI();
+            }
+
+            de_lancer_aff = true;
+
+            Jeu.GererTourIA(); // IA joue
+
+            //Animation du pion qui a bougé
+            for(int p=0; p<4; p++){
+                int i_apres= Jeu.GetJoueur(id_joueur_ia)->GetPion(p).GetI();
+                if(i_apres != i_depart[p]){
+                    AnimerDeplacement(Jeu, id_joueur_ia, p, i_depart[p], i_apres);
+                    break;
+                }
+            }
+            //ia_joue= true; //eviter que ça relance direct
+
+        }
+        /*if(Jeu.IAdoitJouer()){
+            ia_joue= false;
+        }*/
 
         // Affichage
 
