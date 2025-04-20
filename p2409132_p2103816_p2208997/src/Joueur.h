@@ -108,6 +108,8 @@ class Joueur
 		 * @param cy le new Y du pion
 		 */
 		void SetYpion(int id_p, float cy);
+
+		void RentrerPionBase(int id_pion, pair<float, float> coordo_pion);
 		
 		/**
 		 * @brief remplit le tab de coordonnées des piosn dans la poule

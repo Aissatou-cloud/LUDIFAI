@@ -254,6 +254,8 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
 
                         int i_arrivee = Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetPion(0).GetI();
                         AnimerDeplacement(Jeu, Jeu.GetJoueurActuel(), 0, i_depart, i_arrivee);  //premier 0 est le joueur a remplacer
+                        //Jeu.VerifierCollision(joueurs[joueur_actuel]->GetPion(0), *joueurs[joueur_actuel]);
+                        Jeu.VerifierCollision(Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetPion(0), *Jeu.GetJoueur(Jeu.GetJoueurActuel()));
                     }
                     break;
 

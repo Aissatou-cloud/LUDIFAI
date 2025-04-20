@@ -30,6 +30,7 @@ class Jeu
         vector<Joueur*> joueurs_gagnants;   ///<tableau dynamique des joueurs gagnants
         //vector<Joueur> * joueurs;      ///<creer tableau de nb Joueur présent
         De de;              ///le de du jeu 
+<<<<<<< HEAD
         pair<int, int> chemin[53]; ///< le chemin commun de tous les piosn 
         pair<int, int> zone_Gagnante_R[6]; ///< la partie gagnante du jRouge
         pair<int, int> zone_Gagnante_V[6]; ///< la partie gagnante du jVert
@@ -40,6 +41,20 @@ class Jeu
         int case_Depart_V; ///<la case de departVert
         int case_Depart_J; ///<la case de departJaune
         int case_Depart_B; ///<la case de departBleu
+=======
+        pair<int, int> chemin[53];
+        pair<int, int> zone_Gagnante_R[6];      //ici on aurait pu tout mettre dans le meme tableau
+        pair<int, int> zone_Gagnante_V[6];  
+        pair<int, int> zone_Gagnante_J[6];
+        pair<int, int> zone_Gagnante_B[6];
+        pair<int, int> LesCasesDepart[4];
+        int case_Depart_R;
+        int case_Depart_V;
+        int case_Depart_J;
+        int case_Depart_B;
+>>>>>>> 72dcfe506f4c8be56c42ae6efc429ffcf9641a94
+
+        pair<float,float> coordo_poule[4];
 
 
 
@@ -81,6 +96,21 @@ class Jeu
         * @brief retourne les coordonnée d'un point du chemin
         * @param i indice du chemin 
         */
+
+        /**
+        * @brief retourne les coordonée de la poule d'un joueur
+        * @param i index du joueur
+         */
+        pair<int, int> GetCoordoPoule(int i) const;
+
+        /**
+        * @brief remplie coordonnee de la poule d'un joueur
+        * @param cx coordo x
+        * @param cy coordo y
+        */
+        void SetCoordoPoule(int i, float cx, float cy);  //peut etre elle sert a rien 
+        
+
         pair<int,int> GetChemin(int i);
 
 
@@ -151,7 +181,7 @@ class Jeu
         * @param pion_deplace 1 ptr sur Pion qui est le pion du joueur a deplacer
         * @param jouur_actuel le joueur qui joue le tour
         */
-        void VerifierCollision(Pion &pion_deplace, Joueur &joueur_ctuel);
+        void VerifierCollision(Pion &pion_deplace, Joueur &joueur_actuel);
 
         /**
          * @brief renvoie le de du jeu
