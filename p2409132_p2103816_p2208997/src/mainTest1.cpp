@@ -35,7 +35,7 @@ int main() {
 
     // Test de la classe Joueur
     cout << "\n==== TEST JOUEUR ====" << endl;
-    Joueur joueur1(1, 0, 255, 0); // Joueur vert
+    Joueur joueur1(1, HUMAIN,0, 255, 0); // Joueur vert
     cout << "Joueur " << joueur1.getId() 
          << " a la couleur R=" << (int)joueur1.getCouleur().getR() 
          << ", V=" << (int)joueur1.getCouleur().getV ()

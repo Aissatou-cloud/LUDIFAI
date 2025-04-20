@@ -83,7 +83,7 @@ Jeu::Jeu(): etat(ATTENTE_LANCER_DE), nb_Joueur(4), joueur_actuel(0)
      */
     for (int i=0;i<nb_Joueur; i++)
     {
-        joueurs.push_back(new Joueur(i,0, 0, 0)); //ajoute a la fin du vector
+        joueurs.push_back(new Joueur(i,HUMAIN,0, 0, 0)); //ajoute a la fin du vector
       //gerer la couleur 
     }
     assert(joueurs.size()== static_cast<size_t>(nb_Joueur));
@@ -96,7 +96,7 @@ Jeu::Jeu(int nb_j):etat(ATTENTE_LANCER_DE), nb_Joueur(nb_j), joueur_actuel(0)
    
     for (int i=0;i<nb_j; i++)
     {
-        joueurs.push_back(new Joueur(i,0, 0, 0));      //gerer la couleur 
+        joueurs.push_back(new Joueur(i,HUMAIN, 0, 0, 0));      //gerer la couleur 
     }
     assert(joueurs.size()== static_cast<size_t>(nb_Joueur));
 
@@ -303,6 +303,63 @@ void Jeu::VerifierCollision(Pion &pion_deplace, Joueur &joueur_actuel)
 	}
 }
 
+
+void Jeu:: GererTourIA(){
+    Joueur* joueur_ia= GetJoueur(joueur_actuel);
+
+    switch (etat){
+
+    case ATTENTE_LANCER_DE:
+        de.LancerDe();
+        cout<<"Joueur actel IA : "<<joueur_actuel<<endl;
+        cout << "Dé lancé, valeur = " << de.GetVal() << endl;
+        if(de.GetVal()== 6 && !joueur_ia->TousPionsSortis()){
+            etat=ATTENTE_SORTIE_PION;
+
+        }else{
+            etat=ATTENTE_ACTION;
+        }
+        break;
+
+    case ATTENTE_SORTIE_PION:
+        assert(GetJoueurActuel() >= 0 && GetJoueurActuel() < static_cast<int>(joueurs.size()));
+        //sortir le premier pion non sorti dans  le sens 1, 4 des pions
+        for(int i=0; i< 4; i++){
+            if(!joueur_ia->GetPion(i).GetEstSorti()){
+                cout << "Sortie de pion" << endl;
+                joueur_ia->SortirPionBase(LesCasesDepart[joueur_actuel]);
+                etat = FIN_TOUR;
+                break;
+            }
+        }
+        break;
+
+    case ATTENTE_ACTION:
+        //Avancer le premier pion sorti
+        for(int i=0; i<4; i++){
+            if(joueur_ia->GetPion(i).GetEstSorti()){
+                joueur_ia ->DeplacerUnPion(i, de.GetVal());
+                break;
+            }
+        }
+        etat= FIN_TOUR;
+        break;
+        
+    case FIN_TOUR:
+        //passer au joueur suivant
+        joueur_actuel = (joueur_actuel + 1)% 4;
+        etat= ATTENTE_LANCER_DE;
+        break;
+    }
+    if(GetJoueur(joueur_actuel)->GetType() == IA){
+        //faire dans la SDL un Delay pour l'effet visuel
+        GererTourIA(); //l'IA suivante joue automatiquement
+    }
+}
+
+
+
+
 void Jeu::Gerer_Jeu(int id_pion_deplacer)
 {
     assert(joueur_actuel >=0 && joueur_actuel < static_cast<int>(joueurs.size()));
@@ -383,6 +440,11 @@ void Jeu::Gerer_Jeu(int id_pion_deplacer)
         default:     
             joueur_actuel = joueur_actuel + 1;
             break;
+    }
+    //cas de l'IA
+    if(GetJoueur(joueur_actuel)->GetType() == IA){
+        //faire dans la SDL un Delay pour l'effet visuel
+        GererTourIA(); //l'IA suivante joue automatiquement
     }
 }
 

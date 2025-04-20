@@ -10,6 +10,12 @@ using namespace std;
  * @class Joueur
  * @brief definit le Joueur et ses données 
  */
+
+enum TypeJoueur{
+	HUMAIN, 
+	IA
+};
+
 class Joueur
 {
 	private:
@@ -18,6 +24,7 @@ class Joueur
     	Pion tab[4];  //< chaque joeur a 4 pions
     	Color couleur; //<  la couler du joeur et ses pions	
 		bool a_gagner; //< pour veriier s'il a gagné
+		TypeJoueur type; ///< le type du joueur
     public:
 		//Joueur(const Joueur& j) : 
 		/**
@@ -32,7 +39,7 @@ class Joueur
 		 * @param v le nouveau v de la couleur
 		 * @param b le nouveau b de la couleur
 		 */
-		Joueur(unsigned int ident,unsigned char r, unsigned char v, unsigned char b);
+		Joueur(unsigned int ident, TypeJoueur t, unsigned char r, unsigned char v, unsigned char b);
 		
 		/**
 		 * @brief le destructeur de la  classe
@@ -121,6 +128,22 @@ class Joueur
 		 * @param val_de la valeur du dé
 		 */
 		void DeplacerUnPion(int id_pion, int val_de);
+
+		/**
+		 * @brief retourne le type du joueur
+		 */
+		TypeJoueur GetType() const;
+
+		/**
+		 * @brief change  le type du joueur
+		 * @param t le type du joueur 
+		 */
+		void SetType(TypeJoueur t) ;
+
+		/**
+		 * @brief verifie que tous les pions spnt sortis
+		 */
+		bool TousPionsSortis();
 
 		/**
 		 * @brief teste toutes les fonctions de la classe

@@ -85,7 +85,7 @@ class Jeu
 
 
         /**
-        * @brief  Retourne le joueurs actuel
+        * @brief  Retourne le joueur actuel
         */
        int GetJoueurActuel() const ;
 
@@ -199,6 +199,11 @@ class Jeu
          * @param j le joueur
          */
         int IdVersCase(Joueur &j) const;
+
+        /**
+         * @brief gere le logique du tour de l'IA 
+         */
+        void GererTourIA();
 
         /**
          * @brief Gere le jeu pour chaque tour

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-	Joueur::Joueur(): id(1), nbpionarrives(0), a_gagner(false)
+	Joueur::Joueur(): id(1), nbpionarrives(0), a_gagner(false), type(HUMAIN)
 	{
 		for(unsigned int i=0; i<4; i++){
 			tab[i]=Pion(i); //cree 4 pions avec un identifiant unique
@@ -14,8 +14,8 @@ using namespace std;
 
 
 
-Joueur::Joueur(unsigned int ident, unsigned char r, unsigned char v, unsigned char b)
-:id(ident), nbpionarrives(0), a_gagner(false)
+Joueur::Joueur(unsigned int ident, TypeJoueur t, unsigned char r, unsigned char v, unsigned char b)
+:id(ident), nbpionarrives(0), a_gagner(false), type(t)
 {
 	couleur.setColor(r,v,b); //correctement initialise
 	for (unsigned int i=0; i<4; i++){
@@ -41,6 +41,22 @@ Joueur::~Joueur()
 	//peut pas vider un tableau statique
 }
 
+TypeJoueur Joueur:: GetType() const{
+	return type;
+}
+
+void Joueur::SetType(TypeJoueur t){
+	type =t;
+}
+
+bool Joueur:: TousPionsSortis(){
+	for(int i=0; i<4; i++){
+		if(!tab[i].GetEstSorti()){
+			return false;
+		}
+	}
+	return true;
+}
 unsigned int Joueur::getId() const
 {
 	return id;
@@ -157,11 +173,12 @@ void Joueur::SetYpion(int id_p, float cy)
 void Joueur:: testRegression(){
 	cout << "Début des test de regression de la classe Joueur "<<endl;
 
-	Joueur j1( 0, 55, 0, 0); //joueur rouge
+	Joueur j1( 0,HUMAIN, 55, 0, 0); //joueur rouge
 	assert(j1.getId() == 0);
     assert(j1.getCouleur().r == 255);
     assert(j1.getCouleur().v == 0);
     assert(j1.getCouleur().b == 0);
+	assert(j1.GetType()== HUMAIN);
 
 	for(int i=0; i< 4; i++){
 		assert(j1.GetPion(i).GetId()== i);
