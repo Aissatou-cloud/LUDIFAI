@@ -4,7 +4,8 @@
 
 using namespace std;
 
-void Jeu:: InitialiserPlateau(){
+void Jeu:: InitialiserPlateau()
+{
 
     //Inialisation du chemin principal
     for(int i=0; i<5; i++){
@@ -70,6 +71,16 @@ void Jeu:: InitialiserPlateau(){
     joueurs[1]->RemplirCoordonneePoule(1.75, 3.5);  //vert
     joueurs[2]->RemplirCoordonneePoule(10.75, 3.5); //jaune
     joueurs[3]->RemplirCoordonneePoule(10.75, 12.5); //bleu
+
+    coordo_poule[0] = make_pair(1.75, 12.5);
+    coordo_poule[1] = make_pair(1.75, 3.5);
+    coordo_poule[2] = make_pair(10.75, 3.5);
+    coordo_poule[3] = make_pair(10.75, 12.5);
+    
+    joueurs[0]->RemplirCoordonneePoule(coordo_poule[0].first, coordo_poule[0].second);  //rouge
+    joueurs[1]->RemplirCoordonneePoule(coordo_poule[1].first, coordo_poule[1].second);  //vert
+    joueurs[2]->RemplirCoordonneePoule(coordo_poule[2].first, coordo_poule[2].second); //jaune
+    joueurs[3]->RemplirCoordonneePoule(coordo_poule[3].first, coordo_poule[3].second); //bleu
 }
 
 Jeu::Jeu(): etat(ATTENTE_LANCER_DE), nb_Joueur(4), joueur_actuel(0)
@@ -468,6 +479,9 @@ void Jeu::Gerer_Jeu(int id_pion_deplacer)
         GererTourIA(); //l'IA joue
     }
 }
+
+
+
 
 
 void TestRegression() {
