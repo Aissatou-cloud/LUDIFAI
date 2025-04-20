@@ -32,6 +32,8 @@ class Joueur
 
 		void SetXpion(int id_p, float cx);
 		void SetYpion(int id_p, float cy);
+
+		void RentrerPionBase(int id_pion, pair<float, float> coordo_pion);
 		
 		void RemplirCoordonneePoule(float cx, float cy);
 

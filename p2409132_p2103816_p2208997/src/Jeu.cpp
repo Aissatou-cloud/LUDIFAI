@@ -23,12 +23,15 @@ Jeu::Jeu(): nb_Joueur(4)
       //gerer la couleur 
     }
 
+    coordo_poule[0] = make_pair(1.75, 12.5);
+    coordo_poule[1] = make_pair(1.75, 3.5);
+    coordo_poule[2] = make_pair(10.75, 3.5);
+    coordo_poule[3] = make_pair(10.75, 12.5);
 
-
-    joueurs[0]->RemplirCoordonneePoule(1.75, 12.5);  //rouge
-    joueurs[1]->RemplirCoordonneePoule(1.75, 3.5);  //vert
-    joueurs[2]->RemplirCoordonneePoule(10.75, 3.5); //jaune
-    joueurs[3]->RemplirCoordonneePoule(10.75, 12.5); //bleu
+    joueurs[0]->RemplirCoordonneePoule(coordo_poule[0].first, coordo_poule[0].second);  //rouge
+    joueurs[1]->RemplirCoordonneePoule(coordo_poule[1].first, coordo_poule[1].second);  //vert
+    joueurs[2]->RemplirCoordonneePoule(coordo_poule[2].first, coordo_poule[2].second); //jaune
+    joueurs[3]->RemplirCoordonneePoule(coordo_poule[3].first, coordo_poule[3].second); //bleu
 
 
     for(int i=0; i<5; i++){
@@ -454,6 +457,15 @@ void Jeu::SetEtat(EtatJeu etat_jeu)
     etat = etat_jeu;
 }
 
+pair<int, int> Jeu::GetCoordoPoule(int i) const
+{
+    return coordo_poule[i];
+}
+
+void Jeu::SetCoordoPoule(int i, float cx, float cy)
+{
+    coordo_poule[i] = make_pair(cx, cy);
+}
 
 pair<int,int> Jeu::GetChemin(int i)
 {
@@ -495,7 +507,8 @@ int  Jeu:: IdVersCase(Joueur &j) const{
 //FONCTIONS VERIFIERCOLLISIONS
 void Jeu::VerifierCollision(Pion &pion_deplace, Joueur &joueur_actuel)
 {
-	int tab_case_special[4]={0,13,26,39}; // case special ou on ne peux pas supprimer de pion on a aussi les cases en couleurs
+    //remplacer ici par le tableau depart
+	//int tab_case_special[4]={0,13,26,39}; // case special ou on ne peux pas supprimer de pion on a aussi les cases en couleurs  
 	cout<<"--------------collision"<<endl;
 	int case_joueur_actuel = (IdVersCase(joueur_actuel) + pion_deplace.GetI() ) % 52;
 	cout << "Case actuelle du joueur " << joueur_actuel.getId() << " : " << case_joueur_actuel<<" a fait tant de pas "<< (static_cast<int>(pion_deplace.GetI()))<< endl;
@@ -508,17 +521,21 @@ void Jeu::VerifierCollision(Pion &pion_deplace, Joueur &joueur_actuel)
 			for (int j = 0; j < 4; j++) // boucle pour parcourir les pions
 			{
 				Pion& pion_autre_joueur = autre_joueur.GetPion(j); // on recupere un pion
-				int case_autre_joueur = (IdVersCase(autre_joueur) + (pion_autre_joueur.GetI()-i)) % 52; // permet de transformer le nombre de pas en position dans le jeu
+				int case_autre_joueur = (IdVersCase(autre_joueur) + (pion_autre_joueur.GetI())) % 52; // permet de transformer le nombre de pas en position dans le jeu
 				cout << "  Pion " << j << " de l’adversaire est en case " << case_autre_joueur << endl;
 				
 				for (int c=0; c<4; c++) // parcours les cases speciales
 				{
-					if ((case_autre_joueur!=tab_case_special[c]) || (pion_autre_joueur.GetI()< 52)) // si case coloree ou special alors on fait rien
+					if ((case_autre_joueur!=IdVersCase(*joueurs[0])) && 
+                        (case_autre_joueur!=IdVersCase(*joueurs[1])) &&
+                        (case_autre_joueur!=IdVersCase(*joueurs[2])) &&
+                        (case_autre_joueur!=IdVersCase(*joueurs[3])) )//|| (pion_autre_joueur.GetI()< 52)) // interdit de manger dans la case 52 -> zone propre
 					{
 						if (case_autre_joueur == case_joueur_actuel) // si meme endroit alors on fait retourner à la base
 						{
 							cout << ">>> COLLISION détectée ! Le pion adverse retourne à la base." << endl;
 							pion_autre_joueur.RetournerBase();
+                            autre_joueur.RentrerPionBase(j, coordo_poule[i]);
 							return;
 						}
 					}	
@@ -585,6 +602,9 @@ void Jeu::Gerer_Jeu(int id_pion_deplacer)
 
                     joueurs[joueur_actuel]->SetXpion(id_pion_deplacer, chemin[index_chemin].first);
                     joueurs[joueur_actuel]->SetYpion(id_pion_deplacer, chemin[index_chemin].second);  
+
+                    //verifie collision
+                    //VerifierCollision(joueurs[joueur_actuel]->GetPion(id_pion_deplacer), *joueurs[joueur_actuel]);
 
                 }else{  //cas ou +val de depasse cases final on met direct le pion a la case final;
 

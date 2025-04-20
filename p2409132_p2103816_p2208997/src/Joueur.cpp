@@ -121,6 +121,26 @@ void Joueur::RemplirCoordonneePoule(float cx, float cy)
 	tab[3].CoordonneesPionPoule(cx+1.75, cy-1.75);
 }
 
+void Joueur::RentrerPionBase(int id_pion, pair<float, float> coordo_pion)
+{
+	if(id_pion==0)
+	{
+		tab[0].CoordonneesPionPoule(coordo_pion.first, coordo_pion.second);
+	}
+	if(id_pion==1)
+	{
+		tab[1].CoordonneesPionPoule(coordo_pion.first+1.75, coordo_pion.second);
+	}
+	if(id_pion==2)
+	{
+		tab[2].CoordonneesPionPoule(coordo_pion.first, coordo_pion.second-1.75);
+	}
+	if(id_pion==3)
+	{
+		tab[3].CoordonneesPionPoule(coordo_pion.first+1.75, coordo_pion.second-1.75);
+	}
+}
+
 void Joueur::SortirPionBase(pair<int,int> CoordSortiBase)
 {
 	assert(CoordSortiBase.first);

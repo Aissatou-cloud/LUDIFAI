@@ -72,6 +72,7 @@ void Pion::SortirDeLaBase(float newx, float newy){
 void Pion::RetournerBase(){
     est_sorti=false;
     i=0;
+    
     cout<<"Pion "<<id <<"dans la base"<<endl;
 }
 
