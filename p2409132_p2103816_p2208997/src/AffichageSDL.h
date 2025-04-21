@@ -16,7 +16,8 @@
 #include "Joueur.h"
 
 /**
- * @class gere l'affichage sdl du jeu 
+ * @class AffichageSDL
+ * @brief gere l'affichage sdl du jeu 
  */
 class AffichageSDL
 {

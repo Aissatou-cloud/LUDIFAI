@@ -33,6 +33,9 @@ obj/Color.o: src/Color.cpp src/Color.h
 obj/Image.o: src/Image.cpp src/Image.h
 	g++ -ggdb -Wall $(shell sdl2-config --cflags) -c src/Image.cpp -o obj/Image.o
 
+doc:
+	doxygen dox/doxyfile
+
 clean:
-	rm -f obj/*.o bin/mainTest1 bin/mainsdl
+	rm -f obj/*.o bin/mainTest1 bin/mainsdl doc/html
 
