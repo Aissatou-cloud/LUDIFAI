@@ -27,6 +27,12 @@ AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nul
         SDL_Quit();
         exit(1);
     }
+    m_font = TTF_OpenFont("data/American_Captain.ttf", 24); // 24 = taille de police
+    if (!m_font) {
+        std::cout << "Erreur chargement police : " << TTF_GetError() << std::endl;
+        exit(1);
+    }
+
 
     //Initialisation de SDL_image pour charger image (PNG, JPG)
     int imgFlags = IMG_INIT_PNG | IMG_INIT_JPG;
@@ -37,9 +43,6 @@ AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nul
         SDL_Quit();
         exit(1);
     }
-
-
-    
 
 
     //taille fenêtre
@@ -101,13 +104,14 @@ AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nul
     m_4.loadFromFile("data/4.png", m_renderer);
     m_4_sombre.loadFromFile("data/4_sombre.png", m_renderer);
     
-    //m_start.loadFromFile("data/start.png", m_renderer);
+    m_start.loadFromFile("data/start.png", m_renderer);
+    m_start_sombre.loadFromFile("data/start_sombre.png", m_renderer);
 
-    bouton1 = {50, 350, 80, 80};
-    bouton2 = {150, 350, 80, 80};
-    bouton3 = {250, 350, 80, 80};
-    bouton4 = {350, 350, 80, 80};
-    bouton_start = {0,0, 100, 100};
+    bouton1 = {60, 350, 100, 100};
+    bouton2 = {185, 350, 100, 100};
+    bouton3 = {310, 350, 100, 100};
+    bouton4 = {435, 350, 100, 100};
+    bouton_start = {200 ,475, 200, 75};
 
 
 }
@@ -126,20 +130,24 @@ AffichageSDL::~AffichageSDL(){
 }
 
 
+void AffichageSDL::AfficherTexte(SDL_Renderer* renderer, TTF_Font* font, const std::string& texte, int x, int y)
+{
+    SDL_Color couleur = {0, 0, 0}; // noir
+    SDL_Surface* surface = TTF_RenderText_Blended(font, texte.c_str(), couleur);
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+    SDL_Rect dstRect = {x, y, surface->w, surface->h};
+    SDL_RenderCopy(renderer, texture, NULL, &dstRect);
+
+    SDL_FreeSurface(surface);
+    SDL_DestroyTexture(texture);
+}
 
 
 
-void AffichageSDL:: SdlAff(bool menu, bool cliquer, bool de_lancer, De de, Jeu &Jeu){
+void AffichageSDL:: SdlAff(bool menu, bool cliquer, bool cliquer_start, bool de_lancer, Jeu &Jeu){
 
-    // Remplir l'écran de blanc
-    //SDL_SetRenderDrawColor : définit la couleur de fond du rendu
-    //( 130, 140, 255, 255) : correspond a une teinte bleue
-    // clair avec une opacite  maximale (255)
     SDL_SetRenderDrawColor(m_renderer, 130, 140, 255, 255);
-
-    //efface l'ecran avec cette couleur :
-    // IMPORTANT :pour ne pas supersposer l'ancien rendu avec
-    // le nouveau
     SDL_RenderClear(m_renderer);
 
     // Affiche du texte
@@ -152,6 +160,7 @@ void AffichageSDL:: SdlAff(bool menu, bool cliquer, bool de_lancer, De de, Jeu &
     if(menu)
     {
         m_menu.draw(m_renderer, 0, 0, dimx, dimy);
+        //m_start_sombre.draw(m_renderer, bouton_start.x, bouton_start.y, bouton_start.w, bouton_start.h);
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
     
@@ -186,7 +195,7 @@ void AffichageSDL:: SdlAff(bool menu, bool cliquer, bool de_lancer, De de, Jeu &
        if (mouseX >= bouton3.x && mouseX <= bouton3.x + bouton3.w &&
             mouseY >= bouton3.y && mouseY <= bouton3.y + bouton3.h) {
             m_3_sombre.draw(m_renderer, bouton3.x, bouton3.y, bouton3.w, bouton3.h);
-        } else {
+        } else {//pour gagner l image sombre
             if(cliquer && Jeu.GetNbJoueur()==3)
             {
                 m_3_sombre.draw(m_renderer, bouton3.x, bouton3.y, bouton3.w, bouton3.h);
@@ -209,22 +218,21 @@ void AffichageSDL:: SdlAff(bool menu, bool cliquer, bool de_lancer, De de, Jeu &
             
         }
 
+
+
         // Si la souris est sur le bouton 1
-        /*if (mouseX >= bouton_start.x && mouseX <= bouton_start.x + bouton_start.w &&
+        if (mouseX >= bouton_start.x && mouseX <= bouton_start.x + bouton_start.w &&
             mouseY >= bouton_start.y && mouseY <= bouton_start.y + bouton_start.h) {
-            m_start.draw(m_renderer, bouton_start.x, bouton_start.y, bouton_start.w, bouton_start.h);
+            m_start_sombre.draw(m_renderer, bouton_start.x, bouton_start.y, bouton_start.w, bouton_start.h);
         } else {
-            if(cliquer)
+            if(cliquer_start)
             {
-                m_start.draw(m_renderer, bouton_start.x, bouton_start.y, bouton_start.w, bouton_start.h);
-            }else{
                 m_start_sombre.draw(m_renderer, bouton_start.x, bouton_start.y, bouton_start.w, bouton_start.h);
+            }else{
+                m_start.draw(m_renderer, bouton_start.x, bouton_start.y, bouton_start.w, bouton_start.h);
             }
             
-        }*/
-
-
-
+        }
 
     }else{
 
@@ -274,7 +282,27 @@ void AffichageSDL:: SdlAff(bool menu, bool cliquer, bool de_lancer, De de, Jeu &
             m_faces_de[Jeu.GetDe().GetVal()-1].draw(m_renderer, dimx/2-35, dimy/2-37);
             de_lancer = false;
         }
+
+        //texte
+        pair<int, int> positions [4]= {
+            {80, 570},   // rouge
+            {80, 210},    // vert
+            {435, 210},   // jaune
+            {435, 570}   // bleu
+        };
+
+        for (int i = 0; i < 4; i++) 
+        {
+            string label;
+            if (i < Jeu.GetNbJoueur())
+                label = "Joueur " + to_string(i + 1);
+            else
+                label = "Computer " + to_string(i - Jeu.GetNbJoueur() + 1);
+    
+            AfficherTexte(m_renderer, m_font, label, positions[i].first, positions[i].second);
+        }
     }
+
 
     /*if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {       //44100 frequence en Hz, format par defaut, stereo, 2042 taille buffer audio, plus petit = plus rapide 
         cout << "Erreur Mix_OpenAudio : " << Mix_GetError() << std::endl;
@@ -314,7 +342,7 @@ void AffichageSDL::AnimerDeplacement(Jeu &Jeu, int id_joueur, int id_pion, int i
         Jeu.GetJoueur(id_joueur)->SetXpion(id_pion, x);
         Jeu.GetJoueur(id_joueur)->SetYpion(id_pion, y);
 
-        SdlAff(false, false, false, Jeu.GetDe(), Jeu);
+        SdlAff(false, false, false, false, Jeu);
         SDL_RenderPresent(m_renderer);
         SDL_Delay(200);
     }
@@ -335,6 +363,7 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
     bool de_lancer_aff = false;
     //bool ia_joue=false;
     bool cliquer = false;
+    bool cliquer_start = false;
     cout<<"Le pion 0 de J0 a pour i= "<<Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetPion(0).GetI()<<endl;
 
     while (!quit)
@@ -350,6 +379,13 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
             {
                 int x = events.button.x;
                 int y = events.button.y;
+
+                if (x >= bouton_start.x && x <= bouton_start.x + bouton_start.w && y >= bouton_start.y && y <= bouton_start.y + bouton_start.h) 
+                {
+                    cout << "Jeu commence"<<endl;
+                    cliquer_start = true;
+                    menu = false;
+                }
 
                 if (x >= bouton1.x && x <= bouton1.x + bouton1.w && y >= bouton1.y && y <= bouton1.y + bouton1.h) 
                 {
@@ -520,7 +556,7 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
 
         // Affichage
 
-        SdlAff(menu, cliquer, de_lancer_aff, Jeu.GetDe(), Jeu);
+        SdlAff(menu, cliquer, cliquer_start, de_lancer_aff, Jeu);
         de_lancer_aff =false;
         SDL_RenderPresent(m_renderer);
     }

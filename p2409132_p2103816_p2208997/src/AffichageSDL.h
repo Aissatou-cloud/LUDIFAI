@@ -7,7 +7,7 @@
 
 #include <SDL2/SDL.h>           //affichage graphique   
 //#include <SDL2/SDL_image.h>     //charger des images
-//#include <SDL2/SDL_ttf.h>  
+#include <SDL2/SDL_ttf.h>  
 #include <SDL2/SDL_mixer.h>
 
 #include "Jeu.h"
@@ -64,11 +64,12 @@ private:
      * @brief fonction qui gere l'affichage
      * @param menu menu du jeu
      * @param cliquer si on a cliquer sur un bouton
+     * @param cliquer_start si on a cliquer sur start
      * @param de_lancer si le dé a ete lancer
-     * @param de de du jeu 
      * @param Jeu jeu
      */
-    void SdlAff(bool menu, bool cliquer, bool de_lancer, De de, Jeu &Jeu);
+    void SdlAff(bool menu, bool cliquer, bool cliquer_star, bool de_lancer, Jeu &Jeu);
+
 
 public:
     /**
@@ -93,6 +94,16 @@ public:
     * @param i_arrivee nouvelle position
     */
     void AnimerDeplacement (Jeu &Jeu, int joueur_actuel,int id_pion, int i_depart, int i_arrivee);
+
+    /**
+     * @brief donne nom pour chq joueur
+     * @param renderer renderer
+     * @param font police
+     * @param texte texte a ecrire
+     * @param x coordonnee
+     * @param y coordonnee
+     */
+    void AfficherTexte(SDL_Renderer* renderer, TTF_Font* font, const string& texte, int x, int y); 
 };
 
 
