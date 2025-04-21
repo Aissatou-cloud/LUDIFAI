@@ -25,10 +25,7 @@ private:
     SDL_Window *m_window;  ///<Fenetre de la SDL
     SDL_Renderer *m_renderer; ///< Moteur du rendu graphique
     TTF_Font *m_font; ///< Police de texte
-    TTF_Font *pseudo_j1; //Police de texte
-    TTF_Font *pseudo_j2; //Police de texte
-    TTF_Font *pseudo_j3; //Police de texte
-    TTF_Font *pseudo_j4; //Police de texte
+
     Image m_plateau; ///< image du plateau
     Image m_faces_de[6]; ///<image du dé
     Image m_de_inter[5]; ///<image intermediaire du dé
@@ -50,6 +47,8 @@ private:
     Image m_start;
     Image m_start_sombre;
 
+    Image m_end;
+
     Image Mix_StartTrack;
 
     SDL_Rect bouton1;
@@ -68,8 +67,9 @@ private:
      * @param cliquer_start si on a cliquer sur start
      * @param de_lancer si le dé a ete lancer
      * @param Jeu jeu
+     * @param end_game si jeu est fini
      */
-    void SdlAff(bool menu, bool cliquer, bool cliquer_star, bool de_lancer, Jeu &Jeu);
+    void SdlAff(bool end_game, bool menu, bool cliquer, bool cliquer_star, bool de_lancer, Jeu &Jeu);
 
 
 public:
