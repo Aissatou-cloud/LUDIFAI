@@ -213,6 +213,11 @@ Joueur* Jeu::GetJoueurGagnant(int id) const
     return joueurs_gagnants[id];
 }
 
+int Jeu:: GetClassementSize() const {
+    return classement.size();
+}
+
+
 De& Jeu::GetDe()
 {
     return de;
@@ -401,68 +406,68 @@ void Jeu:: GererTourIA(){
 
     switch (etat){
 
-    case ATTENTE_LANCER_DE:
-        de.LancerDe();
-        cout<<"Joueur actuel IA : "<<joueur_actuel<<endl;
-        cout << "Dé lancé, valeur = " << de.GetVal() << endl;
-        if( de.GetVal()==6 && !joueur_ia->TousPionsSortis()){
-            etat=ATTENTE_SORTIE_PION;
+        case ATTENTE_LANCER_DE:
+            de.LancerDe();
+            cout<<"Joueur actuel IA : "<<joueur_actuel<<endl;
+            cout << "Dé lancé, valeur = " << de.GetVal() << endl;
+            if( de.GetVal()==6 && !joueur_ia->TousPionsSortis()){
+                etat=ATTENTE_SORTIE_PION;
 
-        }else{
-            etat=ATTENTE_ACTION;
-        }
-        break;
-
-    case ATTENTE_SORTIE_PION:
-        assert(GetJoueurActuel() >= 0 && GetJoueurActuel() < static_cast<int>(joueurs.size()));
-        //sortir le premier pion non sorti dans  le sens 1, 4 des pions
-        for(int i=0; i< 4; i++){
-            if(!joueur_ia->GetPion(i).GetEstSorti()){
-                cout << "Sortie de pion" << endl;
-                joueur_ia->SortirPionBase(LesCasesDepart[joueur_actuel]);
-                etat = FIN_TOUR;
-                break;
+            }else{
+                etat=ATTENTE_ACTION;
             }
-        }
-        break;
+            break;
+
+        case ATTENTE_SORTIE_PION:
+            assert(GetJoueurActuel() >= 0 && GetJoueurActuel() < static_cast<int>(joueurs.size()));
+            //sortir le premier pion non sorti dans  le sens 1, 4 des pions
+            for(int i=0; i< 4; i++){
+                if(!joueur_ia->GetPion(i).GetEstSorti()){
+                    cout << "Sortie de pion" << endl;
+                    joueur_ia->SortirPionBase(LesCasesDepart[joueur_actuel]);
+                    etat = FIN_TOUR;
+                    break;
+                }
+            }
+            break;
 
 
 
-    case ATTENTE_ACTION:
-        //Avancer le premier pion sorti
-        for(int i=0; i<4; i++){
-            if(joueur_ia->GetPion(i).GetEstSorti()&& !joueur_ia->GetPion(i).GetEstArrive()){
-                joueur_ia ->DeplacerUnPion(i, de.GetVal());
-                tab_zone_g = IdversTableauGagnant(joueur_ia->getId());
-                i_gagnant = (joueur_ia->GetPion(i).GetI() - 53);
-   
-                if(joueur_ia->GetPion(i).GetI()>=58)
-                {
-                    joueur_ia->GetPion(i).ChangerI(58);  //met a jour le i
-                    joueur_ia->GetPion(i).SetEstArrive();
-                    cout<<"i= "<<joueur_ia->GetPion(i).GetI()<<endl;
-                    joueur_ia->SetXpion(i, tab_zone_g[5].first);   //a voir si pas 58
-                    joueur_ia->SetYpion(i, tab_zone_g[5].second);     
-                }else{
-                    if(joueur_ia->GetPion(i).GetI()>52 && joueur_ia->GetPion(i).GetI()<58)
+        case ATTENTE_ACTION:
+            //Avancer le premier pion sorti
+            for(int i=0; i<4; i++){
+                if(joueur_ia->GetPion(i).GetEstSorti()&& !joueur_ia->GetPion(i).GetEstArrive()){
+                    joueur_ia ->DeplacerUnPion(i, de.GetVal());
+                    tab_zone_g = IdversTableauGagnant(joueur_ia->getId());
+                    i_gagnant = (joueur_ia->GetPion(i).GetI() - 53);
+    
+                    if(joueur_ia->GetPion(i).GetI()>=58)
                     {
-                        joueur_ia->SetXpion(i, tab_zone_g[i_gagnant].first);
-                        joueur_ia->SetYpion(i, tab_zone_g[i_gagnant].second);
+                        joueur_ia->GetPion(i).ChangerI(58);  //met a jour le i
+                        joueur_ia->GetPion(i).SetEstArrive();
+                        cout<<"i= "<<joueur_ia->GetPion(i).GetI()<<endl;
+                        joueur_ia->SetXpion(i, tab_zone_g[5].first);   //a voir si pas 58
+                        joueur_ia->SetYpion(i, tab_zone_g[5].second);     
+                    }else{
+                        if(joueur_ia->GetPion(i).GetI()>52 && joueur_ia->GetPion(i).GetI()<58)
+                        {
+                            joueur_ia->SetXpion(i, tab_zone_g[i_gagnant].first);
+                            joueur_ia->SetYpion(i, tab_zone_g[i_gagnant].second);
+
+                        }
 
                     }
-
+                    break;
                 }
-                break;
             }
-        }
-        etat= FIN_TOUR;
-        break;
-        
-    case FIN_TOUR:
-        //passer au joueur suivant
-        joueur_actuel = (joueur_actuel + 1)% 4;
-        etat= ATTENTE_LANCER_DE;
-        break;
+            etat= FIN_TOUR;
+            break;
+            
+        case FIN_TOUR:
+            //passer au joueur suivant
+            joueur_actuel = (joueur_actuel + 1)% 4;
+            etat= ATTENTE_LANCER_DE;
+            break;
     }
     /*if(GetJoueur(joueur_actuel)->GetType() == IA){
         //faire dans la SDL un Delay pour l'effet visuel

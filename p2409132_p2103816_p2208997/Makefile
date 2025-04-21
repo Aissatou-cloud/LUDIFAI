@@ -37,5 +37,5 @@ doc:
 	doxygen dox/doxyfile
 
 clean:
-	rm -f obj/*.o bin/mainTest1 bin/mainsdl doc/html
+	rm -f obj/*.o bin/mainTest1 bin/mainsdl
 

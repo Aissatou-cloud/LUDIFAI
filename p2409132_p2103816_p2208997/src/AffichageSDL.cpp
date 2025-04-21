@@ -7,9 +7,7 @@ using namespace std;
 
 AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nullptr), m_font_g(nullptr)
 {
-    //Initialisation de la SDL
-    //SDL_Rect r;     //a voir si on enleve
-    //r.w = (w<0) ? m_surface->w      //...
+
     cout<<"SDL: init"<<endl;
     if(SDL_Init(SDL_INIT_VIDEO)<0)
     {
@@ -50,11 +48,6 @@ AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nul
     int dimx, dimy;
     dimx = dimy = 600;     //Largeur, Hauteur
 
-    //SDL_WINDOWPOS_CENTERED : POSITION X (CENTRE SUR L'AXE X)
-    //SDL_WINDOWPOS_CENTERED : POSITION Y (CENTRE SUR L'AXE Y)
-    //"LUDO" : titre de la fenetre
-    //SDL_WINDOW_SHOWN	: Affiche la fenêtre immédiatement après sa création
-    //a voir si on garde SDL_WINDOW_RESIZABLE : Permet de redimensionner la fenêtre avec la souris
     m_window = SDL_CreateWindow("LUDO", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, dimx, dimy, SDL_WINDOW_SHOWN);
     //SDL_SetWindowResizable(m_window, SDL_FALSE);
     if(m_window == NULL)
@@ -154,17 +147,14 @@ void AffichageSDL:: SdlAff(bool end_game, bool menu, bool cliquer, bool cliquer_
     SDL_SetRenderDrawColor(m_renderer, 130, 140, 255, 255);
     SDL_RenderClear(m_renderer);
 
-    // Affiche du texte
-    //fonction definit dans classe image
-    //m_font_im.draw(m_renderer, 320 - 50, 50, 100, 50);
 
-    //2.Affichage du plateau 
+
+    //Affichage du plateau 
     int dimx, dimy; 
     SDL_GetWindowSize(m_window, &dimx, &dimy);
     if(menu)
     {
         m_menu.draw(m_renderer, 0, 0, dimx, dimy);
-        //m_start_sombre.draw(m_renderer, bouton_start.x, bouton_start.y, bouton_start.w, bouton_start.h);
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
     
@@ -182,7 +172,7 @@ void AffichageSDL:: SdlAff(bool end_game, bool menu, bool cliquer, bool cliquer_
             }
             
         }
-
+        //2
         if (mouseX >= bouton2.x && mouseX <= bouton2.x + bouton2.w &&
             mouseY >= bouton2.y && mouseY <= bouton2.y + bouton2.h) {
             m_2_sombre.draw(m_renderer, bouton2.x, bouton2.y, bouton2.w, bouton2.h);
@@ -195,8 +185,8 @@ void AffichageSDL:: SdlAff(bool end_game, bool menu, bool cliquer, bool cliquer_
             }
             
         }
-
-       if (mouseX >= bouton3.x && mouseX <= bouton3.x + bouton3.w &&
+        //3
+        if (mouseX >= bouton3.x && mouseX <= bouton3.x + bouton3.w &&
             mouseY >= bouton3.y && mouseY <= bouton3.y + bouton3.h) {
             m_3_sombre.draw(m_renderer, bouton3.x, bouton3.y, bouton3.w, bouton3.h);
         } else {//pour gagner l image sombre
@@ -208,7 +198,7 @@ void AffichageSDL:: SdlAff(bool end_game, bool menu, bool cliquer, bool cliquer_
             }
             
         }
-
+        //4
         if (mouseX >= bouton4.x && mouseX <= bouton4.x + bouton4.w &&
             mouseY >= bouton4.y && mouseY <= bouton4.y + bouton4.h) {
             m_4_sombre.draw(m_renderer, bouton4.x, bouton4.y, bouton4.w, bouton4.h);
@@ -224,7 +214,7 @@ void AffichageSDL:: SdlAff(bool end_game, bool menu, bool cliquer, bool cliquer_
 
 
 
-        // Si la souris est sur le bouton 1
+        //bouton start
         if (mouseX >= bouton_start.x && mouseX <= bouton_start.x + bouton_start.w &&
             mouseY >= bouton_start.y && mouseY <= bouton_start.y + bouton_start.h) {
             m_start_sombre.draw(m_renderer, bouton_start.x, bouton_start.y, bouton_start.w, bouton_start.h);
@@ -312,11 +302,12 @@ void AffichageSDL:: SdlAff(bool end_game, bool menu, bool cliquer, bool cliquer_
     {
         m_end.draw(m_renderer, 0, 0, dimx, dimy);
         //AfficherTexte(m_renderer, m_font_g, "test", 175, 250);
-       for(int i=0; i<4; i++)
+        int nb_classe = Jeu.GetClassementSize();
+        for(int i=0; i<nb_classe; i++)
         {
             int gagnant = Jeu.GetClassement(i);
             string id_label = Jeu.GetJoueurGagnant(gagnant)->GetLabel();
-            AfficherTexte(m_renderer, m_font, id_label, 0,0 );
+            AfficherTexte(m_renderer, m_font, id_label, 175,250 - (i*50) );
         }
     }
 
@@ -371,7 +362,6 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
     bool quit = false;
     bool de_lancer_aff = false;
     bool de_lancer_aff_ia = false;
-    //bool ia_joue=false;
     bool cliquer = false;
     bool cliquer_start = false;
     bool end_game = false;
@@ -592,44 +582,6 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
         }
         
 
-        /*while(Jeu.IAdoitJouer()){
-            //affiche de l'encadre du joueur IA
-            //SdlAff(menu, cliquer, cliquer_start, false, Jeu);
-            //SDL_RenderPresent(m_renderer);
-
-            //SDL_Delay(1000);
-            cout << "SDL détecte joueur IA: " << Jeu.GetJoueurActuel() 
-            << " (type = " << Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetType() << ")" << endl;
-
-            
-            int id_joueur_ia= Jeu.GetJoueurActuel();
-            int i_depart[4]; //tab pour i initial
-
-            //Sauvegarder les positions initiales pour le deplacement
-            for(int p=0; p<4; p++){
-                i_depart[p]=Jeu.GetJoueur(id_joueur_ia)->GetPion(p).GetI();
-            }
-
-            
-
-            Jeu.GererTourIA(); // IA joue
-            de_lancer_aff = true;
-
-            SdlAff(menu, cliquer, cliquer_start, de_lancer_aff, Jeu);
-
-            de_lancer_aff = false;
-
-            //Animation du pion qui a bougé
-            for(int p=0; p<4; p++){
-                int i_apres= Jeu.GetJoueur(id_joueur_ia)->GetPion(p).GetI();
-                if(i_apres != i_depart[p]){
-                    AnimerDeplacement(Jeu, id_joueur_ia, p, i_depart[p], i_apres);
-                    break;
-                }
-            }
-            //ia_joue= true; //eviter que ça relance direct
-
-        }
         /*if(Jeu.IAdoitJouer()){
             ia_joue= false;
         }*/

@@ -270,6 +270,11 @@ class Jeu
          */
         int GetClassement(int id) const;
 
+        /**
+         * @brief retourne taille du tableau de classement
+         */
+        int GetClassementSize() const;
+
         
 };
 
