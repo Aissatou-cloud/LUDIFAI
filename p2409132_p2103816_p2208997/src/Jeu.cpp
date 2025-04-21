@@ -489,8 +489,6 @@ void Jeu::Gerer_Jeu(int id_pion_deplacer)
                     
 
                 }else{      //cas ou l'on est dans la zone
-
-                        //rajouter cas si i + de >58 alors changerI(58)
                         joueurs[joueur_actuel]->DeplacerUnPion(id_pion_deplacer, de.GetVal());  //met a jour le i
                         cout<<"i apres deplacement: "<<joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI()<<endl;
                         int i_reel = joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI();
