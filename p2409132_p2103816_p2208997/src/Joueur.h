@@ -48,16 +48,19 @@ class Joueur
 
 		/**
 		 * @brief methode qui retourne l'Id du joueur
+		 * @return unsigned int
 		 */
 		unsigned int getId() const;
 
 		/**
 		 * @brief methode qui retourne la couleur du joueur
+		 * @return Color
 		 */
 		Color getCouleur() const ;
 
 		/**
 		 * @brief retourne le nombre de pions arrives a destination
+		 * @return int
 		 */
     	int GetNbpionArrives() const;
 
@@ -69,6 +72,7 @@ class Joueur
 		/**
 		 * @brief retourne le pion d'indice donnée
 		 * @param indice l'indice du pion à renvoyer
+		 * @return Pion&
 		 */
 		Pion& GetPion(int indice); 
 
@@ -80,18 +84,22 @@ class Joueur
 		
 		/**
 		 * @brief renvoie vrai si tous les pions du jours sonr arrives
+		 * @return true si vrai
+		 * @return false le cas echeant 
 		 */
 		bool Joueur_Gagnant();
 
 		/**
 		 * @brief renvoie la coord X du pion 
 		 * @param id_pion l'indice du pion
+		 * @return float
 		 */
 		float GetXPion(int id_pion) const;
 
 		/**
 		 * @brief renvoie la coord Y du pion 
 		 * @param id_pion l'indice du pion
+		 * @return float
 		 */
 		float GetYPion(int id_pion) const;
 
@@ -133,6 +141,7 @@ class Joueur
 
 		/**
 		 * @brief retourne le type du joueur
+		 * @return TypeJoueur
 		 */
 		TypeJoueur GetType() const;
 
@@ -144,6 +153,8 @@ class Joueur
 
 		/**
 		 * @brief verifie que tous les pions spnt sortis
+		 * @return true si vrai
+		 * @return false si le cas echeant
 		 */
 		bool TousPionsSortis();
 

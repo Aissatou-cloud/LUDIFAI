@@ -86,6 +86,9 @@ void Jeu:: InitialiserPlateau()
 Jeu::Jeu(): etat(ATTENTE_LANCER_DE), nb_Joueur(4), joueur_actuel(0)
 {
     De de;
+    //init de  classemnt qui doit etre vide
+    classement.clear();
+
     //int nb_Joueur=4;
     /*Comme on a un vector de joeur on aura pas besoin d'allouer et desallouer dynmiquement
     car vector le gere automatiquemnt pour nous
@@ -104,7 +107,8 @@ Jeu::Jeu(): etat(ATTENTE_LANCER_DE), nb_Joueur(4), joueur_actuel(0)
 
 Jeu::Jeu(int nb_j):etat(ATTENTE_LANCER_DE), nb_Joueur(nb_j), joueur_actuel(0)
 {
-   
+    //init de  classemnt qui doit etre vide
+    classement.clear();
     for (int i=0;i<nb_j; i++)
     {
         joueurs.push_back(new Joueur(i,HUMAIN, 0, 0, 0));      //gerer la couleur 
@@ -464,6 +468,7 @@ void Jeu::Gerer_Jeu(int id_pion_deplacer)
     int index_chemin = 0;    //ok
     int i_gagnant = 0;
     const pair<int, int> * tab_zone_g;
+    int tentatives =0; //pour joueur prochain
 
     switch (etat)
     {
@@ -563,7 +568,25 @@ void Jeu::Gerer_Jeu(int id_pion_deplacer)
             break;
 
         case FIN_TOUR:
-            joueur_actuel = (joueur_actuel + 1)%nb_Joueur;
+            //verifie si le joueur actuel a gangne et l'add dans le classement
+            if(joueurs[joueur_actuel]->GetNbpionArrives() == 4){
+                if(std::find(classement.begin(), classement.end(), joueur_actuel) == classement.end()){
+                    classement.push_back(joueur_actuel);
+                    cout<< "Joueur " << joueur_actuel <<" a terminé . YOUPI"<<endl;
+                }
+            }
+            //passer au joeur suivant qui n'a pas fini
+            do{
+                joueur_actuel = (joueur_actuel + 1)%nb_Joueur;
+                tentatives ++;
+            }while(joueurs[joueur_actuel]->GetNbpionArrives() == 4 && tentatives <= nb_Joueur);
+
+            if(tentatives > nb_Joueur){
+                cout <<"Tous les joueurs ont fini la partie et le classement est :" << endl;
+                for(size_t i=0; i< classement.size() ; i++){
+                    cout <<"Joueur "<< i << "E"<<endl; 
+                }
+            }
             cout << "Nouveau joueur : " << joueur_actuel << endl;
             etat = ATTENTE_LANCER_DE;
             break;
@@ -584,12 +607,13 @@ void Jeu::Gerer_Jeu(int id_pion_deplacer)
 
 
 
-void TestRegression() {
-    cout << " Début Test de Régression =====" << endl;
+void Jeu::TestRegression() {
 
+    cout << " Début Test de Régression =====" << endl;
     Jeu jeu(4); // Création d'un jeu avec 4 joueurs
 
     // Vérifie que le nombre de joueurs est bien 4
+
     assert(jeu.GetJoueur(0) != nullptr);
     assert(jeu.GetJoueur(1) != nullptr);
     assert(jeu.GetJoueur(2) != nullptr);
@@ -599,12 +623,13 @@ void TestRegression() {
     // Vérifie que tous les pions sont dans la base au début
     for(int i = 0; i < 4; ++i) {
         Joueur* j = jeu.GetJoueur(i);
+
         for(int p = 0; p < 4; ++p) {
             assert(j->GetPion(p).GetEstSorti() == false);
         }
     }
     cout << "Tous les pions commencent dans la base ok" << endl;
-
+    
     // Vérifie les coordonnées d’une case du chemin
     pair<int,int> coord = jeu.GetChemin(0);
     assert(coord.first == 6 && coord.second == 13);
@@ -618,19 +643,159 @@ void TestRegression() {
 
     // Simulation de sortie de pion (si dé == 6)
     Joueur* j0 = jeu.GetJoueur(0);
-    //jeu.GetDe().ChangerVal(6);  // Forcer la valeur du dé à 6 pour test
+
+  //jeu.GetDe().ChangerVal(6);  // Forcer la valeur du dé à 6 pour test
+    do { 
+        jeu.GetDe().LancerDe();
+
+    } while (jeu.GetDe().GetVal()!=6);
+
+    cout<<jeu.GetDe().GetVal()<<endl;
+    j0->SortirPionBase({100.0f, 100.0f});
     jeu.SetEtat(ATTENTE_SORTIE_PION);
     jeu.Gerer_Jeu(0);
     assert(j0->GetPion(0).GetEstSorti());
     cout << "Sortie de pion fonctionne avec un 6" << endl;
+    Joueur* j1 = jeu.GetJoueur(1); // joueur adverse
 
-    // Vérifie la collision : pion adverse retourne à la base
-    Joueur* j1 = jeu.GetJoueur(1);
-    j1->SortirPionBase(jeu.GetChemin(0));         // met un pion adverse sur chemin[0]
-    j0->GetPion(0).ChangerI(0);                   // positionne le pion du joueur 0 sur la même case
-    jeu.VerifierCollision(j0->GetPion(0), *j0);   // collision
-    assert(!j1->GetPion(0).GetEstSorti());        // pion adverse doit être retourné à la base
+    // Le pion du joueur 1 est sorti et a avancé de 5 cases
+
+    j1->SortirPionBase(jeu.GetChemin(0));
+    j1->GetPion(0).ChangerI(5);  // Chemin[13 + 5] = case 18
+
+    // On place le pion du joueur 0 pour qu’il arrive aussi sur cette case 18
+    j0->GetPion(0).ChangerI(18);  // Chemin[0 + 18] = case 18
+
+    // Vérification de la collision
+    jeu.VerifierCollision(j0->GetPion(0), *j0);
+
+    // Assert que le pion adverse a été renvoyé
+    assert(!j1->GetPion(0).GetEstSorti());
     cout << "Collision détectée et pion retourné à la base ok" << endl;
-
     cout << "Tous les tests de régression ont reussi" << endl;
+
+}
+
+
+
+
+
+Pion& Jeu::ChoisirPionconsole(Joueur &joueur, int val_de) //ok
+{
+
+    int choix = -1;  // Initialisation Ã  une valeur invalide
+    bool choixnonval = false;
+    cout << "----------choisirpions" << endl;
+
+    // Afficher les pions valides
+    for (int i = 0; i < 4; i++)
+    {
+        Pion p = joueur.GetPion(i);
+        if ((p.GetEstSorti() && (!p.GetEstArrive())) || (!p.GetEstSorti() && (val_de == 6))) {
+            cout << "Pion " << i << " : valide";
+
+        } else {
+            cout << "Pion " << i << " : non valide";
+
+        }
+        cout <<" sortie ? "<< p.GetEstSorti()<<" arrivee ? "<<p.GetEstArrive()<<endl;
+     }
+    
+     while (!choixnonval){   
+
+        cout<<"ancien"<<choix<<endl;
+        cout<<"choix (0-3) : "<<endl;
+        cin>>choix;
+        cout<<"nouveau"<<choix<<endl;
+        
+        if (choix<=3 && choix>=0){
+
+            cout<<"bon choix"<<endl;
+            Pion p = joueur.GetPion(choix);
+            if ((p.GetEstSorti() && (!p.GetEstArrive())) || (!p.GetEstSorti() && (val_de == 6))){
+
+                cout << "Pion " << choix << " : valide" << endl;
+                return joueur.GetPion(choix);
+
+            }
+        }
+    }
+
+    joueur.GetPion(0).SortirDeLaBase(0,0);
+    cout<<"? "<<joueur.GetPion(0).GetEstSorti();
+
+    return joueur.GetPion(0);
+}
+
+bool Jeu::AGagner(Joueur& joueur)
+{
+
+    // Vérifier si tous les pions du joueur sont arrivés dans la zone gagnante
+    for (int i = 0; i < 4; i++){
+
+        Pion& pion = joueur.GetPion(i);
+        if (!pion.GetEstArrive()) {
+            return false; // Si un des pions n'est pas arrivé
+
+        }
+    }
+    return true; // Tous les pions sont arrivés
+
+}
+
+void Jeu::Affichageconsole()
+{
+    cout << "Le jeu commence avec: " << nb_Joueur << " joueurs" << endl;
+    
+    // Boucle de jeu principale
+    bool jeu_en_cours = true;
+    while (jeu_en_cours){
+
+        // Afficher l'état actuel du jeu
+        cout << "--------------------------------Tour du joueur " << GetJoueurActuel() << endl;
+
+        if (AGagner(*GetJoueur(GetJoueurActuel()))==false){
+
+            // Lance le dee
+            GetDe().LancerDe();
+            int val_de = GetDe().GetVal();
+            cout << "Dé lancé, valeur = " << val_de << endl;
+            bool choisir= false; //possibilite de choisir un pion ? pour l'instant non
+            
+            for (int i = 0; i < 4; ++i){
+
+                Pion& pion = GetJoueur(GetJoueurActuel())->GetPion(i); // recup i pion
+                if ((pion.GetEstSorti() && (!pion.GetEstArrive())) || (!pion.GetEstSorti() && (val_de == 6))) // est ce que disp ?
+                {
+                    cout<<"jouable : "<<i<<endl;
+                    choisir=true;
+
+                }else{
+                    cout<<"non jouable : "<<i<<endl;   
+
+                }
+            }
+            if (choisir) // si dispo on accede au choix et aux collision + mise à jour de son indiceS
+            {
+                Pion& pionchoisi=ChoisirPionconsole(*GetJoueur(GetJoueurActuel()), val_de);
+                cout<<"----------deplacerpion"<<endl;
+                int avance = val_de;
+                if (!pionchoisi.GetEstSorti()) 
+                {
+                    avance = 1; // il commence tout juste, donc 1 seule case et on le sort de la base
+                    pionchoisi.SortirDeLaBase(0,0);
+
+                }else{
+                    pionchoisi.SetI(val_de); // sinon on avance de n du de
+
+                }
+                cout<<"le pion "<< pionchoisi.GetId()<< " avance de " <<avance <<"cases." <<endl;
+                VerifierCollision(pionchoisi, *GetJoueur(GetJoueurActuel()));  // Vérifier s'il y a des collisions
+            }
+        }
+        // Changer le joueur pour le tour suivant
+        SetJoueurActuel((GetJoueurActuel() + 1) % 4);
+    }
+    cout << "Le jeu est terminé!" << endl;
+
 }

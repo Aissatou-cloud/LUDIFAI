@@ -30,8 +30,23 @@ struct Color{
      * @brief methode pour recuperer la couleur
      */
     const Color& getColor();
+
+    /**
+     * @brief methode pour recuperer la comosante rouge de la couleur
+     * @return unsigned char
+     */
     unsigned char getR() const;
+
+    /**
+     * @brief methode pour recuperer la comosante rouge de la couleur
+     * @return unsigned char
+     */
     unsigned char getV() const;
+
+    /**
+     * @brief methode pour recuperer la comosante rouge de la couleur
+     * @return unsigned char
+     */
     unsigned char getB() const;
     
     

@@ -8,13 +8,13 @@
 
 class Pion{
     private: 
-        unsigned int i;    ///position du pion dans le chemin
-        int id;             ///identifiant 
-        int tour;           ///nbr de tour
-        bool est_sorti;     ///si pion est sorti de la poule
-        bool est_arrive;    ///si pion est arrive a case d'arrivée
-        float x;
-        float y;
+        unsigned int i;    ///<position du pion dans le chemin
+        int id;             ///<identifiant 
+        int tour;           ///<nbr de tour
+        bool est_sorti;     ///<si pion est sorti de la poule
+        bool est_arrive;    ///<si pion est arrive a case d'arrivée
+        float x; ///< la coordonnee x du pion
+        float y;  ///< la coordonnee y du pion
 
     public: 
         Pion();
@@ -30,6 +30,7 @@ class Pion{
 
         /**
          * @brief Retourne le nbr de tour
+         * @return int
          */
         int GetTour() const;
 
@@ -45,16 +46,20 @@ class Pion{
         
         /**
         * @brief Retourne position du pion 
+        * @return unsigned int 
         */        
         unsigned int GetI() const;
 
         /**
         * @brief Retourne identifiant du pion
+        * @return int
         */
         int GetId() const;
 
         /**
-        * @brief Retourne si le pion est sorti de sa poule ou non        
+        * @brief Retourne si le pion est sorti de sa poule ou non  
+        * @return true si le pion est sorti de la poule
+        * @return false le cas echeant      
         */
         bool GetEstSorti() const;
 
@@ -64,7 +69,9 @@ class Pion{
         void SetEstArrive();
 
         /**
-        * @brief Retourne si le pion est arrivé a la case d'arrivée ou non        
+        * @brief Retourne si le pion est arrivé a la case d'arrivée ou non 
+        * @return true si est_arrive est vrai
+        * @return false le cas echeant           
         */
         bool GetEstArrive() const;
 
@@ -101,11 +108,13 @@ class Pion{
 
 		/**
 		* @brief Retourne les coordonnées x d'un pion
+        * @return float
 		 */
 		float GetXPion ()const;	
 		
 		/**
-		* @brief Retourne les coordonnées y d'un pion
+         * @brief Retourne les coordonnées y d'un pion
+         * @return float
 		 */
 		 float GetYPion ()const;
 

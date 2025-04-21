@@ -349,13 +349,6 @@ void AffichageSDL::AnimerDeplacement(Jeu &Jeu, int id_joueur, int id_pion, int i
     }
 }
 
-
-
-
-
-
-
-
 void AffichageSDL::SdlBoucle(Jeu &Jeu)
 {
     SDL_Event events;
@@ -531,8 +524,6 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
             }
 
             SdlAff(menu, cliquer, cliquer_start, false, Jeu);
-            SDL_RenderPresent(m_renderer);
-                
         
             // 1. === Détection et animation du dé ===
             if (Jeu.GetEtat() == ATTENTE_LANCER_DE) {

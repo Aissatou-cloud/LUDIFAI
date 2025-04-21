@@ -1,6 +1,6 @@
 #ifndef JEU_H
 #define JEU_H
-
+#include <algorithm>
 #include <vector>
 #include "Joueur.h"
 #include "De.h"
@@ -29,6 +29,7 @@ class Jeu
         int joueur_actuel; ///< le joueur actuel qui joue
         vector<Joueur*> joueurs; ///<Tableau dyna de joueur
         vector<Joueur*> joueurs_gagnants;   ///<tableau dynamique des joueurs gagnants
+        vector<int> classement; ///<tab dyna qui gere le classement des joueurs 
         //vector<Joueur> * joueurs;      ///<creer tableau de nb Joueur présent
         De de;              ///le de du jeu 
         pair<int, int> chemin[53]; ///< le chemin commun de tous les piosn 
@@ -71,6 +72,7 @@ class Jeu
 
         /**
         * @brief retourne l'etat actuel du jeu
+        * @return EtatJeu
         */
         EtatJeu GetEtat() const;
 
@@ -88,6 +90,7 @@ class Jeu
 
         /**
          * @brief Retourne nbr joueurs actuel
+         * @return int
          */
         int GetNbJoueur() const;
 
@@ -106,6 +109,7 @@ class Jeu
         /**
         * @brief retourne les coordonée de la poule d'un joueur
         * @param i index du joueur
+        * @return pair<int, int>
          */
         pair<int, int> GetCoordoPoule(int i) const;
 
@@ -116,12 +120,17 @@ class Jeu
         */
         void SetCoordoPoule(int i, float cx, float cy);  //peut etre elle sert a rien 
         
-
+        /**
+         * @brief retoune les coordonnees d'indice i
+         * @param i l'indice
+         * @return pair<int, int>
+         */
         pair<int,int> GetChemin(int i);
 
 
         /**
         * @brief  Retourne le joueur actuel
+        * @return int
         */
        int GetJoueurActuel() const ;
 
@@ -157,12 +166,14 @@ class Jeu
 
         /**
          * @brief renvoie le de du jeu
+         * @return De&
          */
         De& GetDe();
 
         /**
          * @brief renvoie le joueur d'identifiant en param
          * @param id l'identifiant du joueur
+         * @return Joueur *
          */
         Joueur * GetJoueur(unsigned int id) const;
 
@@ -182,14 +193,9 @@ class Jeu
         void Gerer_Tour(Joueur & j, bool & sortir_pion, bool & lancer_de);
 
         /**
-         * @brief Gère le jeu pour un tour
-         * @param lancer_de si le dé a ete lancer
-         * @param sortir_pion si on veut sortir un pion de la base
-         */
-        /*void Gerer_Jeu (bool &lancer_de, bool &sortir_pion);*/
-        /**
          * @brief donne la case depart du pion en fonction de son id
          * @param j le joueur
+         * @return int
          */
         int IdVersCase(Joueur &j) const;
 
@@ -206,11 +212,15 @@ class Jeu
 
         /**
           * @brief  verifie si c'est IA qui joue ou HUMAIN
+          * @return true si c'est une IA
+          * @return false le cas echeant
           */
         bool IAdoitJouer() const;
 
         /**
-         * @brief Donne le tableau de la zone gagnante en fonction de l'id du joueur, la fonction est const donc on retourne un const
+         * @brief Donne le tableau de la zone gagnante en fonction de l'id du joueur,
+         *  la fonction est const donc on retourne un const
+         * @return const pair<int, int>* 
          */
         const pair<int, int>* IdversTableauGagnant(int id_joueur) const;
 
@@ -221,9 +231,33 @@ class Jeu
         void ConfigurerNbJoueurs(int nb_humains);
         
         /**
+         * @brief permet de faire l'affichage sur la console
+        */
+       void Affichageconsole();
+
+            /**
+            *@brief Permet au joueur de choisir un pion à déplacer via la console. 
+            *Cette fonction permet de choisir un pion disponible du joueur selon les règles du jeu.
+            *@param joueur Référence vers le joueur qui doit jouer.
+            *@param val_de La valeur du dé lancée au tour actuel.
+            *@return Pion& Référence vers le pion choisi par le joueur.
+            */
+        Pion& ChoisirPionconsole(Joueur &joueur, int val_de);
+
+        /**
+            *@brief Vérifie si le joueur a gagné la partie.
+            * Cette fonction verifie le joueur a gagné la partie.
+            *@param joueur Référence vers le joueur a vérifiée.
+            *@return true Si le joueur a rempli toutes les conditions de victoire.
+            *@return false Sinon.
+         */
+        bool AGagner(Joueur& joueur);
+
+        /**
          * @brief teste toutes les fonctions de la classe
          */
-        void testRegression();
+        void TestRegression();
+
         
 };
 

@@ -23,6 +23,7 @@ class De{
 
         /**
         * @brief Retourne la valeur actuel du de
+        * @return int
         */
         int GetVal() const;
 
