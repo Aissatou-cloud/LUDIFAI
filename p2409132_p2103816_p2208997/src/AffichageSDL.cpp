@@ -5,7 +5,7 @@
 
 using namespace std;
 
-AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nullptr)
+AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nullptr), m_font_g(nullptr)
 {
     //Initialisation de la SDL
     //SDL_Rect r;     //a voir si on enleve
@@ -28,6 +28,7 @@ AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nul
         exit(1);
     }
     m_font = TTF_OpenFont("data/American_Captain.ttf", 24); // 24 = taille de police
+    m_font_g = TTF_OpenFont("data/American_Captain.ttf", 46); // 46 = taille de police
     if (!m_font) {
         std::cout << "Erreur chargement police : " << TTF_GetError() << std::endl;
         exit(1);
@@ -281,11 +282,11 @@ void AffichageSDL:: SdlAff(bool end_game, bool menu, bool cliquer, bool cliquer_
         {
             string label;
             if (i < Jeu.GetNbJoueur())
-                label = "Joueur " + to_string(i + 1);
+                Jeu.GetJoueur(i)->SetLabel("Joueur " + to_string(i + 1));
             else
-                label = "Computer " + to_string(i - Jeu.GetNbJoueur() + 1);
+                Jeu.GetJoueur(i)->SetLabel("Computer " + to_string(i - Jeu.GetNbJoueur() + 1));
     
-            AfficherTexte(m_renderer, m_font, label, positions[i].first, positions[i].second);
+            AfficherTexte(m_renderer, m_font, Jeu.GetJoueur(i)->GetLabel(), positions[i].first, positions[i].second);
         }
     
         //affichage du dé si pas tirer
@@ -310,6 +311,13 @@ void AffichageSDL:: SdlAff(bool end_game, bool menu, bool cliquer, bool cliquer_
     if(end_game)
     {
         m_end.draw(m_renderer, 0, 0, dimx, dimy);
+        //AfficherTexte(m_renderer, m_font_g, "test", 175, 250);
+       for(int i=0; i<4; i++)
+        {
+            int gagnant = Jeu.GetClassement(i);
+            string id_label = Jeu.GetJoueurGagnant(gagnant)->GetLabel();
+            AfficherTexte(m_renderer, m_font, id_label, 0,0 );
+        }
     }
 
     /*if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {       //44100 frequence en Hz, format par defaut, stereo, 2042 taille buffer audio, plus petit = plus rapide 

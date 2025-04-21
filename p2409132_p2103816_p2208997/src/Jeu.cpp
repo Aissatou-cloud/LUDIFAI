@@ -124,6 +124,10 @@ Jeu::~Jeu()
     {
         delete joueur;
     }
+    joueurs.clear();
+    joueurs_gagnants.clear();
+    classement.clear();
+
 } //Plus besoin de delete[] car 'vector' gere la mem automatiquement, pour chq joueur du vector on delete
 
 
@@ -201,6 +205,12 @@ Joueur* Jeu::GetJoueur(unsigned int id) const
 {
     assert(id< joueurs.size());
     return joueurs[id];
+}
+
+Joueur* Jeu::GetJoueurGagnant(int id) const
+{
+    assert(id<0);
+    return joueurs_gagnants[id];
 }
 
 De& Jeu::GetDe()
@@ -310,6 +320,11 @@ const pair<int, int>* Jeu::IdversTableauGagnant(int id_joueur) const
     }
 }
 
+int Jeu::GetClassement(int id) const
+{
+    return classement[id];
+}
+
 //FONCTIONS VERIFIERCOLLISIONS
 void Jeu::VerifierCollision(Pion &pion_deplace, Joueur &joueur_actuel)
 {
@@ -390,7 +405,7 @@ void Jeu:: GererTourIA(){
         de.LancerDe();
         cout<<"Joueur actuel IA : "<<joueur_actuel<<endl;
         cout << "Dé lancé, valeur = " << de.GetVal() << endl;
-        if( !joueur_ia->TousPionsSortis()){
+        if( de.GetVal()==6 && !joueur_ia->TousPionsSortis()){
             etat=ATTENTE_SORTIE_PION;
 
         }else{
@@ -570,8 +585,9 @@ void Jeu::Gerer_Jeu(int id_pion_deplacer)
         case FIN_TOUR:
             //verifie si le joueur actuel a gangne et l'add dans le classement
             if(joueurs[joueur_actuel]->GetNbpionArrives() == 4){
-                if(std::find(classement.begin(), classement.end(), joueur_actuel) == classement.end()){
+                if(find(classement.begin(), classement.end(), joueur_actuel) == classement.end()){
                     classement.push_back(joueur_actuel);
+                    joueurs_gagnants.push_back(GetJoueur(joueur_actuel));
                     cout<< "Joueur " << joueur_actuel <<" a terminé . YOUPI"<<endl;
                 }
             }

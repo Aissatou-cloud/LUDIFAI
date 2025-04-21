@@ -253,10 +253,22 @@ class Jeu
          */
         bool AGagner(Joueur& joueur);
 
+
+        /**
+         * @brief Retourne l'indice des joueurs gagnant
+         * @param id indice tableau
+         */
+        Joueur* GetJoueurGagnant(int id) const;
+
         /**
          * @brief teste toutes les fonctions de la classe
          */
         void TestRegression();
+
+        /**
+         * @brief Retourne classment
+         */
+        int GetClassement(int id) const;
 
         
 };

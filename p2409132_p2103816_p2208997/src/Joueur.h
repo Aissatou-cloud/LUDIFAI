@@ -1,8 +1,11 @@
 #ifndef JOUEUR_H
 #define JOUEUR_H
 #include <vector>
+#include <string>
+
 #include "Pion.h"
 #include "Color.h"
+
 
 using namespace std;
 
@@ -25,6 +28,7 @@ class Joueur
     	Color couleur; //<  la couler du joeur et ses pions	
 		bool a_gagner; //< pour veriier s'il a gagné
 		TypeJoueur type; ///< le type du joueur
+		string label;
     public:
 		//Joueur(const Joueur& j) : 
 		/**
@@ -45,6 +49,17 @@ class Joueur
 		 * @brief le destructeur de la  classe
 		 */
 		~Joueur();
+
+		/**
+		 * @brief Retourne label du joueur
+		 */
+		string GetLabel() const;
+
+		/**
+		 * @brief ecrit label joueur
+		 * @param lab label 
+		 */
+		void SetLabel (string lab);
 
 		/**
 		 * @brief methode qui retourne l'Id du joueur

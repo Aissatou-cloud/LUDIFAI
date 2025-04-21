@@ -41,6 +41,16 @@ Joueur::~Joueur()
 	//peut pas vider un tableau statique
 }
 
+string Joueur::GetLabel() const
+{
+	return label;
+}
+
+void Joueur::SetLabel(string lab)
+{
+	label = lab;
+}
+
 TypeJoueur Joueur:: GetType() const{
 	return type;
 }

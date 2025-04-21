@@ -25,6 +25,7 @@ private:
     SDL_Window *m_window;  ///<Fenetre de la SDL
     SDL_Renderer *m_renderer; ///< Moteur du rendu graphique
     TTF_Font *m_font; ///< Police de texte
+    TTF_Font *m_font_g;   ///Police classement
 
     Image m_plateau; ///< image du plateau
     Image m_faces_de[6]; ///<image du dé
