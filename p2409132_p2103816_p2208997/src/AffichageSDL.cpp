@@ -5,7 +5,7 @@
 
 using namespace std;
 
-AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nullptr), pseudo_j1(nullptr), pseudo_j2(nullptr), pseudo_j3(nullptr), pseudo_j4(nullptr)
+AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nullptr)
 {
     //Initialisation de la SDL
     //SDL_Rect r;     //a voir si on enleve
@@ -54,7 +54,8 @@ AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nul
     //"LUDO" : titre de la fenetre
     //SDL_WINDOW_SHOWN	: Affiche la fenêtre immédiatement après sa création
     //a voir si on garde SDL_WINDOW_RESIZABLE : Permet de redimensionner la fenêtre avec la souris
-    m_window = SDL_CreateWindow("LUDO", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, dimx, dimy, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+    m_window = SDL_CreateWindow("LUDO", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, dimx, dimy, SDL_WINDOW_SHOWN);
+    //SDL_SetWindowResizable(m_window, SDL_FALSE);
     if(m_window == NULL)
     {
         cout<<"Erreur lors de la creation de la fenetre: "<<SDL_GetError()<<endl;
@@ -107,6 +108,8 @@ AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nul
     m_start.loadFromFile("data/start.png", m_renderer);
     m_start_sombre.loadFromFile("data/start_sombre.png", m_renderer);
 
+    m_end.loadFromFile("data/end.png", m_renderer);
+
     bouton1 = {60, 350, 100, 100};
     bouton2 = {185, 350, 100, 100};
     bouton3 = {310, 350, 100, 100};
@@ -145,7 +148,7 @@ void AffichageSDL::AfficherTexte(SDL_Renderer* renderer, TTF_Font* font, const s
 
 
 
-void AffichageSDL:: SdlAff(bool menu, bool cliquer, bool cliquer_start, bool de_lancer, Jeu &Jeu){
+void AffichageSDL:: SdlAff(bool end_game, bool menu, bool cliquer, bool cliquer_start, bool de_lancer, Jeu &Jeu){
 
     SDL_SetRenderDrawColor(m_renderer, 130, 140, 255, 255);
     SDL_RenderClear(m_renderer);
@@ -304,6 +307,10 @@ void AffichageSDL:: SdlAff(bool menu, bool cliquer, bool cliquer_start, bool de_
 
     }
 
+    if(end_game)
+    {
+        m_end.draw(m_renderer, 0, 0, dimx, dimy);
+    }
 
     /*if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {       //44100 frequence en Hz, format par defaut, stereo, 2042 taille buffer audio, plus petit = plus rapide 
         cout << "Erreur Mix_OpenAudio : " << Mix_GetError() << std::endl;
@@ -343,7 +350,7 @@ void AffichageSDL::AnimerDeplacement(Jeu &Jeu, int id_joueur, int id_pion, int i
         Jeu.GetJoueur(id_joueur)->SetXpion(id_pion, x);
         Jeu.GetJoueur(id_joueur)->SetYpion(id_pion, y);
 
-        SdlAff(false, false, false, false, Jeu);
+        SdlAff(false,false, false, false, false, Jeu);
         SDL_RenderPresent(m_renderer);
         SDL_Delay(200);
     }
@@ -359,6 +366,7 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
     //bool ia_joue=false;
     bool cliquer = false;
     bool cliquer_start = false;
+    bool end_game = false;
 
     int dimx, dimy; 
     SDL_GetWindowSize(m_window, &dimx, &dimy);
@@ -425,7 +433,7 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
                     break;
 
                 case SDL_SCANCODE_0:
-                    menu=false;
+                    end_game=true;
                     break;
 
                 case SDL_SCANCODE_SPACE:
@@ -523,7 +531,9 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
                 i_depart[p] = Jeu.GetJoueur(id_ia)->GetPion(p).GetI();
             }
 
-            SdlAff(menu, cliquer, cliquer_start, false, Jeu);
+            SdlAff(false, menu, cliquer, cliquer_start, false, Jeu);
+            SDL_RenderPresent(m_renderer);
+                
         
             // 1. === Détection et animation du dé ===
             if (Jeu.GetEtat() == ATTENTE_LANCER_DE) {
@@ -531,7 +541,7 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
                 de_lancer_aff_ia = true;
 
                 Jeu.GererTourIA(); // juste lancer le dé
-                SdlAff(menu, cliquer, cliquer_start, de_lancer_aff_ia, Jeu); // animation du dé
+                SdlAff(false, menu, cliquer, cliquer_start, de_lancer_aff_ia, Jeu); // animation du dé
                 SDL_RenderPresent(m_renderer);
                 SDL_Delay(1000);
                 de_lancer_aff = false;
@@ -568,7 +578,7 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
             }
             //de_lancer_aff = true;
             // Affichage global
-            SdlAff(menu, cliquer, cliquer_start, false, Jeu);
+            SdlAff(false, menu, cliquer, cliquer_start, false, Jeu);
             de_lancer_aff_ia = false;
             SDL_RenderPresent(m_renderer);
         }
@@ -619,7 +629,7 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
 
         // Affichage
 
-        SdlAff(menu, cliquer, cliquer_start, de_lancer_aff, Jeu);
+        SdlAff(end_game, menu, cliquer, cliquer_start, de_lancer_aff, Jeu);
         de_lancer_aff =false;
         SDL_RenderPresent(m_renderer);
     }
