@@ -25,6 +25,7 @@ class Jeu
     private:
         EtatJeu etat;       ///<l'etat du jeu actuel
         int nb_Joueur;      ///<nb de joueur 
+        int nb_Joueur_reel;
         int joueur_actuel; ///< le joueur actuel qui joue
         vector<Joueur*> joueurs; ///<Tableau dyna de joueur
         vector<Joueur*> joueurs_gagnants;   ///<tableau dynamique des joueurs gagnants
@@ -89,6 +90,17 @@ class Jeu
          * @brief Retourne nbr joueurs actuel
          */
         int GetNbJoueur() const;
+
+                /**
+        * @brief Remplie le nombre de joueur reel
+        * @param nb nbr de joueur
+        */
+       void SetNbJoueurReel(int nb);
+
+       /**
+        * @brief Retourne nbr joueurs actuel reel
+        */
+       int GetNbJoueurReel() const;
 
 
         /**

@@ -243,6 +243,16 @@ int Jeu::GetNbJoueur() const
     return nb_Joueur;
 }
 
+void Jeu::SetNbJoueurReel(int nb)
+{
+    nb_Joueur_reel = nb;
+}
+
+int Jeu::GetNbJoueurReel() const
+{
+    return nb_Joueur_reel;
+}
+
 pair<int, int> Jeu::GetCoordoPoule(int i) const
 {
     return coordo_poule[i];
@@ -367,6 +377,8 @@ void Jeu:: ConfigurerNbJoueurs(int nb_humains){
 
 void Jeu:: GererTourIA(){
     Joueur* joueur_ia= GetJoueur(joueur_actuel);
+    int i_gagnant = 0;
+    const pair<int, int> * tab_zone_g;
 
     switch (etat){
 
@@ -374,7 +386,7 @@ void Jeu:: GererTourIA(){
         de.LancerDe();
         cout<<"Joueur actuel IA : "<<joueur_actuel<<endl;
         cout << "Dé lancé, valeur = " << de.GetVal() << endl;
-        if(de.GetVal()== 6 && !joueur_ia->TousPionsSortis()){
+        if( !joueur_ia->TousPionsSortis()){
             etat=ATTENTE_SORTIE_PION;
 
         }else{
@@ -395,11 +407,32 @@ void Jeu:: GererTourIA(){
         }
         break;
 
+
+
     case ATTENTE_ACTION:
         //Avancer le premier pion sorti
         for(int i=0; i<4; i++){
-            if(joueur_ia->GetPion(i).GetEstSorti()){
+            if(joueur_ia->GetPion(i).GetEstSorti()&& !joueur_ia->GetPion(i).GetEstArrive()){
                 joueur_ia ->DeplacerUnPion(i, de.GetVal());
+                tab_zone_g = IdversTableauGagnant(joueur_ia->getId());
+                i_gagnant = (joueur_ia->GetPion(i).GetI() - 53);
+   
+                if(joueur_ia->GetPion(i).GetI()>=58)
+                {
+                    joueur_ia->GetPion(i).ChangerI(58);  //met a jour le i
+                    joueur_ia->GetPion(i).SetEstArrive();
+                    cout<<"i= "<<joueur_ia->GetPion(i).GetI()<<endl;
+                    joueur_ia->SetXpion(i, tab_zone_g[5].first);   //a voir si pas 58
+                    joueur_ia->SetYpion(i, tab_zone_g[5].second);     
+                }else{
+                    if(joueur_ia->GetPion(i).GetI()>52 && joueur_ia->GetPion(i).GetI()<58)
+                    {
+                        joueur_ia->SetXpion(i, tab_zone_g[i_gagnant].first);
+                        joueur_ia->SetYpion(i, tab_zone_g[i_gagnant].second);
+
+                    }
+
+                }
                 break;
             }
         }
@@ -464,7 +497,7 @@ void Jeu::Gerer_Jeu(int id_pion_deplacer)
             case_depart = IdVersCase(*joueurs[joueur_actuel]);
 
             
-            if(joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetEstSorti())
+            if(joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetEstSorti() && !joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetEstArrive())
             {
                 cout<<"tour= "<<joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetTour()<<endl;
                 if(joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetI()<=52  && joueurs[joueur_actuel]->GetPion(id_pion_deplacer).GetTour() == 0)   //a changer normalement c est l'indice de leur ancienne position dans le chemin

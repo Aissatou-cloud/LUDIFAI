@@ -170,7 +170,7 @@ void AffichageSDL:: SdlAff(bool menu, bool cliquer, bool cliquer_start, bool de_
             mouseY >= bouton1.y && mouseY <= bouton1.y + bouton1.h) {
             m_1_sombre.draw(m_renderer, bouton1.x, bouton1.y, bouton1.w, bouton1.h);
         } else {
-            if(cliquer && Jeu.GetNbJoueur()==1)
+            if(cliquer && Jeu.GetNbJoueurReel()==1)
             {
                 m_1_sombre.draw(m_renderer, bouton1.x, bouton1.y, bouton1.w, bouton1.h);
             }else{
@@ -183,7 +183,7 @@ void AffichageSDL:: SdlAff(bool menu, bool cliquer, bool cliquer_start, bool de_
             mouseY >= bouton2.y && mouseY <= bouton2.y + bouton2.h) {
             m_2_sombre.draw(m_renderer, bouton2.x, bouton2.y, bouton2.w, bouton2.h);
         } else {
-            if(cliquer && Jeu.GetNbJoueur()==2)
+            if(cliquer && Jeu.GetNbJoueurReel()==2)
             {
                 m_2_sombre.draw(m_renderer, bouton2.x, bouton2.y, bouton2.w, bouton2.h);
             }else{
@@ -196,7 +196,7 @@ void AffichageSDL:: SdlAff(bool menu, bool cliquer, bool cliquer_start, bool de_
             mouseY >= bouton3.y && mouseY <= bouton3.y + bouton3.h) {
             m_3_sombre.draw(m_renderer, bouton3.x, bouton3.y, bouton3.w, bouton3.h);
         } else {//pour gagner l image sombre
-            if(cliquer && Jeu.GetNbJoueur()==3)
+            if(cliquer && Jeu.GetNbJoueurReel()==3)
             {
                 m_3_sombre.draw(m_renderer, bouton3.x, bouton3.y, bouton3.w, bouton3.h);
             }else{
@@ -209,7 +209,7 @@ void AffichageSDL:: SdlAff(bool menu, bool cliquer, bool cliquer_start, bool de_
             mouseY >= bouton4.y && mouseY <= bouton4.y + bouton4.h) {
             m_4_sombre.draw(m_renderer, bouton4.x, bouton4.y, bouton4.w, bouton4.h);
         } else {
-            if(cliquer && Jeu.GetNbJoueur()==4)
+            if(cliquer && Jeu.GetNbJoueurReel()==4)
             {
                 m_4_sombre.draw(m_renderer, bouton4.x, bouton4.y, bouton4.w, bouton4.h);
             }else{
@@ -266,23 +266,6 @@ void AffichageSDL:: SdlAff(bool menu, bool cliquer, bool cliquer_start, bool de_
     
         }
     
-    
-        //affichage du dé si pas tirer
-        m_faces_de[Jeu.GetDe().GetVal()-1].draw(m_renderer, dimx/2-35, dimy/2-37);
-        //si tirer (pour l'instant sans prendre en compte le joueur pour test)
-        if(de_lancer)
-        {
-            for(int i=0; i<6; i++)
-            {
-                m_faces_de[i].draw(m_renderer, dimx/2-35, dimy/2-37);
-                SDL_RenderPresent(m_renderer);
-                SDL_Delay(50);      //petite pause
-            }
-            cout<<Jeu.GetDe().GetVal()<<endl;
-            m_faces_de[Jeu.GetDe().GetVal()-1].draw(m_renderer, dimx/2-35, dimy/2-37);
-            de_lancer = false;
-        }
-
         //texte
         pair<int, int> positions [4]= {
             {80, 570},   // rouge
@@ -301,6 +284,24 @@ void AffichageSDL:: SdlAff(bool menu, bool cliquer, bool cliquer_start, bool de_
     
             AfficherTexte(m_renderer, m_font, label, positions[i].first, positions[i].second);
         }
+    
+        //affichage du dé si pas tirer
+        m_faces_de[Jeu.GetDe().GetVal()-1].draw(m_renderer, dimx/2-35, dimy/2-37);
+        //si tirer (pour l'instant sans prendre en compte le joueur pour test)
+        if(de_lancer)
+        {
+            for(int i=0; i<6; i++)
+            {
+                m_faces_de[i].draw(m_renderer, dimx/2-35, dimy/2-37);
+                SDL_RenderPresent(m_renderer);
+                SDL_Delay(50);      //petite pause
+            }
+            
+            cout<<Jeu.GetDe().GetVal()<<endl;
+            m_faces_de[Jeu.GetDe().GetVal()-1].draw(m_renderer, dimx/2-35, dimy/2-37);
+            de_lancer = false;
+        }
+
     }
 
 
@@ -361,9 +362,14 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
     bool menu=true;
     bool quit = false;
     bool de_lancer_aff = false;
+    bool de_lancer_aff_ia = false;
     //bool ia_joue=false;
     bool cliquer = false;
     bool cliquer_start = false;
+
+    int dimx, dimy; 
+    SDL_GetWindowSize(m_window, &dimx, &dimy);
+
     cout<<"Le pion 0 de J0 a pour i= "<<Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetPion(0).GetI()<<endl;
 
     while (!quit)
@@ -389,28 +395,28 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
 
                 if (x >= bouton1.x && x <= bouton1.x + bouton1.w && y >= bouton1.y && y <= bouton1.y + bouton1.h) 
                 {
-                    Jeu.SetNbJoueur(1);
+                    Jeu.SetNbJoueurReel(1);
                     Jeu.ConfigurerNbJoueurs(1); // cas 1 seul humain
                     std::cout << "1 joueur sélectionné\n";
                     cliquer = true;
                 }
                 else if (x >= bouton2.x && x <= bouton2.x + bouton2.w && y >= bouton2.y && y <= bouton2.y + bouton2.h) 
                 {
-                    Jeu.SetNbJoueur(2);
+                    Jeu.SetNbJoueurReel(2);
                     Jeu.ConfigurerNbJoueurs(2); // cas 2 humains
                     std::cout << "2 joueur sélectionné\n";
                     cliquer = true;
                 }
                 else if (x >= bouton3.x && x <= bouton3.x + bouton3.w && y >= bouton3.y && y <= bouton3.y + bouton3.h) 
                 {
-                    Jeu.SetNbJoueur(3);
+                    Jeu.SetNbJoueurReel(3);
                     Jeu.ConfigurerNbJoueurs(3); // cas 3 humains
                     std::cout << "3 joueur sélectionné\n";
                     cliquer = true;
                 }
                 else if (x >= bouton4.x && x <= bouton4.x + bouton4.w && y >= bouton4.y && y <= bouton4.y + bouton4.h) 
                 {
-                    Jeu.SetNbJoueur(4);
+                    Jeu.SetNbJoueurReel(4);
                     Jeu.ConfigurerNbJoueurs(4); // cas 4 humains
                     std::cout << "4 joueur sélectionné\n";
                     cliquer = true;
@@ -516,12 +522,73 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
                 }
         }
 
-        while(Jeu.IAdoitJouer()){
-            //affiche de l'encadre du joueur IA
-            SdlAff(menu, cliquer, de_lancer_aff, Jeu.GetDe(), Jeu);
-            SDL_RenderPresent(m_renderer);
+        while (Jeu.IAdoitJouer()) {
+            int id_ia = Jeu.GetJoueurActuel();
+            int i_depart[4];
+            for (int p = 0; p < 4; p++)
+            {
+                i_depart[p] = Jeu.GetJoueur(id_ia)->GetPion(p).GetI();
+            }
 
-            SDL_Delay(1000);
+            SdlAff(menu, cliquer, cliquer_start, false, Jeu);
+            SDL_RenderPresent(m_renderer);
+                
+        
+            // 1. === Détection et animation du dé ===
+            if (Jeu.GetEtat() == ATTENTE_LANCER_DE) {
+                
+                de_lancer_aff_ia = true;
+
+                Jeu.GererTourIA(); // juste lancer le dé
+                SdlAff(menu, cliquer, cliquer_start, de_lancer_aff_ia, Jeu); // animation du dé
+                SDL_RenderPresent(m_renderer);
+                SDL_Delay(1000);
+                de_lancer_aff = false;
+            }
+        
+            // 2. === Sortie pion si besoin ===
+            if (Jeu.GetEtat() == ATTENTE_SORTIE_PION) {
+                Jeu.GererTourIA(); // juste sortir le pion
+               // SDL_Delay(300);
+            }
+        
+            // 3. === Déplacement du pion ===
+            if (Jeu.GetEtat() == ATTENTE_ACTION) {
+                Jeu.GererTourIA(); // déplacement du pion
+                //SDL_Delay(300);
+        
+                int i_apres = -1;
+                for (int p = 0; p < 4; p++) {
+                    i_apres = Jeu.GetJoueur(id_ia)->GetPion(p).GetI();
+                    if (i_apres != i_depart[p]) {
+                        AnimerDeplacement(Jeu, id_ia, p, i_depart[p], i_apres);
+                        Jeu.VerifierCollision(Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetPion(p), *Jeu.GetJoueur(Jeu.GetJoueurActuel()));
+                        break;
+                    }
+
+                }
+                
+            }
+        
+            // 4. === Fin du tour ===
+            if (Jeu.GetEtat() == FIN_TOUR) {
+                Jeu.GererTourIA(); // passe au prochain joueur
+                SDL_Delay(200);
+            }
+            //de_lancer_aff = true;
+            // Affichage global
+            SdlAff(menu, cliquer, cliquer_start, false, Jeu);
+            de_lancer_aff_ia = false;
+            SDL_RenderPresent(m_renderer);
+        }
+        
+
+        /*while(Jeu.IAdoitJouer()){
+            //affiche de l'encadre du joueur IA
+            //SdlAff(menu, cliquer, cliquer_start, false, Jeu);
+            //SDL_RenderPresent(m_renderer);
+
+            //SDL_Delay(1000);
             cout << "SDL détecte joueur IA: " << Jeu.GetJoueurActuel() 
             << " (type = " << Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetType() << ")" << endl;
 
@@ -534,9 +601,14 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
                 i_depart[p]=Jeu.GetJoueur(id_joueur_ia)->GetPion(p).GetI();
             }
 
-            de_lancer_aff = true;
+            
 
             Jeu.GererTourIA(); // IA joue
+            de_lancer_aff = true;
+
+            SdlAff(menu, cliquer, cliquer_start, de_lancer_aff, Jeu);
+
+            de_lancer_aff = false;
 
             //Animation du pion qui a bougé
             for(int p=0; p<4; p++){
