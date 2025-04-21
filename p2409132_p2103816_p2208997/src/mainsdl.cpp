@@ -9,11 +9,6 @@ int main()
     AffichageSDL sj;
     
     Jeu J;
-    J.GetJoueur(0)->SetType(HUMAIN);
-    J.GetJoueur(1)->SetType(IA);      // IA ici
-    J.GetJoueur(2)->SetType(HUMAIN);
-    J.GetJoueur(3)->SetType(HUMAIN);
-
     sj.SdlBoucle(J);
 
     return 0;

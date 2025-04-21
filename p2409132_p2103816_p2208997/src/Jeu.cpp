@@ -192,16 +192,6 @@ void Jeu::Demarer_Jeu(char tab[4])
 }
 
 
-/*pair<int, int> Jeu::GetCoordonnes(int index) const{
-    assert(index >=0 && index <53);
-    return chemin[index];
-}
-
-pair<int, int> Jeu::GetZoneGagnateRouge(int index) const{
-    assert(index >=0 && index <6);
-    return zone_Gagnante_R[index];
-}
-*/
 
 Joueur* Jeu::GetJoueur(unsigned int id) const
 {
@@ -241,6 +231,16 @@ EtatJeu Jeu::GetEtat() const
 void Jeu::SetEtat(EtatJeu etat_jeu)
 {
     etat = etat_jeu;
+}
+
+void Jeu::SetNbJoueur(int nb)
+{
+    nb_Joueur = nb;
+}
+
+int Jeu::GetNbJoueur() const
+{
+    return nb_Joueur;
 }
 
 pair<int, int> Jeu::GetCoordoPoule(int i) const
@@ -349,6 +349,20 @@ void Jeu::VerifierCollision(Pion &pion_deplace, Joueur &joueur_actuel)
 bool Jeu:: IAdoitJouer() const{
     assert(joueur_actuel >=0 && joueur_actuel <static_cast<int>(joueurs.size()));
     return GetJoueur(joueur_actuel)->GetType() == IA ;
+}
+
+
+void Jeu:: ConfigurerNbJoueurs(int nb_humains){
+    nb_Joueur= 4;
+
+    for(int i=0; i< 4; i++){
+        if(i<nb_humains){
+            joueurs[i]->SetType(HUMAIN);
+
+        }else{
+            joueurs[i]->SetType(IA);
+        }
+    }
 }
 
 void Jeu:: GererTourIA(){
@@ -518,14 +532,14 @@ void Jeu::Gerer_Jeu(int id_pion_deplacer)
             break;
 
         case FIN_TOUR:
-            joueur_actuel = (joueur_actuel + 1)%4;
+            joueur_actuel = (joueur_actuel + 1)%nb_Joueur;
             cout << "Nouveau joueur : " << joueur_actuel << endl;
             etat = ATTENTE_LANCER_DE;
             break;
     
         
         default:     
-            joueur_actuel = joueur_actuel + 1;
+            joueur_actuel = (joueur_actuel + 1)%nb_Joueur;
             break;
     }
     //cas de l'IA

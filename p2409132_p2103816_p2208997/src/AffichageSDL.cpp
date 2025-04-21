@@ -39,6 +39,9 @@ AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nul
     }
 
 
+    
+
+
     //taille fenêtre
     int dimx, dimy;
     dimx = dimy = 600;     //Largeur, Hauteur
@@ -65,14 +68,6 @@ AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nul
     //Image plateau
     m_plateau.loadFromFile("data/plateau.png", m_renderer);
 
-    //m_tab_pion[0].loadFromFile("data/pion/rond_rouge", m_renderer);        //vert, jaune bleu rouge
-    /*m_tab_pion[1].loadFromFile("data/pion/rond_jaune", m_renderer);
-    m_tab_pion[2].loadFromFile("data/pion/rond_bleu", m_renderer);
-    m_tab_pion[3].loadFromFile("data/pion/rond_rouge", m_renderer);*/
-    /*m_tab_pion[0].loadFromFile("data/pion/rond_vert.png", m_renderer);        //vert, jaune bleu rouge
-    m_tab_pion[1].loadFromFile("data/pion/rond_jaune.png", m_renderer);
-    m_tab_pion[2].loadFromFile("data/pion/rond_bleu.png", m_renderer);*/
-
     for(int i=0; i<4; i++)
     {
         m_pion_rouge[i].loadFromFile("data/pion/rond_rouge.png", m_renderer);
@@ -89,15 +84,32 @@ AffichageSDL::AffichageSDL(): m_window(nullptr), m_renderer(nullptr), m_font(nul
         string nom_fichier = "data/de/de_"+to_string(i)+".png";
         m_faces_de[i-1].loadFromFile(nom_fichier.c_str(), m_renderer);
     }
-    /*
-    for(int i=0; i<5; i++)
-    {
-        string nom_fichier2 ="data/de/de_int"+to_string(i)+".png";
-        m_de_inter[i].loadFromFile(nom_fichier2.c_str(), m_renderer);
-    }*/
+
 
     m_encadrer.loadFromFile("data/encadrer.png", m_renderer);
     m_menu.loadFromFile("data/menu.png", m_renderer);
+
+    m_1.loadFromFile("data/1.png", m_renderer);
+    m_1_sombre.loadFromFile("data/1_sombre.png", m_renderer);
+
+    m_2.loadFromFile("data/2.png", m_renderer);
+    m_2_sombre.loadFromFile("data/2_sombre.png", m_renderer);
+
+    m_3.loadFromFile("data/3.png", m_renderer);
+    m_3_sombre.loadFromFile("data/3_sombre.png", m_renderer);
+
+    m_4.loadFromFile("data/4.png", m_renderer);
+    m_4_sombre.loadFromFile("data/4_sombre.png", m_renderer);
+    
+    //m_start.loadFromFile("data/start.png", m_renderer);
+
+    bouton1 = {50, 350, 80, 80};
+    bouton2 = {150, 350, 80, 80};
+    bouton3 = {250, 350, 80, 80};
+    bouton4 = {350, 350, 80, 80};
+    bouton_start = {0,0, 100, 100};
+
+
 }
 
 //libere la meoire allouee
@@ -107,6 +119,9 @@ AffichageSDL::~AffichageSDL(){
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(m_window);
     SDL_Quit();
+    //Mix_FreeChunk(de_son);
+    de_son = nullptr;
+
 
 }
 
@@ -114,7 +129,7 @@ AffichageSDL::~AffichageSDL(){
 
 
 
-void AffichageSDL:: SdlAff(bool menu, bool de_lancer, De de, Jeu &Jeu){
+void AffichageSDL:: SdlAff(bool menu, bool cliquer, bool de_lancer, De de, Jeu &Jeu){
 
     // Remplir l'écran de blanc
     //SDL_SetRenderDrawColor : définit la couleur de fond du rendu
@@ -137,27 +152,84 @@ void AffichageSDL:: SdlAff(bool menu, bool de_lancer, De de, Jeu &Jeu){
     if(menu)
     {
         m_menu.draw(m_renderer, 0, 0, dimx, dimy);
+        int mouseX, mouseY;
+        SDL_GetMouseState(&mouseX, &mouseY);
+    
+    
+        // Si la souris est sur le bouton 1
+         if (mouseX >= bouton1.x && mouseX <= bouton1.x + bouton1.w &&
+            mouseY >= bouton1.y && mouseY <= bouton1.y + bouton1.h) {
+            m_1_sombre.draw(m_renderer, bouton1.x, bouton1.y, bouton1.w, bouton1.h);
+        } else {
+            if(cliquer && Jeu.GetNbJoueur()==1)
+            {
+                m_1_sombre.draw(m_renderer, bouton1.x, bouton1.y, bouton1.w, bouton1.h);
+            }else{
+                m_1.draw(m_renderer, bouton1.x, bouton1.y, bouton1.w, bouton1.h);
+            }
+            
+        }
+
+        if (mouseX >= bouton2.x && mouseX <= bouton2.x + bouton2.w &&
+            mouseY >= bouton2.y && mouseY <= bouton2.y + bouton2.h) {
+            m_2_sombre.draw(m_renderer, bouton2.x, bouton2.y, bouton2.w, bouton2.h);
+        } else {
+            if(cliquer && Jeu.GetNbJoueur()==2)
+            {
+                m_2_sombre.draw(m_renderer, bouton2.x, bouton2.y, bouton2.w, bouton2.h);
+            }else{
+                m_2.draw(m_renderer, bouton2.x, bouton2.y, bouton2.w, bouton2.h);
+            }
+            
+        }
+
+       if (mouseX >= bouton3.x && mouseX <= bouton3.x + bouton3.w &&
+            mouseY >= bouton3.y && mouseY <= bouton3.y + bouton3.h) {
+            m_3_sombre.draw(m_renderer, bouton3.x, bouton3.y, bouton3.w, bouton3.h);
+        } else {
+            if(cliquer && Jeu.GetNbJoueur()==3)
+            {
+                m_3_sombre.draw(m_renderer, bouton3.x, bouton3.y, bouton3.w, bouton3.h);
+            }else{
+                m_3.draw(m_renderer, bouton3.x, bouton3.y, bouton3.w, bouton3.h);
+            }
+            
+        }
+
+        if (mouseX >= bouton4.x && mouseX <= bouton4.x + bouton4.w &&
+            mouseY >= bouton4.y && mouseY <= bouton4.y + bouton4.h) {
+            m_4_sombre.draw(m_renderer, bouton4.x, bouton4.y, bouton4.w, bouton4.h);
+        } else {
+            if(cliquer && Jeu.GetNbJoueur()==4)
+            {
+                m_4_sombre.draw(m_renderer, bouton4.x, bouton4.y, bouton4.w, bouton4.h);
+            }else{
+                m_4.draw(m_renderer, bouton4.x, bouton4.y, bouton4.w, bouton4.h);
+            }
+            
+        }
+
+        // Si la souris est sur le bouton 1
+        /*if (mouseX >= bouton_start.x && mouseX <= bouton_start.x + bouton_start.w &&
+            mouseY >= bouton_start.y && mouseY <= bouton_start.y + bouton_start.h) {
+            m_start.draw(m_renderer, bouton_start.x, bouton_start.y, bouton_start.w, bouton_start.h);
+        } else {
+            if(cliquer)
+            {
+                m_start.draw(m_renderer, bouton_start.x, bouton_start.y, bouton_start.w, bouton_start.h);
+            }else{
+                m_start_sombre.draw(m_renderer, bouton_start.x, bouton_start.y, bouton_start.w, bouton_start.h);
+            }
+            
+        }*/
+
+
+
+
     }else{
 
         m_plateau.draw(m_renderer, 0, 0, dimx, dimy); //à haut en gauche
-    
-        //Affiche les pions rouges
-        //AffPionRouge(jeu);
-    
-        /*3.affchage des pions de chaque joueur
-        for(int j=0; j<nb_Joueur; j++){
-            for(int i=0; i<4; i++){
-                Pion* pion=joueur[j]->GetPion(i);
-    
-                //recuperer la case actuelle du pion
-                unsigned char caseIndex= pion->GetI();
-    
-                //recuperer les coordonnees du pion
-            }
-        }*/
-    
-    
-    
+        
         if(Jeu.GetJoueurActuel()==0)
         {
             m_encadrer.draw(m_renderer, 12, 370, 219, 218);
@@ -204,6 +276,19 @@ void AffichageSDL:: SdlAff(bool menu, bool de_lancer, De de, Jeu &Jeu){
         }
     }
 
+    /*if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {       //44100 frequence en Hz, format par defaut, stereo, 2042 taille buffer audio, plus petit = plus rapide 
+        cout << "Erreur Mix_OpenAudio : " << Mix_GetError() << std::endl;
+    }
+
+    
+    ///son
+    de_son = Mix_LoadWAV("data/son/de_son.wav");
+    if (!de_son) {
+        cout << "Erreur de chargement du son : " << Mix_GetError() <<endl;
+    }
+
+    Mix_VolumeChunk(de_son, MIX_MAX_VOLUME);*/
+
 
 }
 
@@ -229,7 +314,7 @@ void AffichageSDL::AnimerDeplacement(Jeu &Jeu, int id_joueur, int id_pion, int i
         Jeu.GetJoueur(id_joueur)->SetXpion(id_pion, x);
         Jeu.GetJoueur(id_joueur)->SetYpion(id_pion, y);
 
-        SdlAff(false, false, Jeu.GetDe(), Jeu);
+        SdlAff(false, false, false, Jeu.GetDe(), Jeu);
         SDL_RenderPresent(m_renderer);
         SDL_Delay(200);
     }
@@ -249,6 +334,7 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
     bool quit = false;
     bool de_lancer_aff = false;
     //bool ia_joue=false;
+    bool cliquer = false;
     cout<<"Le pion 0 de J0 a pour i= "<<Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetPion(0).GetI()<<endl;
 
     while (!quit)
@@ -260,6 +346,41 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
             if (events.type == SDL_QUIT)
                 quit = true;
 
+            if(menu && events.type == SDL_MOUSEBUTTONDOWN)
+            {
+                int x = events.button.x;
+                int y = events.button.y;
+
+                if (x >= bouton1.x && x <= bouton1.x + bouton1.w && y >= bouton1.y && y <= bouton1.y + bouton1.h) 
+                {
+                    Jeu.SetNbJoueur(1);
+                    Jeu.ConfigurerNbJoueurs(1); // cas 1 seul humain
+                    std::cout << "1 joueur sélectionné\n";
+                    cliquer = true;
+                }
+                else if (x >= bouton2.x && x <= bouton2.x + bouton2.w && y >= bouton2.y && y <= bouton2.y + bouton2.h) 
+                {
+                    Jeu.SetNbJoueur(2);
+                    Jeu.ConfigurerNbJoueurs(2); // cas 2 humains
+                    std::cout << "2 joueur sélectionné\n";
+                    cliquer = true;
+                }
+                else if (x >= bouton3.x && x <= bouton3.x + bouton3.w && y >= bouton3.y && y <= bouton3.y + bouton3.h) 
+                {
+                    Jeu.SetNbJoueur(3);
+                    Jeu.ConfigurerNbJoueurs(3); // cas 3 humains
+                    std::cout << "3 joueur sélectionné\n";
+                    cliquer = true;
+                }
+                else if (x >= bouton4.x && x <= bouton4.x + bouton4.w && y >= bouton4.y && y <= bouton4.y + bouton4.h) 
+                {
+                    Jeu.SetNbJoueur(4);
+                    Jeu.ConfigurerNbJoueurs(4); // cas 4 humains
+                    std::cout << "4 joueur sélectionné\n";
+                    cliquer = true;
+                }
+            }
+            
             if (events.type == SDL_KEYDOWN)
             {
                 switch (events.key.keysym.scancode)
@@ -276,7 +397,12 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
                     if (Jeu.GetEtat()==ATTENTE_LANCER_DE)
                     {
                         Jeu.Gerer_Jeu(0);   //changer?
+                        //Mix_PlayChannel(-1, de_son, 0);     //-1 canal, 0 pour jouer une fois
                         de_lancer_aff = true;
+                        /*if (Mix_PlayChannel(-1, de_son, 0) == -1) {
+                            std::cout << "Erreur de lecture du son : " << Mix_GetError() << std::endl;
+                        }*/
+                        
                     }
                     break;
 
@@ -351,10 +477,14 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
                     //etat = ATTENTE_LANCER_DE;
                     break;
                 }
-            }
+                }
         }
 
         while(Jeu.IAdoitJouer()){
+            //affiche de l'encadre du joueur IA
+            SdlAff(menu, cliquer, de_lancer_aff, Jeu.GetDe(), Jeu);
+            SDL_RenderPresent(m_renderer);
+
             SDL_Delay(1000);
             cout << "SDL détecte joueur IA: " << Jeu.GetJoueurActuel() 
             << " (type = " << Jeu.GetJoueur(Jeu.GetJoueurActuel())->GetType() << ")" << endl;
@@ -386,10 +516,11 @@ void AffichageSDL::SdlBoucle(Jeu &Jeu)
         /*if(Jeu.IAdoitJouer()){
             ia_joue= false;
         }*/
+        //Mix_CloseAudio(); 
 
         // Affichage
 
-        SdlAff(menu, de_lancer_aff, Jeu.GetDe(), Jeu);
+        SdlAff(menu, cliquer, de_lancer_aff, Jeu.GetDe(), Jeu);
         de_lancer_aff =false;
         SDL_RenderPresent(m_renderer);
     }

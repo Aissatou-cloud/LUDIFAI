@@ -80,9 +80,16 @@ class Jeu
         void SetEtat(EtatJeu etat_jeu);
 
         /**
-        * @brief retourne les coordonnée d'un point du chemin
-        * @param i indice du chemin 
+        * @brief Remplie le nombre de joueur
+        * @param nb nbr de jo
         */
+        void SetNbJoueur(int nb);
+
+        /**
+         * @brief Retourne nbr joueurs actuel
+         */
+        int GetNbJoueur() const;
+
 
         /**
         * @brief retourne les coordonée de la poule d'un joueur
@@ -127,41 +134,7 @@ class Jeu
         */
         void AffichageLimiteTerrain_SDL (int t_x, int t_y, char tab[4]);
 
-        //methodes dont aura besoin Gerer_tour(Joueur &joueur)
-                /**
-        * @brief retourne la valeur lance du de
-        * @param id_joueur joueur qui lance le dé
-        * @param de de du jeu 
-        */
-        //int JoueurLanceDe(unsigned int id_joueur, De de);
 
-        /**
-        * @brief recupere le l'ensemble des pions qui sont deja en jeu d'un joueur
-        * @param joueur le joueur
-        */
-        //void RecupDesPionsEnJeu(Joueur &joueur, Pion pionsenjeu[4], bool &vide);
-
-                
-        /**
-        * @brief gere l'entree du jeu c'est_à_dire la sortie d'un pion ou non par rapport a valeur du de
-        * @param joueur le joueur
-        * @param val_de la valeur du de
-        */
-        //bool GererEntreeJeu(Joueur &joueur, int val_de);
-
-        /**
-        * @brief choisir le pion qui doit sortir 
-        * @param choix un entier retournant le chois de l'utilisateur
-        * @param joueur le joueur
-        */
-        //Pion& ChoisirPion(Joueur &joueur, int val_de);
-
-        /**
-        * @brief Deplace le pion sur le plateau 
-        * @param pion 1 ptr sur Pion
-        * @param val_de la valeur du de
-        */
-        //void DeplacerPion(Pion & pion, int val_de);
 
         /**
         * @brief verifie la collision entre les autres pions des autres joeur et le joueur
@@ -187,15 +160,6 @@ class Jeu
          * @param joueur le joueur
          */
         void VerifierArrivee(Pion pion, Joueur &joueur);
-
-        /**
-         * @brief 
-         */
-		//bool Pionsjouables(Joueur &joueur, int val_de);
-       
-
-        //pair<int, int>  GetCoordonnes(int index) const;
-        //pair<int, int>  GetZoneGagnateRouge(int index) const;
 
         /**
         * @brief gere les tours pour chaque joueur
@@ -232,15 +196,22 @@ class Jeu
           * @brief  verifie si c'est IA qui joue ou HUMAIN
           */
         bool IAdoitJouer() const;
-        /**
-         * @brief teste toutes les fonctions de la classe
-         */
-        void testRegression();
 
         /**
          * @brief Donne le tableau de la zone gagnante en fonction de l'id du joueur, la fonction est const donc on retourne un const
          */
         const pair<int, int>* IdversTableauGagnant(int id_joueur) const;
+
+        /**
+         * @brief configure dynamiquement les types des joueurs
+         * @param nb_humains le nb de joueurs humain pour la partie
+         */
+        void ConfigurerNbJoueurs(int nb_humains);
+        
+        /**
+         * @brief teste toutes les fonctions de la classe
+         */
+        void testRegression();
         
 };
 
