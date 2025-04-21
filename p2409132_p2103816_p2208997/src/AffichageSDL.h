@@ -8,6 +8,8 @@
 #include <SDL2/SDL.h>           //affichage graphique   
 //#include <SDL2/SDL_image.h>     //charger des images
 //#include <SDL2/SDL_ttf.h>  
+#include <SDL2/SDL_mixer.h>
+
 #include "Jeu.h"
 #include "Image.h"
 #include "De.h"
@@ -35,16 +37,38 @@ private:
     Image m_pion_bleu[4];   ///<Image pion Bleu
     Image m_encadrer;
     Image m_menu;
+    Image m_1;
+    Image m_1_sombre;
+    Image m_2;
+    Image m_2_sombre;
+    Image m_3;
+    Image m_3_sombre;
+    Image m_4;
+    Image m_4_sombre;
+
+    Image m_start;
+    Image m_start_sombre;
+
+    Image Mix_StartTrack;
+
+    SDL_Rect bouton1;
+    SDL_Rect bouton2;
+    SDL_Rect bouton3;
+    SDL_Rect bouton4;
+    SDL_Rect bouton_start;
+
+    Mix_Chunk* de_son;
     
 
     /**
      * @brief fonction qui gere l'affichage
      * @param menu menu du jeu
+     * @param cliquer si on a cliquer sur un bouton
      * @param de_lancer si le dé a ete lancer
      * @param de de du jeu 
      * @param Jeu jeu
      */
-    void SdlAff(bool menu, bool de_lancer, De de, Jeu &Jeu);
+    void SdlAff(bool menu, bool cliquer, bool de_lancer, De de, Jeu &Jeu);
 
     //void SdlAff(bool de_lancer, De de, Jeu & jeu);
 

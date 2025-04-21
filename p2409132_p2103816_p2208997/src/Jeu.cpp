@@ -243,6 +243,16 @@ void Jeu::SetEtat(EtatJeu etat_jeu)
     etat = etat_jeu;
 }
 
+void Jeu::SetNbJoueur(int nb)
+{
+    nb_Joueur = nb;
+}
+
+int Jeu::GetNbJoueur() const
+{
+    return nb_Joueur;
+}
+
 pair<int, int> Jeu::GetCoordoPoule(int i) const
 {
     return coordo_poule[i];
@@ -514,14 +524,14 @@ void Jeu::Gerer_Jeu(int id_pion_deplacer)
             break;
 
         case FIN_TOUR:
-            joueur_actuel = (joueur_actuel + 1)%4;
+            joueur_actuel = (joueur_actuel + 1)%nb_Joueur;
             cout << "Nouveau joueur : " << joueur_actuel << endl;
             etat = ATTENTE_LANCER_DE;
             break;
     
         
         default:     
-            joueur_actuel = joueur_actuel + 1;
+            joueur_actuel = (joueur_actuel + 1)%nb_Joueur;
             break;
     }
     //cas de l'IA

@@ -80,9 +80,16 @@ class Jeu
         void SetEtat(EtatJeu etat_jeu);
 
         /**
-        * @brief retourne les coordonnée d'un point du chemin
-        * @param i indice du chemin 
+        * @brief Remplie le nombre de joueur
+        * @param nb nbr de jo
         */
+        void SetNbJoueur(int nb);
+
+        /**
+         * @brief Retourne nbr joueurs actuel
+         */
+        int GetNbJoueur() const;
+
 
         /**
         * @brief retourne les coordonée de la poule d'un joueur
