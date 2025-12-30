@@ -11,7 +11,7 @@ build/* linguist-vendored
 script.fakeextension linguist-language=Python
 
 # Ignorer tous les fichiers .txt
-*.tex linguist-vendored
+*.TeX linguist-vendored
 
 
 
