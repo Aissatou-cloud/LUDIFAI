@@ -1,2 +1,12 @@
 # Ignorer tous les fichiers HTML pour le calcul des langages
 *.html linguist-vendored
+
+# Ignorer les fichiers de documentation
+docs/* linguist-vendored
+
+# Ignorer les fichiers générés
+build/* linguist-vendored
+
+# Forcer certains fichiers à un langage
+script.fakeextension linguist-language=Python
+
