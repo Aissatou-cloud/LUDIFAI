@@ -10,3 +10,8 @@ build/* linguist-vendored
 # Forcer certains fichiers à un langage
 script.fakeextension linguist-language=Python
 
+# Ignorer tous les fichiers .txt
+*.txt linguist-vendored
+
+
+
