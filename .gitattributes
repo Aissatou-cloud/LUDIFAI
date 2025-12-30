@@ -1,0 +1,2 @@
+# Ignorer tous les fichiers HTML pour le calcul des langages
+*.html linguist-vendored
